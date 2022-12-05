@@ -2,8 +2,8 @@
 
 import time
 
-IN_FILE = "d:\\Dev\AOC2022\\202204.txt"
-# IN_FILE = "d:\\Dev\AOC2022\\202204.sample.txt"
+IN_FILE = "AOC2022\\202204.txt"
+# IN_FILE = "AOC2022\\202204.sample.txt"
 
 def parse():
     """Parse input."""

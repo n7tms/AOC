@@ -3,8 +3,8 @@
 import pathlib
 import sys
 
-IN_FILE = "d:\\Dev\AOC2022\\202201.txt"
-#IN_FILE = "d:\\Dev\AOC2022\\202201.sample.txt"
+IN_FILE = "AOC2022\\202201.txt"
+#IN_FILE = "AOC2022\\202201.sample.txt"
 
 def parse(puzzle_input):
     """Parse input."""
