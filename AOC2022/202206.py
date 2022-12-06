@@ -3,24 +3,27 @@
 import time
 
 IN_FILE = "AOC2022\\202206.txt"
-# IN_FILE = "AOC2022\\202206.sample.txt"
-
-
 
 def parse():
     """Parse input."""
-    # pi = [line for line in puzzle_input.split("\n")]
     with open(IN_FILE) as f:
         out = [(line) for line in f.read().split('\n')]
-    return out
-        
+    return out[0]
 
-def part1(directions):            # => 
+def part1(data):            # => 1356
     """Solve part 1."""
+    print(data)
+    for idx in range(len(data)-4):
+        marker = data[idx:idx+4] 
+        if len(set(marker)) == 4:
+            return idx+4
 
-
-def part2(directions):            # => 
+def part2(data):            # => 2564
     """Solve part 2."""
+    for idx in range(len(data)-14):
+        marker = data[idx:idx+14] 
+        if len(set(marker)) == 14:
+            return idx+14
     
 
 if __name__ == "__main__":
