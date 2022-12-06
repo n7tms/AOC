@@ -7,7 +7,7 @@
 [L] [Q] [S] [B] [H] [B] [M] [L] [D]
 [D] [H] [R] [L] [N] [W] [G] [C] [R]
  1   2   3   4   5   6   7   8   9 
- 
+
 move 1 from 7 to 6
 move 1 from 8 to 5
 move 3 from 7 to 4
