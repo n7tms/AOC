@@ -20,12 +20,8 @@ def get_directions(line):
 
 def parse():
     """Parse input."""
-    # pi = [line for line in puzzle_input.split("\n")]
     out = list()
     with open(IN_FILE) as f:
-    #     out = [(line) for line in f.read().split('\n')]
-    # return out
-
         for line in f.read().split('\n'):
             out.append(get_directions(line))
     return out
@@ -51,10 +47,8 @@ def turn(on_off, range_of_lights, lights):
 def part1(data):            # => 543903
     """Solve part 1."""
     lights = [[0] * 1000 for _ in range(1000)]
-    # lights = [[0] * 10 for _ in range(10)]
     
     for cmd in data:
-        # print(cmd)
         if cmd[0] == 'toggle':
             lights = toggle(cmd[1:],lights)
         else:
@@ -90,15 +84,12 @@ def total_on(data):
 def part2(data):            # => 14687245
     """Solve part 2."""
     lights = [[0] * 1000 for _ in range(1000)]
-    # lights = [[0] * 10 for _ in range(10)]
     
     for cmd in data:
-        # print(cmd)
         if cmd[0] == 'toggle':
             lights = toggle2(cmd[1:],lights)
         else:
             lights = turn2(1,cmd[1:],lights) if cmd[0] == 'on' else turn2(-1,cmd[1:],lights)
-    # print(lights)
     return total_on(lights)
 
 
