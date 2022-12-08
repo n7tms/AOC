@@ -2,8 +2,8 @@
 
 import time
 
-IN_FILE = "AOC2022/202208.txt"
-# IN_FILE = "AOC2022/202208.sample.txt"
+# IN_FILE = "AOC2022\\202208.txt"
+IN_FILE = "AOC2022\\202208.sample.txt"
 
 
 def parse():
@@ -70,11 +70,6 @@ def view_score(x,y,p_i):
             break
         else:
             i += 1
-    # for i in range(y+1,y_size):
-    #     count += 1
-    #     if int(p_i[x][i]) >= my_height:
-    #         break
-    # score *= count
 
     # down from tree
     count = 0
@@ -85,10 +80,6 @@ def view_score(x,y,p_i):
             break
         else:
             i += 1
-    # for i in range(x+1,x_size):
-    #     count += 1
-    #     if int(p_i[i][y]) >= my_height:
-    #         break
     score *= count
 
     # left from tree
@@ -100,11 +91,6 @@ def view_score(x,y,p_i):
             break
         else:
             i -= 1
-
-    # for i in range(y-1,0,-1):
-    #     count += 1
-    #     if int(p_i[x][i]) >= my_height:
-    #         break
     score *= count
 
     # up from tree
@@ -116,12 +102,7 @@ def view_score(x,y,p_i):
             break
         else:
             i -= 1
-
-    # for i in range(x-1,0,-1):
-    #     count += 1
-    #     if int(p_i[i][y]) >= my_height:
-    #         break
-    # score *= count
+    score *= count
 
     return score
 
