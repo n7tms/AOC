@@ -2,8 +2,8 @@
 
 import time
 
-# IN_FILE = "AOC2022\\202208.txt"
-IN_FILE = "AOC2022\\202208.sample.txt"
+IN_FILE = "AOC2022/202208.txt"
+# IN_FILE = "AOC2022/202208.sample.txt"
 
 
 def parse():
@@ -58,6 +58,11 @@ def look_for_trees(p_i,vis):
     return vis
 
 def view_score(x,y,p_i):
+    if x == 0 or x == x_size - 1:
+        return 0
+    if y == 0 or y == y_size - 1:
+        return 0
+
     score = 1
     my_height = int(p_i[x][y])
 
@@ -70,6 +75,7 @@ def view_score(x,y,p_i):
             break
         else:
             i += 1
+    score *= count
 
     # down from tree
     count = 0
@@ -107,12 +113,12 @@ def view_score(x,y,p_i):
     return score
 
 
-def part1(data):            # => 
+def part1(data):            # => 1782
     """Solve part 1."""
     look_for_trees(data,visible)
     return sum_trees(visible)
 
-def part2(data):            # => 
+def part2(data):            # => 474606
     """Solve part 2."""
     high_score = 0
     for x in range(x_size):
