@@ -2,8 +2,8 @@
 
 import time
 
-# IN_FILE = "AOC2022\\202207.txt"
-IN_FILE = "AOC2022\\202207.sample.txt"
+# IN_FILE = "AOC2022/202207.txt"
+IN_FILE = "AOC2022/202207.sample.txt"
 # directory = {'a':{'e':{'i':584},'f':29116,'g':2557,'h.lst':62596},'b':14848514,'c':8504156,'d':{'j':406,'d.log':803}}
 directory = {}
 commands = None
@@ -21,24 +21,28 @@ def get_line():
     return commands[idx[0]].split()
 
 def sub_dir(sd):
-    idx[0] += 1
-    line = get_line()
-    if line[0] == '$':
-        return sd
-    if line[0] == 'dir':
-        sd[line[1]] = {}
-    else:
-        sd[line[1]] = int(line[0])
-    return sub_dir(sd)
+    while True:
+        idx[0] += 1
+        if idx[0] >= len(commands):
+            return sd
+        line = commands[idx[0]].split()
+        if line[0] == '$':
+            return sd
+        if line[0] == 'dir':            # add directory
+            sd[line[1]] = {}
+        else:
+            sd[line[1]] = int(line[0])  # add file
+
 
 def execute_cmd(cur_dir):
-    if idx[0] == len(commands):
+    if idx[0] >= len(commands):
         return cur_dir
     
-    line = get_line()
+    line = commands[idx[0]].split()
     if line[0] == '$':  # command prompt
         if line[1] == 'cd':
             if line[2] == '..':
+                idx[0] += 1
                 return cur_dir  # backup
             else:
                 idx[0] += 1
@@ -48,15 +52,29 @@ def execute_cmd(cur_dir):
     # idx[0] -= 1
     return execute_cmd(cur_dir)
 
-def sum_dirs(max_size):
-    pass
+total_total = {}
+def sum_dirs(cur_dir):
+    total = 0
+    for k,v in cur_dir.items():
+        if type(v) is int:
+            total += v
+        else:
+            total += sum_dirs(v)
+    if total < 100000:
+        total_total[k] = total
+        return total
+    else:
+        return 0
 
+        
 def part1(data):            # => 
     """Solve part 1."""
     idx[0] = 1
     directory = execute_cmd({}) # start with the second command
-    # return sum_dirs(100000)
-    return directory
+    x = sum_dirs(directory)
+    print(total_total)
+    return sum(total_total.values())
+    # return sum_dirs(directory)
 
 
 
