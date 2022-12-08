@@ -2,8 +2,8 @@
 
 import time
 
-# IN_FILE = "AOC2022/202207.txt"
-IN_FILE = "AOC2022/202207.sample.txt"
+# IN_FILE = "AOC2022\\202207.txt"
+IN_FILE = "AOC2022\\202207.sample.txt"
 # directory = {'a':{'e':{'i':584},'f':29116,'g':2557,'h.lst':62596},'b':14848514,'c':8504156,'d':{'j':406,'d.log':803}}
 directory = {}
 commands = None
