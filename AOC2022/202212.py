@@ -1,4 +1,6 @@
 # AOC 2022 - Day 12
+# Look at https://www.redblobgames.com/ for some tutorials on this type of puzzle
+
 
 import time
 
