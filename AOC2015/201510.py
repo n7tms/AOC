@@ -17,18 +17,18 @@ def look_and_say(x):
     return out
 
 
-def part1(data):            # => 
+def part1(data):            # => 360154
     """Solve part 1."""
     x = look_and_say(data)
     for i in range(39):
         x = look_and_say(x)
     return len(x)
 
-def part2(data):            # => 
+def part2(data):            # => 5103798
     """Solve part 2."""
     x = look_and_say(data)
     for i in range(49):
-        print(i)
+        # print(i)
         x = look_and_say(x)
     return len(x)
 
