@@ -2,26 +2,21 @@
 
 import time
 
-IN_FILE = "AOC2022\\202213.txt"
-# IN_FILE = "AOC2022\\202213.sample.txt"
-
+IN_FILE = "AOC2022/202213.txt"
+# IN_FILE = "AOC2022/202213.sample.txt"
 
 def parse():
     """Parse input."""
     with open(IN_FILE) as f:
-        # return [[int(c) for c in line.strip()] for line in f]     # integers
-        # return [(line.strip()) for line in f.read().split('\n')]    # strings
-        # return [([dir,mag] for dir,mag in line.split()) for line in f.read().split('\n')]
-        out = [line for line in f.read().split('\n\n')]
-        out = [line.split() for line in out]
-        final_out = []
-        for x,y in out:
-            final_out.append([eval(x),eval(y)])
+        # out = [line for line in f.read().split('\n\n')]
+        # out = [line.split() for line in out]
+        # final_out = [[eval(x),eval(y)] for x,y in out]
+        final_out = [[eval(x),eval(y)] for x,y in [line.split() for line in [line for line in f.read().split('\n\n')]]]
     return final_out
 
 def compare_pairs(x,y):
     # both values are integers
-    if type(x) == int and type(y) == int:
+    if isinstance(x,int) and isinstance(y,int):
         if x == y:
             return 0 # indeterminate
         elif x < y:
@@ -30,9 +25,8 @@ def compare_pairs(x,y):
             return -1 # wrong order
 
     # both values are lists
-    if type(x) == list and type(y) == list:
-        z = zip(x,y)
-        for a,b in z:
+    if isinstance(x,list) and isinstance(y,list):
+        for a,b in zip(x,y):
             c = compare_pairs(a,b) 
             if c == 0:
                 continue
@@ -46,9 +40,9 @@ def compare_pairs(x,y):
             return 0
 
     # one value is an integer
-    if type(x) == int and type(y) != int:
+    if isinstance(x,int) and isinstance(y,list):
         return compare_pairs([x],y)
-    elif type(x) != int and type(y) == int:
+    elif isinstance(x,list) and isinstance(y,int):
         return compare_pairs(x,[y])
     else:
         return 0
@@ -57,20 +51,15 @@ def compare_pairs(x,y):
 def part1(data):            # => 5013
     """Solve part 1."""
     cnt = 0
-    for idx in range(len(data)):
-        p1,p2 = data[idx]
-        c = compare_pairs(p1,p2)
-        if c == 1:
-            cnt += idx + 1
+    for idx,pairs in enumerate(data,start=1):
+        if compare_pairs(pairs[0],pairs[1]) == 1: cnt += idx
     return cnt
 
 
 def part2(data):            # => 25038
     """Solve part 2."""
-    one_list = []
-    for p1,p2 in data:
-        one_list.append(p1)
-        one_list.append(p2)
+    # turn the data into one big list of lists (rather than pairs of lists)
+    one_list = [item for sublist in data for item in sublist]
     one_list.append([[2]])
     one_list.append([[6]])
 
@@ -84,7 +73,6 @@ def part2(data):            # => 25038
             if c != 1:
                 one_list[idx], one_list[idx+1] = one_list[idx+1], one_list[idx]
                 sorted = False
-
 
     # index of [[2]]
     idx2 = one_list.index([[2]])+1
@@ -104,4 +92,3 @@ if __name__ == "__main__":
     
     timeend = time.time()
     print("Execution time: ", "{:.7f}".format(round(timeend-timestart,7)))
-
