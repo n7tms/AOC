@@ -32,8 +32,8 @@ def parse():
     # min[x,y]   max[x,y]
 
     sensors = {}
-    ul = (0,0)
-    lr = (0,0)
+    ul = (0,0) # upper left corner
+    lr = (0,0) # lower right corner
     for sb in out:
         x1,y1,x2,y2 = map(int,re.findall("-?\d+\.?\d*",sb))
         md = man_dist([x1,y1],[x2,y2])
