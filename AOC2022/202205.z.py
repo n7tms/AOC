@@ -2,7 +2,7 @@
 # Code used to parse the initial stack of crates
 # https://www.reddit.com/r/adventofcode/comments/zcxid5/2022_day_5_solutions/iyz110o/?context=3
 
-IN_FILE = "AOC2022\\202205.txt"
+IN_FILE = "AOC2022\\inputs\\202205.txt"
 
 with open(IN_FILE, 'r') as f:
     lines=f.readlines()

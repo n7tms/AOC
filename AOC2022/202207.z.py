@@ -3,7 +3,7 @@
 import re
 
 def part1():
-    itxt = open("AOC2022\\202207.txt", mode='r').read()
+    itxt = open("AOC2022\\inputs\\202207.txt", mode='r').read()
     itxt = itxt.splitlines()
 
     path = list()

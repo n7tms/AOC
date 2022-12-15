@@ -1,7 +1,7 @@
 # AOC 2022 - Day 9
 
-IN_FILE = "AOC2022/202209.txt"
-# IN_FILE = "AOC2022\\202209.sample.txt"
+IN_FILE = "AOC2022\\inputs\\202209.txt"
+# IN_FILE = "AOC2022\\inputs\\202209.sample.txt"
 
 def get_input(afile):
     with open(afile, "r") as ifile:

@@ -4,7 +4,7 @@
 import time
 timestart = time.time()
 
-IN_FILE = "d:\\Dev\AOC2022\\202204.txt"
+IN_FILE = "d:\\Dev\AOC2022\\inputs\\202204.txt"
 
 def part1():
     overlaps = 0

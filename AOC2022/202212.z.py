@@ -70,7 +70,7 @@ def breadth_first_search(grid, start, end):
                 frontier.add(next_node)
     return came_from
 
-IN_FILE = 'AOC2022/202212.txt'
+IN_FILE = 'AOC2022\\inputs\\202212.txt'
 
 def part1_solution(day12_input):
     solution = []

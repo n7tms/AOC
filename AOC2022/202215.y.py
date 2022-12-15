@@ -10,8 +10,8 @@
 from collections import defaultdict
 import sys, fileinput, re, math
 
-IN_FILE = "AOC2022/202215.txt"
-# IN_FILE = "AOC2022\\202215.sample.txt"
+IN_FILE = "AOC2022\\inputs\\202215.txt"
+# IN_FILE = "AOC2022\\inputs\\202215.sample.txt"
 
 def part1():
     with open(IN_FILE) as f:

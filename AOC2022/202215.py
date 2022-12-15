@@ -3,8 +3,8 @@
 import time
 import re
 
-# IN_FILE = "AOC2022\\202215.txt"
-IN_FILE = "AOC2022\\202215.sample.txt"
+# IN_FILE = "AOC2022\\inputs\\202215.txt"
+IN_FILE = "AOC2022\\inputs\\202215.sample.txt"
 
 # initialize the cave with all 1 
 # all locations in range of sensor get flipped to 0

@@ -126,7 +126,7 @@ def get_level_of_monkey_business(monkeys):
 if __name__ == '__main__':
 
     print("Part 1")
-    monkeys = load_monkeys(r"AOC2022\\202211.txt")
+    monkeys = load_monkeys(r"AOC2022\\inputs\\202211.txt")
     limiter = lcm(*[monkey['divider'] for monkey in monkeys])
     print("limiter ", limiter)
     process(20, monkeys, True, limiter)
@@ -135,7 +135,7 @@ if __name__ == '__main__':
 
     print()
     print("Part 2")
-    monkeys = load_monkeys(r"AOC2022\\202211.txt")
+    monkeys = load_monkeys(r"AOC2022\\inputs\\202211.txt")
     limiter = lcm(*[monkey['divider'] for monkey in monkeys])
     print("limiter ", limiter)
     process(10000, monkeys, False, limiter)

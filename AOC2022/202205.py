@@ -2,8 +2,8 @@
 
 import time
 
-IN_FILE = "AOC2022/202205.txt"
-# IN_FILE = "AOC2022/202205.sample.txt"
+IN_FILE = "AOC2022\\inputs\\202205.txt"
+# IN_FILE = "AOC2022\\inputs\\202205.sample.txt"
 
 #     [P]                 [Q]     [T]
 # [F] [N]             [P] [L]     [M]

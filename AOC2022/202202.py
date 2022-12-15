@@ -5,8 +5,8 @@ import sys
 import time
 
 
-IN_FILE = "AOC2022\\202202.txt"
-# IN_FILE = "AOC2022\\202202.sample.txt"
+IN_FILE = "AOC2022\\inputs\\202202.txt"
+# IN_FILE = "AOC2022\\inputs\\202202.sample.txt"
 
 def parse(puzzle_input):
     """Parse input."""

@@ -1,7 +1,7 @@
 # AOC 2022 - day 10
 # adapted from 'juanplopes'
 
-IN_FILE = "AOC2022\\202210.txt"
+IN_FILE = "AOC2022\\inputs\\202210.txt"
 
 def parse():
     """Parse input."""

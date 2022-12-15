@@ -3,8 +3,8 @@
 
 import time
 
-IN_FILE = "AOC2022\\202211.txt"
-# IN_FILE = "AOC2022\\202211.sample.txt"
+IN_FILE = "AOC2022\\inputs\\202211.txt"
+# IN_FILE = "AOC2022\\inputs\\202211.sample.txt"
 
 class Monkey:
     def __init__(self, id, items, operation, test, throwT, throwF):
