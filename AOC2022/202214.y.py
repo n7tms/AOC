@@ -3,8 +3,8 @@
 b = set()
 
 abyss = 0
-IN_FILE = "AOC2022\\202214.txt"
-# IN_FILE = "AOC2022\\202214.sample.txt"
+# IN_FILE = "AOC2022\\202214.txt"
+IN_FILE = "AOC2022/202214.sample.txt"
 with open(IN_FILE) as f:
     out = f.read().split('\n')
 # for line in open(0):
