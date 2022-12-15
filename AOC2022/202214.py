@@ -1,10 +1,9 @@
 # AOC 2022 - Day 14
 
 import time
-import implementation as graph
 
-IN_FILE = "AOC2022/202214.txt"
-# IN_FILE = "AOC2022/202214.sample.txt"
+IN_FILE = "AOC2022\\202214.txt"
+# IN_FILE = "AOC2022\\202214.sample.txt"
 
 def parse():
     """Parse input."""
