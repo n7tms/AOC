@@ -3,8 +3,8 @@
 import time
 from collections import defaultdict
 
-IN_FILE = "AOC2015/201514.txt"
-# IN_FILE = "AOC2015/201514.sample.txt"
+IN_FILE = "AOC2015\\201514.txt"
+# IN_FILE = "AOC2015\\201514.sample.txt"
 
 
 
@@ -24,14 +24,15 @@ def one_second(reindeers):
         # print(reindeer)
         if reindeers[reindeer]["resting"]:
             if reindeers[reindeer]["rested"] == 0:
-                reindeers[reindeer]["resting"] == False
+                reindeers[reindeer]["resting"] = False
                 reindeers[reindeer]["ran"] = reindeers[reindeer]["duration"]
+                reindeers[reindeer]["distance"] += reindeers[reindeer]["speed"]
             else:
                 reindeers[reindeer]["rested"] -= 1
         else:
             if reindeers[reindeer]["ran"] == 0:
                 reindeers[reindeer]["resting"] = True
-                reindeers[reindeer]["rested"] = reindeers[reindeer]["rest"]
+                reindeers[reindeer]["rested"] = reindeers[reindeer]["rest"] - 1
             else:
                 reindeers[reindeer]["distance"] += reindeers[reindeer]["speed"]
                 reindeers[reindeer]["ran"] -= 1
@@ -40,14 +41,13 @@ def one_second(reindeers):
 
 def part1(reindeers):          # -> 
     race = one_second(reindeers)
-    for i in range(2053):
+    for i in range(2503):
         race = one_second(race)
     
-    max_dist = 0
     winner = [None,0]
-    for r in reindeers:
-        if reindeers[r]["distance"] > max_dist:
-            winner = [r,reindeers[r]["distance"]]
+    for r in race:
+        if race[r]["distance"] > winner[1]:
+            winner = [r,race[r]["distance"]]
     return winner
 
 
