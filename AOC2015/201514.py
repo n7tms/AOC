@@ -26,13 +26,13 @@ def one_second(reindeers):
             if reindeers[reindeer]["rested"] == 0:
                 reindeers[reindeer]["resting"] = False
                 reindeers[reindeer]["ran"] = reindeers[reindeer]["duration"]
-                reindeers[reindeer]["distance"] += reindeers[reindeer]["speed"]
+                # reindeers[reindeer]["distance"] += reindeers[reindeer]["speed"]
             else:
                 reindeers[reindeer]["rested"] -= 1
         else:
             if reindeers[reindeer]["ran"] == 0:
                 reindeers[reindeer]["resting"] = True
-                reindeers[reindeer]["rested"] = reindeers[reindeer]["rest"] - 1
+                reindeers[reindeer]["rested"] = reindeers[reindeer]["rest"]
             else:
                 reindeers[reindeer]["distance"] += reindeers[reindeer]["speed"]
                 reindeers[reindeer]["ran"] -= 1
@@ -41,7 +41,9 @@ def one_second(reindeers):
 
 def part1(reindeers):          # -> 
     race = one_second(reindeers)
-    for i in range(2503):
+    for i in range(2502):
+        if i == 136:
+            t=3
         race = one_second(race)
     
     winner = [None,0]
@@ -52,7 +54,7 @@ def part1(reindeers):          # ->
 
 
 
-def part2(guests):          # -> 
+def part2(reindeers):          # -> 
     pass
 
 if __name__ == "__main__":
