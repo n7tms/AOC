@@ -6,7 +6,7 @@ from collections import defaultdict
 IN_FILE = "AOC2015\\201514.txt"
 # IN_FILE = "AOC2015\\201514.sample.txt"
 
-
+ 
 
 def parse():
     with open(IN_FILE) as f:
