@@ -14,11 +14,11 @@ def parse():
     
 
 
-def part1(data):            # => 
+def part1(data):            # => 2029
     """Solve part 1."""
 
 
-def part2(data):            # => 
+def part2(data):            # => 2723
     """Solve part 2."""
 
 if __name__ == "__main__":

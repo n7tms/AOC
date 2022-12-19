@@ -3,10 +3,10 @@
 import time
 from collections import defaultdict
 
-IN_FILE = "AOC2015/201514.txt"
-# IN_FILE = "AOC2015/201514.sample.txt"
+IN_FILE = "AOC2015\\201514.txt"
+# IN_FILE = "AOC2015\\201514.sample.txt"
 
-
+ 
 
 def parse():
     with open(IN_FILE) as f:
@@ -24,8 +24,9 @@ def one_second(reindeers):
         # print(reindeer)
         if reindeers[reindeer]["resting"]:
             if reindeers[reindeer]["rested"] == 0:
-                reindeers[reindeer]["resting"] == False
+                reindeers[reindeer]["resting"] = False
                 reindeers[reindeer]["ran"] = reindeers[reindeer]["duration"]
+                # reindeers[reindeer]["distance"] += reindeers[reindeer]["speed"]
             else:
                 reindeers[reindeer]["rested"] -= 1
         else:
@@ -40,19 +41,20 @@ def one_second(reindeers):
 
 def part1(reindeers):          # -> 
     race = one_second(reindeers)
-    for i in range(2053):
+    for i in range(2502):
+        if i == 136:
+            t=3
         race = one_second(race)
     
-    max_dist = 0
     winner = [None,0]
-    for r in reindeers:
-        if reindeers[r]["distance"] > max_dist:
-            winner = [r,reindeers[r]["distance"]]
+    for r in race:
+        if race[r]["distance"] > winner[1]:
+            winner = [r,race[r]["distance"]]
     return winner
 
 
 
-def part2(guests):          # -> 
+def part2(reindeers):          # -> 
     pass
 
 if __name__ == "__main__":
