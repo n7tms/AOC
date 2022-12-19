@@ -23,8 +23,7 @@ def parse():
 
 
 
-
-def part1(data):            # => 
+def part1(data):            # => 851
     """Solve part 1."""
 
             
@@ -32,7 +31,7 @@ def part1(data):            # =>
 
 
 
-def part2(data):            # => 
+def part2(data):            # => 12160
     """Solve part 2."""
 
 if __name__ == "__main__":
