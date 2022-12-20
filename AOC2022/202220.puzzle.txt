@@ -1,7 +1,3 @@
-Advent of Code[About][Events][Shop][Settings][Log Out]Todd Smith 38*
-          2022[Calendar][AoC++][Sponsors][Leaderboard][Stats]
-Our sponsors help make Advent of Code possible:
-TCGplayer - Join an ever-growing worldwide team in connecting hobbyists to communities, exchanging things and thoughts that fuel passions. Competitive benefits, remote work, participate in hackathons and Advent of Code, & more!
 --- Day 20: Grove Positioning System ---
 It's finally time to meet back up with the Elves. When you try to contact them, however, you get no reply. Perhaps you're out of range?
 
