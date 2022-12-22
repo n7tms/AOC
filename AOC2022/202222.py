@@ -3,7 +3,7 @@
 import time
 import re
 
-IN_FILE = "AOC2022\\inputs\\202222.txt"
+IN_FILE = "AOC2022/inputs/202222.txt"
 # IN_FILE = "AOC2022/inputs/202222.sample.txt"
 
 
@@ -54,13 +54,13 @@ def move(maps,cp,cd,mag):
             # maps[ym][xm] = '>'
 
     elif cd == 2: # left
-        maps[ym][xm] = '<'
+        # maps[ym][xm] = '<'
         while mag > 0:
             if (xm-1 < 0) or maps[ym][xm-1] == ' ': # hit the void; wrap
-                tmp_map = maps[ym]
+                tmp_map = maps[ym].copy()
                 tmp_map.reverse()
                 if tmp_map.index('.') < tmp_map.index('#'):
-                    xm = len(tmp_map) - tmp_map.index('.') - 1
+                    xm = len(tmp_map) - tmp_map.index('.') 
                 else:
                     return maps,[xm,ym]
             elif maps[ym][xm-1] == '#': # hit a wall
@@ -95,7 +95,7 @@ def move(maps,cp,cd,mag):
                     if maps[yw][xm] == ' ':
                         continue
                     elif maps[yw][xm] == '#':
-                        ym = yw
+                        # ym = yw
                         # maps[ym][xm] = 'v' 
                         return maps,[xm,ym]
                     ym = yw + 1
@@ -111,7 +111,7 @@ def move(maps,cp,cd,mag):
 
 
 
-def part1(maps,dirs):            # =>   < 147278
+def part1(maps,dirs):            # => 60362
     cp = (maps[0].index('.'),0)  # current position
     cd = 0                       # current direction (R)
 
