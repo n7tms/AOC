@@ -3,7 +3,7 @@
 import time
 import re
 
-IN_FILE = "AOC2022/inputs/202222.txt"
+IN_FILE = "AOC2022\\inputs\\202222.txt"
 # IN_FILE = "AOC2022/inputs/202222.sample.txt"
 
 
@@ -40,7 +40,7 @@ DIRECTIONS = [1,1,-1,-1]
 def move(maps,cp,cd,mag):
     xm,ym = cp
     if cd == 0: # right
-        maps[ym][xm] = '>'
+        # maps[ym][xm] = '>'
         while mag > 0:
             if (xm+1 > len(maps[ym])-1) or maps[ym][xm+1] == ' ': # hit the void; wrap
                 if maps[ym].index('.') < maps[ym].index('#'):
@@ -51,7 +51,7 @@ def move(maps,cp,cd,mag):
                 return maps,[xm,ym]
             mag -= 1
             xm += 1
-            maps[ym][xm] = '>'
+            # maps[ym][xm] = '>'
 
     elif cd == 2: # left
         maps[ym][xm] = '<'
@@ -67,17 +67,17 @@ def move(maps,cp,cd,mag):
                 return maps,[xm,ym]
             mag -= 1
             xm -= 1
-            maps[ym][xm] = '<'
+            # maps[ym][xm] = '<'
 
     elif cd == 1: # down
-        maps[ym][xm] = 'v'
+        # maps[ym][xm] = 'v'
         while mag > 0:
             if (ym+1 > len(maps)-1) or maps[ym+1][xm] == ' ': # hit the void; wrap
                 for yw in range(len(maps)-1):
                     if maps[yw][xm] == ' ':
                         continue
                     elif maps[yw][xm] == '#':
-                        maps[ym][xm] = 'v' 
+                        # maps[ym][xm] = 'v' 
                         return maps, [xm,ym]
                     ym = yw - 1
                     break
@@ -85,10 +85,10 @@ def move(maps,cp,cd,mag):
                 return maps, [xm,ym]
             mag -= 1
             ym += 1
-            maps[ym][xm] = 'v' 
+            # maps[ym][xm] = 'v' 
 
     else: # up
-        maps[ym][xm] = '^'
+        # maps[ym][xm] = '^'
         while mag > 0:
             if (ym-1 < 0) or maps[ym-1][xm] == ' ': # hit the void; wrap
                 for yw in range(len(maps)-1,-1,-1):
@@ -96,7 +96,7 @@ def move(maps,cp,cd,mag):
                         continue
                     elif maps[yw][xm] == '#':
                         ym = yw
-                        maps[ym][xm] = 'v' 
+                        # maps[ym][xm] = 'v' 
                         return maps,[xm,ym]
                     ym = yw + 1
                     break
@@ -104,14 +104,14 @@ def move(maps,cp,cd,mag):
                 return maps,[xm,ym]
             mag -= 1
             ym -= 1
-            maps[ym][xm] = '^' 
+            # maps[ym][xm] = '^' 
     return maps,[xm,ym]
 
             
 
 
 
-def part1(maps,dirs):            # => 
+def part1(maps,dirs):            # =>   < 147278
     cp = (maps[0].index('.'),0)  # current position
     cd = 0                       # current direction (R)
 
