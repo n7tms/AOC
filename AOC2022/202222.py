@@ -3,8 +3,8 @@
 import time
 import re
 
-# IN_FILE = "AOC2022\\inputs\\202222.txt"
-IN_FILE = "AOC2022\\inputs\\202222.sample.txt"
+IN_FILE = "AOC2022/inputs/202222.txt"
+# IN_FILE = "AOC2022/inputs/202222.sample.txt"
 
 
 def parse():
@@ -14,9 +14,19 @@ def parse():
     
     # build the map
     maps = []
+    max_len = 0
     for line in m.split('\n'):
-        maps.append(list(c for c in line))
-    print(maps)
+        tmp = list(c for c in line)
+        max_len = max([max_len,len(tmp)])
+        maps.append(tmp)
+    
+    # append spaces in short rows
+    for x in range(len(maps)):
+        if len(maps[x]) < max_len:
+            tmp = [' ' * 1 for _ in range(max_len - len(maps[x]))]
+            maps[x].extend(tmp)
+            
+    # print(maps)
 
     # parse the directions
     dirs = re.findall(r'\d+|[RL]',d)
@@ -31,51 +41,72 @@ def move(maps,cp,cd,mag):
     xm,ym = cp
     if cd == 0: # right
         maps[ym][xm] = '>'
-        for x in range(1,mag+1):
-            if maps[ym][xm+x] == '#': # hit a wall
-                return maps,[x-1,ym]
-            elif maps[ym][xm+x] == ' ': # hit the void; wrap
+        while mag > 0:
+            if (xm+1 > len(maps[ym])-1) or maps[ym][xm+1] == ' ': # hit the void; wrap
                 if maps[ym].index('.') < maps[ym].index('#'):
-                    xm = maps[ym].index('.')
+                    xm = maps[ym].index('.')-1
                 else:
-                    return maps,[x-1,ym]
+                    return maps,[xm,ym]
+            elif maps[ym][xm+1] == '#': # hit a wall
+                return maps,[xm,ym]
+            mag -= 1
+            xm += 1
             maps[ym][xm] = '>'
 
+    elif cd == 2: # left
+        maps[ym][xm] = '<'
+        while mag > 0:
+            if (xm-1 < 0) or maps[ym][xm-1] == ' ': # hit the void; wrap
+                tmp_map = maps[ym]
+                tmp_map.reverse()
+                if tmp_map.index('.') < tmp_map.index('#'):
+                    xm = len(tmp_map) - tmp_map.index('.') - 1
+                else:
+                    return maps,[xm,ym]
+            elif maps[ym][xm-1] == '#': # hit a wall
+                return maps,[xm,ym]
+            mag -= 1
+            xm -= 1
+            maps[ym][xm] = '<'
+
     elif cd == 1: # down
-        maps[ym][xm] == 'v'
-        for y in range(1,mag+1):
-            if maps[ym+y][xm] == '#': # hit a wall
-                return maps, [xm,y-1]
-            elif maps[ym+y][xm] == ' ': # hit the void; wrap
+        maps[ym][xm] = 'v'
+        while mag > 0:
+            if (ym+1 > len(maps)-1) or maps[ym+1][xm] == ' ': # hit the void; wrap
                 for yw in range(len(maps)-1):
                     if maps[yw][xm] == ' ':
                         continue
                     elif maps[yw][xm] == '#':
-                        maps[y-1][xm] = 'v' 
-                        return maps, [xm,y-1]
-            maps[y][xm] = 'v' 
+                        maps[ym][xm] = 'v' 
+                        return maps, [xm,ym]
+                    ym = yw - 1
+                    break
+            elif maps[ym+1][xm] == '#': # hit a wall
+                return maps, [xm,ym]
+            mag -= 1
+            ym += 1
+            maps[ym][xm] = 'v' 
 
-    if cd == 2: # left
-        maps[ym][xm] = '<'
-        for x in range(1,mag+1):
-            if maps[ym][xm-x] == '#': # hit a wall
-                return maps,[x+1,ym]
-            elif maps[ym][xm-x] == ' ': # hit the void; wrap
-                for xw in range(len(maps[ym])-1,0,-1):
-                    if maps[ym][xw] == '#':
-                        maps[ym][x+1] = '<'
-                        return maps,[x+1,ym]
-                    elif maps[ym][xw] == ' ':
+    else: # up
+        maps[ym][xm] = '^'
+        while mag > 0:
+            if (ym-1 < 0) or maps[ym-1][xm] == ' ': # hit the void; wrap
+                for yw in range(len(maps)-1,-1,-1):
+                    if maps[yw][xm] == ' ':
                         continue
-                    maps[ym][xw] = '<'
-                    # ????????????????????
-                    # if I wrap and hit another '.', it breaks the for
-                    # i need to keep track of the location independent of the for
-                if maps[ym].index('.') < maps[ym].index('#'):
-                    xm = maps[ym].index('.')
-                else:
-                    return maps,[x+1,ym]
-            maps[ym][xm] = '>'
+                    elif maps[yw][xm] == '#':
+                        ym = yw
+                        maps[ym][xm] = 'v' 
+                        return maps,[xm,ym]
+                    ym = yw + 1
+                    break
+            elif maps[ym-1][xm] == '#': # hit a wall
+                return maps,[xm,ym]
+            mag -= 1
+            ym -= 1
+            maps[ym][xm] = '^' 
+    return maps,[xm,ym]
+
             
 
 
@@ -85,12 +116,15 @@ def part1(maps,dirs):            # =>
     cd = 0                       # current direction (R)
 
     for cmd in dirs:
-        if isinstance(cmd,int): # move
+        if cmd.isnumeric(): # move
             maps,cp = move(maps,cp,cd,int(cmd))
         else: # turn
-            pass
-
-    return 1        
+            if cmd == 'R':
+                cd = (cd + 1) % 4
+            else:
+                cd = (cd - 1) % 4
+    password = ((cp[1] + 1) * 1000) + ((cp[0] + 1) * 4) + cd
+    return password        
 
 def part2(data):            # => 
     pass
@@ -102,7 +136,7 @@ if __name__ == "__main__":
     # print(data)
 
     print("part 1:",part1(maps,dirs))
-    print("part 2:",part2(data))
+    # print("part 2:",part2(data))
     
     timeend = time.time()
     print("Execution time: ", "{:.7f}".format(round(timeend-timestart,7)))
