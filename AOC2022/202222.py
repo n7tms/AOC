@@ -126,7 +126,7 @@ def part1(maps,dirs):            # => 60362
     password = ((cp[1] + 1) * 1000) + ((cp[0] + 1) * 4) + cd
     return password        
 
-def part2(data):            # => 
+def part2(data):            # => 74288
     pass
 
 if __name__ == "__main__":
