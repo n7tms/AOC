@@ -52,11 +52,11 @@ def considerations(elves,round):
 
 
 
-def part1(data):            # => 
+def part1(data):            # => 3996
     elves = considerations(data,0)
     return 
 
-def part2(data):        # => 
+def part2(data):        # => 908
     pass
 
 if __name__ == "__main__":
