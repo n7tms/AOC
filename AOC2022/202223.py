@@ -38,7 +38,7 @@ def locate_elf(elves,pos):
 def considerations(elves,round):
     for e in elves:
         x,y = e.x,e.y
-        potentials = list((i*x,j*y) for i,j in DIRS)
+        potentials = list((i+x,j+y) for i,j in DIRS)
         decided = True
         e.proposed = [x,y]
         for d in ROUNDS:
@@ -46,13 +46,14 @@ def considerations(elves,round):
                 if locate_elf(elves,p):
                     decided = False
             if decided:
-                e.proposed = [d[0]*x,d[1]*y]
+                e.proposed = [d[0]+x,d[1]+y]
                 break
+    return elves
 
 
 
 def part1(data):            # => 
-    considerations(data,0)
+    elves = considerations(data,0)
     return 
 
 def part2(data):        # => 
