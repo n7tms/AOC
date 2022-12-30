@@ -43,6 +43,18 @@ def in_tree(node, tree):
             return x
     return None
 
+def testing():
+    tree = []
+    a = Node('pbga',66)
+    tree.append(a)
+
+    if in_tree(a,tree):
+        print('found')
+
+    print(tree)
+
+    x = 3
+
 
 def parse():
     """Parse input."""
@@ -89,6 +101,8 @@ def part2(data):    #
 
 if __name__ == "__main__":
     timestart = time.time()
+
+    testing()
 
     data1 = parse()
     # print(data)
