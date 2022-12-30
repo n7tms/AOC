@@ -39,11 +39,12 @@ def one_second(reindeers):
     return reindeers
 
 
-def part1(reindeers):          # -> 
+def part1(reindeers):          # -> 2640
     race = one_second(reindeers)
     for i in range(2502):
-        if i == 136:
-            t=3
+    # for i in range(999):
+        # if i == 136:
+        #     t=3
         race = one_second(race)
     
     winner = [None,0]
@@ -54,7 +55,7 @@ def part1(reindeers):          # ->
 
 
 
-def part2(reindeers):          # -> 
+def part2(reindeers):          # ->  >1064
     pass
 
 if __name__ == "__main__":

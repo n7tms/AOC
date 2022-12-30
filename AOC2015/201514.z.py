@@ -46,7 +46,7 @@ def main():
 
     # we need to determine the winner for each second that has elapsed, 
     # and allocate a point to that reindeer
-    for i in range(1, TIME+1):
+    for i in range(1, TIME+2):
         current_winner = max(reindeer_list, key=lambda x: x.distance_at_t(i))
         reindeer_points[current_winner.name] += 1
     
