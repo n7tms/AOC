@@ -1,5 +1,6 @@
-# AOC 2017 - Day 10
+# AOC 2017 - Day 11
 # tags: #hexgrid
+# see aoc202024.z.py
 
 import time
 
