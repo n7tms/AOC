@@ -14,8 +14,8 @@ def parse():
         out = f.read().split('\n')
     
     for line in out:
-        nodes = line.split('<->')
-        for node in nodes[1].split(','):
+        nodes = line.strip().split('<->')
+        for node in nodes[1].strip().split(','):
             edges.add((int(nodes[0]),int(node)))
 
     return
@@ -57,10 +57,10 @@ def part2(data):    # 221
 if __name__ == "__main__":
     timestart = time.time()
 
-    data1 = parse()
+    data = parse()
 
-    print("part 1:",part1(data1))
-    print("part 2:",part2(data1))
+    print("part 1:",part1(data))
+    print("part 2:",part2(data))
 
     timeend = time.time()
     print("Execution time: ", "{:.4f}".format(round(timeend-timestart,7)))
