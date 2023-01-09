@@ -1,9 +1,9 @@
 # AOC 2017 - Day 22
-# tags: #
+# tags: #coords
 
 import time
 
-IN_File = "AOC2017/22.z.txt"
+IN_File = "AOC2017/22.txt"
 grid_size = 1001
 DIRS = [[-1,0],[0,1],[1,0],[0,-1]]
 
@@ -26,7 +26,7 @@ def parse():
     for i in range(brdr_size):
         the_map.append("." * grid_size)
 
-    print("map size: ",len(the_map[0]),"x",len(the_map))
+    # print("map size: ",len(the_map[0]),"x",len(the_map))
 
     # now convert everything to a lists of lists
     final_map = []
@@ -63,15 +63,13 @@ def part1(data):    # 5565
 
 
 
-def part2(data):    # < 2537266
+def part2(data):    # 2511978
     infected = 0
     pos = [grid_size//2,grid_size//2]
     dir = 0
 
     # walk the map
-    # for _ in range(10000000):
-    for _ in range(100):
-    # for _ in range(4):
+    for _ in range(10000000):
         cur_node = data[pos[0]][pos[1]]
         if cur_node == '#':
             dir += 1    # turn right
@@ -79,11 +77,10 @@ def part2(data):    # < 2537266
         elif cur_node == '.':
             dir -= 1    # turn left
             data[pos[0]][pos[1]] = 'w'
-            infected += 1
         elif cur_node == 'w':
             # dir -= 1    # continue straight
             data[pos[0]][pos[1]] = '#'
-            # infected += 1
+            infected += 1
         elif cur_node == 'f':
             dir += 2    # reverse
             data[pos[0]][pos[1]] = '.'
@@ -96,8 +93,6 @@ def part2(data):    # < 2537266
             print("off the map:",pos)
             break
 
-    # for r in data:
-    #     print(r)
     return infected
 
 if __name__ == "__main__":
