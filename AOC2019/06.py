@@ -1,9 +1,15 @@
-# AOC 2019 - Day 4
+# AOC 2019 - Day 06
 # tags: 
 
 import time
+import intcode as ic
 
-IN_File = "271973-785961"
+IN_File = "AOC2019/06.txt"
+
+def parse():
+    with open(IN_File) as f:
+        out = f.read().split('\n')
+
 
 def parse():
     return list(map(int,IN_File.split('-')))
