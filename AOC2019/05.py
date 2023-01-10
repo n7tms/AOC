@@ -8,18 +8,13 @@ IN_File = "AOC2019/05.txt"
 
 def parse():
     with open(IN_File) as f:
-        out = f.read().split('\n')
+        out = f.read().split(',')
+    prgm = list(map(int,out))
+    return prgm
 
-
-def parse():
-    return list(map(int,IN_File.split('-')))
-
-
-def valid_pwd(pwd):
-    pass
 
 def part1(data):    # 
-    pass
+    ic.run()
 
 def part2(data):    # 
     pass
@@ -29,6 +24,7 @@ if __name__ == "__main__":
     timestart = time.time()
 
     data = parse()
+    data2 = data[:]
 
     print("part 1:",part1(data))
     print("part 2:",part2(data))
