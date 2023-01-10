@@ -31,10 +31,14 @@ def valid_pwd2(pwd):
     for i in range(1,len(pwd)):
         if pwd[i] < pwd[i-1]: increasing = False
         if pwd[i] == pwd[i-1]: 
+            if i+1 < len(pwd) and pwd[i] == pwd[i+1]:
+                if i+2 < len(pwd) and pwd[i] == pwd[i+2]:
+                    repeating = True
+                    i += 2
+                else:
+                    repeating = False
             repeating = True
-            if not group:
-                group = True
-                
+
 
     return repeating & increasing & length
 
@@ -45,7 +49,7 @@ def part1(data):    # 925
             count += 1
     return count
 
-def part2(data):    # 
+def part2(data):    # 607
     count = 0
     for x in range(data[0],data[1]+1):
         if valid_pwd2(str(x)):
