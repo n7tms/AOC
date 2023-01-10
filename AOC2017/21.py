@@ -10,10 +10,10 @@ def parse():
         out = f.read().split('\n')
 
 
-def part1(data):    # 
+def part1(data):    # 125
     pass
 
-def part2(data):    # 
+def part2(data):    # 1782917
     pass
 
 if __name__ == "__main__":
