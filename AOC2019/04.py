@@ -1,4 +1,4 @@
-# AOC 2019 - Day 3
+# AOC 2019 - Day 2
 # tags: #set #direction
 
 import time
