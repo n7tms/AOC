@@ -10,14 +10,47 @@ def parse():
 
 
 def valid_pwd(pwd):
-    pass
+    repeating = False
+    increasing = True
+    length = False
 
-def part1(data):    # 
-    pass
+    if len(pwd) >= 6: length = True
+    for i in range(1,len(pwd)):
+        if pwd[i] < pwd[i-1]: increasing = False
+        if pwd[i] == pwd[i-1]: repeating = True
+
+    return repeating & increasing & length
+
+def valid_pwd2(pwd):
+    repeating = False
+    increasing = True
+    length = False
+    group = False
+
+    if len(pwd) >= 6: length = True
+    for i in range(1,len(pwd)):
+        if pwd[i] < pwd[i-1]: increasing = False
+        if pwd[i] == pwd[i-1]: 
+            repeating = True
+            if not group:
+                group = True
+                
+
+    return repeating & increasing & length
+
+def part1(data):    # 925
+    count = 0
+    for x in range(data[0],data[1]+1):
+        if valid_pwd(str(x)):
+            count += 1
+    return count
 
 def part2(data):    # 
-    pass
-
+    count = 0
+    for x in range(data[0],data[1]+1):
+        if valid_pwd2(str(x)):
+            count += 1
+    return count
 
 if __name__ == "__main__":
     timestart = time.time()
