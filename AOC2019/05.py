@@ -16,6 +16,7 @@ def parse():
 def part1(data):    # 
     ic.run()
 
+
 def part2(data):    # 
     pass
 
