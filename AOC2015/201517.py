@@ -22,20 +22,26 @@ def parse():
     return out
 
 def part1(data):    # => 1304
-    all_possible = []
-    for n in range(1,len(data)+1):
-        pos_sol = list(combinations(data,n))
-        all_possible += pos_sol
-
     count = 0
-    for x in all_possible:
-        if sum(x) == 150:
-            count += 1
+    for n in range(1, len(data)+1):
+        for m in combinations(data, n):
+            if sum(m) == 150:
+                count += 1
+
     return count
 
-def part2(data):    # => 
-
-    return 0
+def part2(data):    # => 18
+    # It took me a while to understand this part.
+    # What is the minimun containers required for 150?
+    # If the answer is 4, then how many combinations of 4 containers = 150?
+    min_containers = 0
+    for n in range(1, len(data)+1):
+        for m in combinations(data, n):
+            if sum(m) == 150:
+                min_containers += 1
+        if min_containers > 0:
+            break
+    return min_containers
 
 
 if __name__ == "__main__":
@@ -43,10 +49,11 @@ if __name__ == "__main__":
 
     puzzle_input = parse()
 
+    print("\nDay 17: ===========================")
     print("part 1:",part1(puzzle_input))
     print("part 2:",part2(puzzle_input))
     
     timeend = time.time()
-    print("Execution time: ", f"{timeend-timestart:0.4f}")
+    print("Execution time: ", f"{timeend-timestart:0.4f}", "\n")
 
 
