@@ -1,7 +1,6 @@
 # AOC 2015 - Day 15
 
 import time
-import re
 
 IN_FILE = "AOC2015\\201515.txt"
 # IN_FILE = "AOC2015\\201515.sample.txt"
@@ -14,14 +13,13 @@ def parse():
     ingredients = []
     for x in out:
         ingr, a = x.split(':')
-        b = a.split(' ')
         _,cap,_,dur,_,fla,_,tex,_,cal = a.strip().split(' ')
         ingredients.append(list([ingr,int(cap.strip(',')),int(dur.strip(',')),int(fla.strip(',')),int(tex.strip(',')),int(cal)]))
 
     return ingredients
 
 
-def part1(ingredients):     # -> 13882464, 11171160
+def part(ingredients):     # -> part1: 13882464, part2: 11171160
     imax = 0
     imax500 = 0
 
@@ -51,7 +49,7 @@ if __name__ == "__main__":
     timestart = time.time()
     
     puzzle_input = parse()
-    p1,p2 = part1(puzzle_input)
+    p1,p2 = part(puzzle_input)
 
     print("part 1:",p1)
     print("part 2:",p2)
