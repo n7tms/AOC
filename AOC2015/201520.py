@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
     puzzle_input = target
 
-    print("\nDay 18: ===========================")
+    print("\nDay 20: ===========================")
     print("part 1:",part1(puzzle_input))
     print("part 2:",part2(puzzle_input))
     
