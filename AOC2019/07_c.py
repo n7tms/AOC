@@ -37,12 +37,28 @@ phase = (9,8,7,6,5)
 # phases = list(permutations(range(5,10)))
 
 thrustersignal = 0
-ampa = Intcode("ampa", testpgrm, [phase[0],0])
+ampa = Intcode("ampa", testpgrm, [phase[0]])
+ampb = Intcode("ampb", testpgrm, [phase[1]])
+ampc = Intcode("ampc", testpgrm, [phase[2]])
+ampd = Intcode("ampd", testpgrm, [phase[3]])
+ampe = Intcode("ampe", testpgrm, [phase[4]])
+
+out = 0
 while True:
-    ampb = Intcode("ampb", testpgrm, [phase[1],ampa.run()[1][0]])
-    ampc = Intcode("ampc", testpgrm, [phase[2], ampb.run()[1][0]])
-    ampd = Intcode("ampd", testpgrm, [phase[3], ampc.run()[1][0]])
-    ampe = Intcode("ampe", testpgrm, [phase[4], ampd.run()[1][0]])
+    p0, outs = ampa.run()
+
+    ampb.inputs.append(out)
+    out = ampb.run()[1][0]
+
+    ampc.inputs.append(out)
+    out = ampc.run()[1][0]
+
+    ampd.inputs.append(out)
+    out = ampd.run()[1][0]
+
+    ampe.inputs.append(out)
+    out = ampe.run()[1][0]
+
     thrustersignal = ampe.run()[1][0]
     if thrustersignal ==139629729:
         break

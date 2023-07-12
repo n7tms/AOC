@@ -6,9 +6,9 @@ class Intcode:
         self.pc = 0
         self.done = False
         self.inputs = inputs
+        self.output = []
 
     
-
     def run(self):
         while not self.done:
             # get opcode
@@ -44,26 +44,28 @@ class Intcode:
                     return f"Opcode {opcode} is not defined."
         return self.prgm[0], self.inputs
 
-
-    def oc1(self, mode1, mode2):
+    def oc1(self, mode1, mode2):        # Add
         """ ADD: pc[+1] + pc[+2] = pc[+3]"""
-        if mode1 == 0:
-            num1 = self.prgm[self.prgm[self.pc + 1]]
-        else: 
-            num1 = self.prgm[self.pc + 1]
+
+        num1 = self.prgm[self.prgm[self.pc + 1]] if mode1 == 0 else self.prgm[self.pc + 1]
+        # if mode1 == 0:
+        #     num1 = self.prgm[self.prgm[self.pc + 1]]
+        # else: 
+        #     num1 = self.prgm[self.pc + 1]
         
-        if mode2 == 0:
-            num2 = self.prgm[self.prgm[self.pc + 2]]
-        else:
-            num2 = self.prgm[self.pc + 2]
+        num2 = self.prgm[self.prgm[self.pc + 2]] if mode2 == 0 else self.prgm[self.pc + 2]
+        # if mode2 == 0:
+        #     num2 = self.prgm[self.prgm[self.pc + 2]]
+        # else:
+        #     num2 = self.prgm[self.pc + 2]
 
         dest = self.prgm[self.pc + 3]
 
         self.prgm[dest] = num1 + num2
         self.pc += 4
        
-            
-    def oc2(self, mode1, mode2):
+           
+    def oc2(self, mode1, mode2):        # Multiply
         """ MULTIPLY: pc[+1] * pc[+2] = pc[+3]"""
         if mode1 == 0:
             num1 = self.prgm[self.prgm[self.pc + 1]]
@@ -80,18 +82,17 @@ class Intcode:
         self.prgm[dest] = num1 * num2
         self.pc += 4
 
-
-    def oc3(self):
+    def oc3(self):                      # Input
         """INPUT"""
         dest = self.prgm[self.pc + 1]
         
         if not self.inputs:
-            return "input expected"
+            self.done = True
+            return "waiting"    # waiting on an input
         self.prgm[dest] = self.inputs.pop(0)
         self.pc += 2
 
-
-    def oc4(self, mode1):
+    def oc4(self, mode1):               # Output
         """OUTPUT"""
         if mode1:
             param1 = self.prgm[self.pc+1]
@@ -100,8 +101,7 @@ class Intcode:
         self.inputs.append(param1)
         self.pc += 2
 
-
-    def oc5(self, mode1, mode2):
+    def oc5(self, mode1, mode2):        # JT
         """JT: jump if true"""
         if mode1:
             param1 = self.prgm[self.pc+1]
@@ -118,8 +118,7 @@ class Intcode:
         else:
             self.pc += 3        
 
-
-    def oc6(self, mode1, mode2):
+    def oc6(self, mode1, mode2):        # JF
         """JF: jump if false"""
         if mode1:
             param1 = self.prgm[self.pc+1]
@@ -136,8 +135,7 @@ class Intcode:
         else:
             self.pc += 3           
 
-
-    def oc7(self, mode1, mode2):
+    def oc7(self, mode1, mode2):        # LT
         """LT: less than"""
         if mode1:
             param1 = self.prgm[self.pc+1]
@@ -158,8 +156,7 @@ class Intcode:
 
         self.pc += 4
 
-
-    def oc8(self, mode1, mode2):
+    def oc8(self, mode1, mode2):        # EQ
         """EQ: equals"""
         if mode1:
             param1 = self.prgm[self.pc+1]
@@ -180,9 +177,8 @@ class Intcode:
             self.prgm[param3] = 0
 
         self.pc += 4
-        
-
-    def oc99(self):
+       
+    def oc99(self):                     # Terminate
         self.done = True
 
 
