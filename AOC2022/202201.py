@@ -3,8 +3,11 @@
 import pathlib
 import sys
 
-IN_FILE = "AOC2022\\inputs\\202201.txt"
-#IN_FILE = "AOC2022\\inputs\\202201.sample.txt"
+# IN_FILE = "AOC2022\\inputs\\202201.txt"
+# IN_FILE = "AOC2022\\inputs\\202201.sample.txt"
+
+IN_FILE = "./inputs/202201.txt"
+# IN_FILE = "./inputs/202201.sample.txt"
 
 def parse(puzzle_input):
     """Parse input."""
@@ -34,10 +37,6 @@ def part2(data):            # => 203002
     """Solve part 2."""
     data.sort()
     return sum(data[-3:])
-
-
-
-
 
 
 
