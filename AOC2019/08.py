@@ -12,10 +12,10 @@ def parse():
 
 def makelayers(input, width, height):
     layersize = width * height
-    image = []
-    for i in range(0,len(input),layersize):
-        image.append(list(input[i:(i+layersize)]))
-    return image
+
+    # slice up the input into 25x6 sections
+    return [input[i*layersize : layersize+i*layersize] for i in range(len(input)//layersize)]
+
 
 def countelements(lst, target):
     return lst.count(target)
@@ -24,15 +24,12 @@ def part1():
     data = parse()
     image = makelayers(data,25,6)
 
-    zeros = 151
-    zerolayer = 0
-    for idx, layer in enumerate(image):
-        z = countelements(layer,0)
-        if z < zeros:
-            zeros = z
-            zerolayer = idx
+    # find the "row" with the fewest number of "0"; save the row in minimum
+    minimum = min(image, key=lambda x: x.count(0))
 
-    return countelements(image[zerolayer],1) * countelements(image[zerolayer],2)
+    # multiply the number of "1" and "2" in the row (with the least "0")
+    return minimum.count(1) * minimum.count(2)
+
 
 def part2():
     data = parse()
