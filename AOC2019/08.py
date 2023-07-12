@@ -5,10 +5,16 @@ IN_File = "AOC2019/08.txt"
 
 def parse():
     with open(IN_File) as f:
-        out = f.read()
-    pwd = [digit for digit in out]
-    prgm = list(map(int,pwd))
-    return prgm
+        data = f.read()
+    # create a list of the data
+    # pwd = [digit for digit in data]
+
+    # convert all of the digits to int
+    # (it probably is not necessary to convert to int. no math will be done. oh well.)
+    # prgm = list(map(int,pwd))
+
+    out = list(map(int,[digit for digit in data]))
+    return out
 
 def makelayers(input, width, height):
     layersize = width * height
@@ -16,9 +22,6 @@ def makelayers(input, width, height):
     # slice up the input into 25x6 sections
     return [input[i*layersize : layersize+i*layersize] for i in range(len(input)//layersize)]
 
-
-def countelements(lst, target):
-    return lst.count(target)
 
 def part1():
     data = parse()
