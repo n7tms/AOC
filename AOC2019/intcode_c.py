@@ -7,6 +7,7 @@ class Intcode:
         self.done = False
         self.inputs = inputs
         self.output = []
+        self.relative_base = 0
 
     
     def run(self):
@@ -38,6 +39,8 @@ class Intcode:
                     self.oc7(mode1, mode2)
                 case 8:
                     self.oc8(mode1, mode2)
+                case 9:
+                    self.oc9()
                 case 99: 
                     self.oc99()
                 case other:
@@ -63,8 +66,7 @@ class Intcode:
 
         self.prgm[dest] = num1 + num2
         self.pc += 4
-       
-           
+                  
     def oc2(self, mode1, mode2):        # Multiply
         """ MULTIPLY: pc[+1] * pc[+2] = pc[+3]"""
         if mode1 == 0:
@@ -94,8 +96,10 @@ class Intcode:
 
     def oc4(self, mode1):               # Output
         """OUTPUT"""
-        if mode1:
+        if mode1 == 1:
             param1 = self.prgm[self.pc+1]
+        elif mode1 == 2:
+            param1 = self.prgm[self.pc+1] + self.relative_base
         else:
             param1 = self.prgm[self.prgm[self.pc+1]]
         self.inputs.append(param1)
@@ -178,6 +182,12 @@ class Intcode:
 
         self.pc += 4
        
+
+    def oc9(self):                      # adjust relative base
+        offset = self.prgm[self.pc+1]
+        self.relative_base += offset
+        self.pc += 2
+
     def oc99(self):                     # Terminate
         self.done = True
 
