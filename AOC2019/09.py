@@ -18,12 +18,14 @@ def get_input():
     return data
 
 
-def part1(data):
+def part1(data):            # -> 2427443564
     ic = Intcode('BOOST',data,[1])
     print(ic.run())
 
 
-def part2(data):
+def part2(data):            # -> 87221
+    # ic = Intcode('Distress',data,[2])
+    # print(ic.run())
     ...
 
 

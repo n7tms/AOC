@@ -2,7 +2,7 @@ class Intcode:
 
     def __init__(self, name, program, inputs=[]) -> None:
         self.name = name
-        self.prgm = [0] * 1000000000        # initialize the memory
+        self.prgm = [0] * 10000             # initialize the memory
         self.prgm[:len(program)] = program  # copy the program into memory
         self.pc = 0
         self.done = False
@@ -23,23 +23,42 @@ class Intcode:
             mode2 = int(instr[1:2])
             mode3 = int(instr[0:1])
 
+            # Parse the Parameters
+            # as is, the parameter (012) refer to the parameters
+            # +3, +2, +1, respectively. Reverse them so they refer to
+            # +1, +2, +3.
+            parameters = []
+            param_modes = instr[0:3]
+            param_modes = param_modes[::-1]
+
+            # iterate through the param_modes and determine the correct
+            # value of the given parameter
+            for i in range(1,4):
+                if param_modes[i-1] == "0":
+                    parameters.append(self.prgm[self.prgm[self.pc + i]])
+                elif param_modes[i-1] == "1":
+                    parameters.append(self.prgm[self.pc + i])
+                else:
+                    parameters.append(self.prgm[self.pc + i] + self.relative_base)
+
+
             match opcode:
                 case 1:
-                    self.oc1(mode1, mode2)
+                    self.oc1(parameters)
                 case 2:
-                    self.oc2(mode1, mode2)
+                    self.oc2(parameters)
                 case 3:
                     self.oc3()
                 case 4:
-                    self.oc4(mode1)
+                    self.oc4(parameters)
                 case 5:
-                    self.oc5(mode1, mode2)
+                    self.oc5(parameters)
                 case 6:
-                    self.oc6(mode1, mode2)
+                    self.oc6(parameters)
                 case 7:
-                    self.oc7(mode1, mode2)
+                    self.oc7(parameters)
                 case 8:
-                    self.oc8(mode1, mode2)
+                    self.oc8(parameters)
                 case 9:
                     self.oc9()
                 case 99: 
@@ -48,51 +67,16 @@ class Intcode:
                     return f"Opcode {opcode} is not defined."
         return self.prgm[0], self.inputs
 
-    def oc1(self, mode1, mode2):        # Add
+    def oc1(self, prm):        # Add
         """ ADD: pc[+1] + pc[+2] = pc[+3]"""
-        # num1 = self.prgm[self.prgm[self.pc + 1]] if mode1 == 0 else self.prgm[self.pc + 1]
-        # num2 = self.prgm[self.prgm[self.pc + 2]] if mode2 == 0 else self.prgm[self.pc + 2]
 
-        if mode1 == 1:
-            num1 = self.prgm[self.pc + 1]
-        elif mode1 == 2:
-            num1 = self.prgm[self.prgm[self.pc + 1] + self.relative_base]
-        else:
-            num1 = self.prgm[self.prgm[self.pc + 1]]
-
-        if mode2 == 1:
-            num2 = self.prgm[self.pc + 2]
-        elif mode2 == 2:
-            num2 = self.prgm[self.prgm[self.pc + 2] + self.relative_base]
-        else:
-            num2 = self.prgm[self.prgm[self.pc + 2]]
-
-
-
-        dest = self.prgm[self.pc + 3]
-
-        self.prgm[dest] = num1 + num2
+        self.prgm[prm[2]] = prm[0] + prm[1]
         self.pc += 4
                   
-    def oc2(self, mode1, mode2):        # Multiply
+    def oc2(self, prm):        # Multiply
         """ MULTIPLY: pc[+1] * pc[+2] = pc[+3]"""
-        if mode1 == 1:
-            num1 = self.prgm[self.pc + 1]
-        elif mode1 == 2:
-            num1 = self.prgm[self.prgm[self.pc + 1] + self.relative_base]
-        else:
-            num1 = self.prgm[self.prgm[self.pc + 1]]
 
-        if mode2 == 1:
-            num2 = self.prgm[self.pc + 2]
-        elif mode2 == 2:
-            num2 = self.prgm[self.prgm[self.pc + 2] + self.relative_base]
-        else:
-            num2 = self.prgm[self.prgm[self.pc + 2]]
-
-        dest = self.prgm[self.pc + 3]
-
-        self.prgm[dest] = num1 * num2
+        self.prgm[prm[2]] = prm[0] * prm[1]
         self.pc += 4
 
     def oc3(self):                      # Input
@@ -105,107 +89,49 @@ class Intcode:
         self.prgm[dest] = self.inputs.pop(0)
         self.pc += 2
 
-    def oc4(self, mode1):               # Output
+    def oc4(self, prm):               # Output
         """OUTPUT"""
-        if mode1 == 1:
-            param1 = self.prgm[self.pc+1]
-        elif mode1 == 2:
-            param1 = self.prgm[self.prgm[self.pc+1] + self.relative_base]
-        else:
-            param1 = self.prgm[self.prgm[self.pc+1]]
-        self.inputs.append(param1)
+        print(f"{self.name} Output: {self.prgm[prm[0]]}")
+        self.inputs.append(self.prgm[prm[0]])
         self.pc += 2
 
-    def oc5(self, mode1, mode2):        # JT
+    def oc5(self, prm):        # JT
         """JT: jump if true"""
-        if mode1 == 1:
-            param1 = self.prgm[self.pc+1]
-        if mode1 == 2:
-            param1 = self.prgm[self.prgm[self.pc+1] + self.relative_base]
-        else:
-            param1 = self.prgm[self.prgm[self.pc+1]]
-        
-        if mode2 == 1:
-            param2 = self.prgm[self.pc+2]
-        if mode2 == 2:
-            param2 = self.prgm[self.prgm[self.pc+2] + self.relative_base]
-        else:
-            param2 = self.prgm[self.prgm[self.pc+2]]
 
-        if param1 != 0:
-            self.pc = param2
+        if prm[0] != 0:
+            self.pc = prm[1]
         else:
             self.pc += 3        
 
-    def oc6(self, mode1, mode2):        # JF
+    def oc6(self, prm):        # JF
         """JF: jump if false"""
-        if mode1 == 1:
-            param1 = self.prgm[self.pc+1]
-        if mode1 == 2:
-            param1 = self.prgm[self.prgm[self.pc+1] + self.relative_base]
-        else:
-            param1 = self.prgm[self.prgm[self.pc+1]]
-        
-        if mode2 == 1:
-            param2 = self.prgm[self.pc+2]
-        if mode2 == 2:
-            param2 = self.prgm[self.prgm[self.pc+2] + self.relative_base]
-        else:
-            param2 = self.prgm[self.prgm[self.pc+2]]
 
-        if param1 == 0:
-            self.pc = param2
+        if prm[0] == 0:
+            self.pc = prm[1]
         else:
             self.pc += 3           
 
-    def oc7(self, mode1, mode2):        # LT
+    def oc7(self, prm):        # LT
         """LT: less than"""
-        if mode1 == 1:
-            param1 = self.prgm[self.pc+1]
-        elif mode1 == 2:
-            param1 = self.prgm[self.prgm[self.pc+1] + self.relative_base]
-        else:
-            param1 = self.prgm[self.prgm[self.pc+1]]
-        
-        if mode2 ==1:
-            param2 = self.prgm[self.pc+2]
-        if mode2 == 2:
-            param2 = self.prgm[self.prgm[self.pc+2] + self.relative_base]
-        else:
-            param2 = self.prgm[self.prgm[self.pc+2]]
 
         param3 = self.prgm[self.pc+3]
 
-        if param1 < param2:
-            self.prgm[param3] = 1
+        if prm[0] < prm[1]:
+            self.prgm[prm[2]] = 1
         else:
-            self.prgm[param3] = 0
+            self.prgm[prm[2]] = 0
 
         self.pc += 4
 
-    def oc8(self, mode1, mode2):        # EQ
+    def oc8(self, prm):        # EQ
         """EQ: equals"""
-        if mode1 == 1:
-            param1 = self.prgm[self.pc+1]
-        elif mode1 == 2:
-            param1 = self.prgm[self.prgm[self.pc+1] + self.relative_base]
-        else:
-            param1 = self.prgm[self.prgm[self.pc+1]]
-        
-        if mode2 == 1:
-            param2 = self.prgm[self.pc+2]
-        if mode2 == 2:
-            param2 = self.prgm[self.prgm[self.pc+2] + self.relative_base]
-        else:
-            param2 = self.prgm[self.prgm[self.pc+2]]
 
-        param3 = self.prgm[self.pc+3]
+        # param3 = self.prgm[self.pc+3]
 
-
-        if param1 == param2:
-            self.prgm[param3] = 1
+        if prm[0] == prm[1]:
+            self.prgm[prm[2]] = 1
         else:
-            self.prgm[param3] = 0
+            self.prgm[prm[2]] = 0
 
         self.pc += 4
        
