@@ -1,1 +1,10 @@
 AOC2019/__pycache__/intcode.cpython-311.pyc
+
+# Exclude AOC input files
+*.in
+
+# Exclude files with the session key
+session.txt
+
+# Exclude the virtual environment directory
+venv/
