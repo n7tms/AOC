@@ -9,6 +9,26 @@ class Intcode:
         self.inputs = inputs
         self.output = []
         self.relative_base = 0
+        self.parameter_count = {1:3,2:3,3:1,4:1,5:2,6:2,7:3,8:3,9:1,99:0}
+
+    def get_parameters(self, param_modes: str, qty: int) -> list:
+        # Parse the Parameters
+        # as is, the parameter (012) refer to the parameters
+        # +3, +2, +1, respectively. Reverse them so they refer to
+        # +1, +2, +3.
+        parameters = []
+
+        # iterate through the param_modes and determine the correct
+        # value of the given parameter
+        for i in range(1,qty+1):
+            if param_modes[i-1] == "0":
+                parameters.append(self.prgm[self.prgm[self.pc + i]])
+            elif param_modes[i-1] == "1":
+                parameters.append(self.prgm[self.pc + i])
+            else:
+                parameters.append(self.prgm[self.pc + i] + self.relative_base)
+        
+        return parameters
 
     
     def run(self):
@@ -23,24 +43,9 @@ class Intcode:
             mode2 = int(instr[1:2])
             mode3 = int(instr[0:1])
 
-            # Parse the Parameters
-            # as is, the parameter (012) refer to the parameters
-            # +3, +2, +1, respectively. Reverse them so they refer to
-            # +1, +2, +3.
-            parameters = []
             param_modes = instr[0:3]
             param_modes = param_modes[::-1]
-
-            # iterate through the param_modes and determine the correct
-            # value of the given parameter
-            for i in range(1,4):
-                if param_modes[i-1] == "0":
-                    parameters.append(self.prgm[self.prgm[self.pc + i]])
-                elif param_modes[i-1] == "1":
-                    parameters.append(self.prgm[self.pc + i])
-                else:
-                    parameters.append(self.prgm[self.pc + i] + self.relative_base)
-
+            parameters = self.get_parameters(param_modes,self.parameter_count[opcode])
 
             match opcode:
                 case 1:
