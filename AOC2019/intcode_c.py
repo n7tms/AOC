@@ -24,7 +24,6 @@ class Intcode:
         # any parameters they don't need.
 
         # Iterate through param_modes and determine the position referred to
-        # for i in range(1,qty+1):
         parameters = []
         for i in range(1,4):
             if param_modes[i-1] == "0":
