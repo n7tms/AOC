@@ -24,9 +24,8 @@ def part1(data):            # -> 2427443564
 
 
 def part2(data):            # -> 87221
-    # ic = Intcode('Distress',data,[2])
-    # print(ic.run())
-    ...
+    ic = Intcode('Distress',data,[2])
+    print(ic.run())
 
 
 

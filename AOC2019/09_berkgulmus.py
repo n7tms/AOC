@@ -66,6 +66,10 @@ class intCodeComputer:
             #print("opcode:" + str(OpCode) + "  parameters: " + str(self.memory[parameters[0]]) +"/"+ str(
                 #self.memory[parameters[1]]) +"/"+ str(self.memory[parameters[2]]))
 
+            # troubleshooting
+            print(f"pc: {self.index}, oc: {OpCode}, pmodes: xxx, params: {parameters}")
+
+
             #reacting according to the OP CODE-----------------------------------------
             if(OpCode=="01"):
                 self.memory[parameters[2]] = int(self.memory[parameters[0]]) + int(self.memory[parameters[1]])
