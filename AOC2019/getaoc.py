@@ -40,7 +40,7 @@ if not YEAR:
     assert YEAR is not None
 YEAR = int(YEAR.strip())
 
-def get_input(day: int, year: int = YEAR, overwrite: bool = False):
+def get_input(day: int, year: int = YEAR, overwrite: bool = False, filename: str = None):
     """
     Usage:
     ```python
@@ -51,8 +51,12 @@ def get_input(day: int, year: int = YEAR, overwrite: bool = False):
 
     # Path("data").mkdir(exist_ok=True)
 
-    # file_name = f"data/{year}_{day}.txt"
-    file_name = f"AOC2019/{year}_{day}.in"
+    if filename == None:
+        # file_name = f"data/{year}_{day}.txt"
+        file_name = f"AOC2019/{year}_{day}.in"
+    else:
+        file_name = filename
+
     data = None if overwrite else _set_read_file(file_name)
     if not data:
         response = requests.get(
@@ -68,3 +72,12 @@ def get_input(day: int, year: int = YEAR, overwrite: bool = False):
     if data is None:
         raise FileNotFoundError(f"Data could not be fetched for day {day}")
     return data
+
+
+# rotate a 2-dimensional list 90 degrees clockwise
+def rotate_cw(data: list) -> list:
+    """Rotate a 2-dimensional list clockwise.
+    Note: Works on other-dimensional lists, too, but
+    your mileage may vary."""
+    return list(zip(*data[::-1]))
+
