@@ -6,8 +6,8 @@ import numpy as np
 
 
 def get_input():
-    data = ga.get_input(10,2019).splitlines()
-    # data = ga.get_input(10,2019,False,"AOC2019/10_sample_a.txt").splitlines()
+    # data = ga.get_input(10,2019).splitlines()
+    data = ga.get_input(10,2019,False,"AOC2019/10_sample_a.txt").splitlines()
 
     # --- do other parsing here if necessary ---
     # convert the lines of strings to list of numbers
@@ -15,16 +15,23 @@ def get_input():
 
     # data = ['.#..#','.....','#####','....#','...##']
 
-
     # return the parsed data
-    data = ga.rotate_cw(data)
-    data = np.fliplr(data)
+    # data = ga.rotate_cw(data)
+    # data = np.fliplr(data)
     return data
 
+def identify_asteroids(galaxy: list) -> list:
+    asteroids = []
+    for r,row in enumerate(galaxy):
+        for c,col in enumerate(row):
+            if col == "#":
+                asteroids.append([c,r])
+    return asteroids
 
-def blocked(galaxy: list, points: list) -> bool:
-    """If any of the 'points' in the 'galaxy' contain an
-    asteroid '#', then return True (blocked); otherwise 
+
+def old_blocked(galaxy: list, points: list) -> bool:
+    """If any of the 'points' correspond to an asteroid "#"
+    in the 'galaxy', then return True (blocked); otherwise 
     return False (not blocked)."""
 
     for point in points:
@@ -33,6 +40,11 @@ def blocked(galaxy: list, points: list) -> bool:
             return True
     return False
 
+def blocked(asteroids: list, points: list) -> bool:
+    for point in points:
+        if point in asteroids:
+            return True
+    return False
 
 def intersecting_points(src: list, dst:list) -> list:
     """intersecting_points uses a modified version of Bresenham's
@@ -68,27 +80,25 @@ def intersecting_points(src: list, dst:list) -> list:
     
     return points
 
-# I might be able to improve the performance by creating a set or list of
-# all the points in the galaxy that have an asteroid. Then I could just 
-# do something like "if point in asteroids:..."
-
 def part1(data):            # -> <248
+    asteroids = identify_asteroids(data)
 
     detected = {}
 
-    # print(intersecting_points(src,dst)[1:-1])
-
-    for src_r in range(len(data)):
-        for src_c in range(len(data[src_r])):
+    for sr, src_r in enumerate(data):
+        for sc, src_c in enumerate(src_r):
             # we don't need to check this point if there is no asteroid there
-            if data[src_r][src_c] == '.':
+            if src_c == '.':
                 continue
             # There is an asteroid at the src. Add it to detected.
-            detected[(src_r,src_c)] = 0
-            for dst_r in range(len(data)):
-                for dst_c in range(len(data[dst_r])):
+            detected[(sc, sr)] = 0
+
+            # now iterate through the galaxy again and determine which asteroids
+            # can be seen from THIS asteroid.
+            for dr, dst_r in enumerate(data):
+                for dc, dst_c in enumerate(dst_r):
                     # if the src and dst are the same, ignore this iteration
-                    if src_c == dst_c and src_r == dst_r:
+                    if sr == dr and sc == dc:
                         continue
 
                     # if there is an asteroid at this point, then generate
@@ -96,11 +106,12 @@ def part1(data):            # -> <248
                     # the intersecting points between then. If an asteroid
                     # does not exist at any of the points, then increment
                     # the detected count.
-                    if data[dst_r][dst_c] == '#':
-                        points_between = intersecting_points([src_r,src_c],[dst_r,dst_c])
-                        if not blocked(data,points_between[1:-1]):
-                            detected[(src_r,src_c)] += 1
-    # print(detected)
+                    if dst_c == '#':
+                        points_between = intersecting_points([sc,sr],[dc,dr])
+                        print(points_between)
+                        if not blocked(asteroids,points_between[1:-1]):
+                            detected[(sc,sr)] += 1
+    print(detected)
     # print(detected[(5,8)])
     print(sorted(detected.items(),key=lambda x:x[1]))
     print(max(zip(detected.values(), detected.keys())))
