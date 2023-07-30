@@ -7,6 +7,7 @@ from typing import Union
 import requests
 from pathlib import Path
 from datetime import datetime
+import math
 
 _SESSION_FILE_NAME = "session.txt"
 _YEAR_FILE_NAME = "AOC2019/year.txt"
@@ -24,23 +25,9 @@ def _set_read_file(filename: str, default: str = None) -> Union[str, None]:
         return None
 
 
-SESSION = _set_read_file(_SESSION_FILE_NAME)
-if not SESSION:
-    SESSION = _set_read_file(
-        _SESSION_FILE_NAME,
-        input("Enter your session cookie: "))
-assert SESSION is not None
-SESSION = SESSION.strip()
 
-YEAR = _set_read_file(_YEAR_FILE_NAME)
-if not YEAR:
-    YEAR = _set_read_file(
-        _YEAR_FILE_NAME,
-        str(datetime.now().year))
-    assert YEAR is not None
-YEAR = int(YEAR.strip())
 
-def get_input(day: int, year: int = YEAR, overwrite: bool = False, filename: str = None):
+def get_input(day: int, year: int = 2019, overwrite: bool = False, filename: str = None):
     """
     Usage:
     ```python
@@ -50,6 +37,22 @@ def get_input(day: int, year: int = YEAR, overwrite: bool = False, filename: str
     """
 
     # Path("data").mkdir(exist_ok=True)
+
+    SESSION = _set_read_file(_SESSION_FILE_NAME)
+    if not SESSION:
+        SESSION = _set_read_file(
+            _SESSION_FILE_NAME,
+            input("Enter your session cookie: "))
+    assert SESSION is not None
+    SESSION = SESSION.strip()
+
+    YEAR = _set_read_file(_YEAR_FILE_NAME)
+    if not YEAR:
+        YEAR = _set_read_file(
+            _YEAR_FILE_NAME,
+            str(datetime.now().year))
+        assert YEAR is not None
+    YEAR = int(YEAR.strip())
 
     if filename == None:
         # file_name = f"data/{year}_{day}.txt"
@@ -81,3 +84,47 @@ def rotate_cw(data: list) -> list:
     your mileage may vary."""
     return list(zip(*data[::-1]))
 
+
+def intersecting_points(src: list, dst:list) -> list:
+    """Intersecting_points uses a modified version of Bresenham's
+    algorithm to plot points that intersect a line between two 
+    given points. The list of points returned includes the end
+    points.
+    As a side benefit, this returns the points IN ORDER from the
+    source to the destination.
+    NOTE: DUE TO ROUNDING ERRORS, IT DOES NOT ALWAYS FIND ALL INTERSECTIONS!"""
+    
+    x0,y0 = src
+    x1,y1 = dst
+
+    dx = x1 - x0
+    dy = y1 - y0
+
+    points = []
+
+    if abs(dx) >= abs(dy):
+        steps = abs(dx)
+    else:
+        steps = abs(dy)
+
+    x_increment = dx / steps
+    y_increment = dy / steps
+
+    x = x0
+    y = y0
+    for _ in range(steps + 1):
+        if round(x) == x and round(y) == y:
+            points.append([round(x),round(y)])
+        x += x_increment
+        y += y_increment
+    
+    return points
+
+
+def calc_heading(src: list, dst: list) -> float:
+    """Given two points (eg. (1,3) and (5,6)), calc_heading calculates the heading
+    or bearing FROM the src TO the dst, in degrees, and returns the value as a float. """
+    heading = math.atan2(dst[0] - src[0], src[1] - dst[1]) * 180 / math.pi
+    if heading < 0:
+        return 360 + heading
+    return heading
