@@ -12,17 +12,6 @@ import getaoc as ga
 
 def get_input():
     data = ga.get_input(10,2019).splitlines()
-    # data = ga.get_input(10,2019,False,"AOC2019/10_sample_1.txt").splitlines()
-
-    # --- do other parsing here if necessary ---
-    # convert the lines of strings to list of numbers
-    # data = [int(line) for line in data[0].split(',')]
-
-    # data = ['.#..#','.....','#####','....#','...##']
-
-    # return the parsed data
-    # data = ga.rotate_cw(data)
-    # data = np.fliplr(data)
     return data
 
 def identify_asteroids(galaxy: list) -> set:
@@ -34,7 +23,7 @@ def identify_asteroids(galaxy: list) -> set:
     return asteroids
 
 
-def calc_angle(src, dst):
+def calc_heading(src, dst):
     heading = math.atan2(dst[0] - src[0], src[1] - dst[1]) * 180 / math.pi
     if heading < 0:
         return 360 + heading
@@ -42,7 +31,7 @@ def calc_angle(src, dst):
 
 
 
-def part1(data):
+def part1(data: list) -> list:
     asteroids = identify_asteroids(data)
 
     best_asteroid = None
@@ -53,53 +42,67 @@ def part1(data):
         a = []
         for destination in asteroids:
             if source != destination:
-                a.append(calc_angle(source,destination))
+                a.append(calc_heading(source,destination))
 
-        b = {calc_angle(source, destination) for destination in asteroids if source != destination}
+        b = {calc_heading(source, destination) for destination in asteroids if source != destination}
 
 
         # cnt = len({angle(start, end) for end in asteroids if start != end})
-        cnt = len(set(calc_angle(source, destination) for destination in asteroids if source != destination))
+        cnt = len(set(calc_heading(source, destination) for destination in asteroids if source != destination))
         if cnt > seen_asteroids:
             seen_asteroids = cnt
             best_asteroid = source
 
-    print('x {} y {}'.format(*best_asteroid))
-    print('visible {}'.format(seen_asteroids))
+    print(f"Part1: Asteroids seen from {best_asteroid}: {seen_asteroids}")
 
+    # The list of asteroids and the best asteroid will be used in part2.
     return asteroids, best_asteroid
 
 
-# my part2 might not work. I am storing the asteroids as a set. If I remove a
-# heading from the "set", it removes all the asteroids on that heading. What
-# about the asteroids that might exist behind it??
-def part2(asteroids, best_asteroid):
+
+def part2(asteroids: list, best_asteroid: list) -> None:
     # remove the "best_asteroid" from the list of asteroids; we don't want to 
     # vaporize the rock we're sitting on!
     asteroids.remove(best_asteroid)
 
-    # sort the headings so we vaporize asteroids starting at 0 and around clockwise
-    angles = sorted(
-        ((calc_angle(best_asteroid, destination), destination) for destination in asteroids),
+    # Sort the headings so we vaporize asteroids starting at 0 and proceed clockwise
+    # These will be sorted first on heading, then on distance from "best_asteroid".
+    # This will ensure that the closest asteroid is vaporized before the ones behind it.
+    headings = sorted(
+        ((calc_heading(best_asteroid, destination), destination) for destination in asteroids),
         key=lambda x: (x[0], abs(best_asteroid[0] - x[1][0]) + abs(best_asteroid[1] - x[1][1]))
     )
 
-    idx = 0
-    last = angles.pop(idx)
-    last_angle = last[0]
-    cnt = 1
 
-    while cnt < 200 and angles:
-        if idx >= len(angles):
-            idx = 0
-            last_angle = None
-        if last_angle == angles[idx][0]:
-            idx += 1
+    # Iterating through the headings. We'll vaporize the first asteroid by taking
+    # it off the list. If there are more asteroids on that same heading, they will be 
+    # behind the first. So, continue iterating through the headings until we find the 
+    # next different heading. Vaporize that one. Then continue to the next different
+    # heading....until we've vaporized 199 asteroids. Which asteroid will be the 200th?
+
+    # Initialize the heading_index to 0 and vaporize the first asteroid.
+    heading_index = 0
+    last_asteroid = headings.pop(heading_index)
+    last_heading = last_asteroid[0]
+    vaporized = 1
+
+    while vaporized < 200 and headings:
+        if heading_index >= len(headings):
+            # We've gone all the way around; start over at 0.
+            heading_index = 0
+            last_heading = None
+        if last_heading == headings[heading_index][0]:
+            # This asteroid is on the same heading as the last; skip it.
+            heading_index += 1
             continue
-        last = angles.pop(idx)
-        last_angle = last[0]
-        cnt += 1
-    print('vaporized {}: {} {}'.format(cnt, last[1], last[1][0] * 100 + last[1][1]))
+
+        # This asteroid must be on a new heading; vaporize it!
+        last_asteroid = headings.pop(heading_index)
+        last_heading = last_asteroid[0]
+        vaporized += 1
+
+    # 199 have been vaporized. Print the 200th!
+    print(f"Part2: 200th to be Vaporized - {last_asteroid[1][0] * 100 + last_asteroid[1][1]} {last_asteroid[1]}")
 
 
 def main():
