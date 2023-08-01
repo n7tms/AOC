@@ -4,10 +4,10 @@
 # TODO Consider incorporating this into a master AOC utility module.
 
 from typing import Union
-import requests
 from pathlib import Path
 from datetime import datetime
 import math
+import requests
 
 _SESSION_FILE_NAME = "session.txt"
 _YEAR_FILE_NAME = "AOC2019/year.txt"
@@ -15,11 +15,11 @@ _YEAR_FILE_NAME = "AOC2019/year.txt"
 
 def _set_read_file(filename: str, default: str = None) -> Union[str, None]:
     try:
-        with open(filename) as file:
+        with open(filename, 'r', encoding="utf-8") as file:
             return file.read()
     except FileNotFoundError:
         if default:
-            with open(filename, "w") as file:
+            with open(filename, "w", encoding="utf-8") as file:
                 file.write(default)
                 return default
         return None
@@ -40,8 +40,7 @@ def get_input(day: int, year: int = 2019, overwrite: bool = False, filename: str
 
     SESSION = _set_read_file(_SESSION_FILE_NAME)
     if not SESSION:
-        SESSION = _set_read_file(
-            _SESSION_FILE_NAME,
+        SESSION = _set_read_file(_SESSION_FILE_NAME,
             input("Enter your session cookie: "))
     assert SESSION is not None
     SESSION = SESSION.strip()
@@ -54,7 +53,7 @@ def get_input(day: int, year: int = 2019, overwrite: bool = False, filename: str
         assert YEAR is not None
     YEAR = int(YEAR.strip())
 
-    if filename == None:
+    if filename is None:
         # file_name = f"data/{year}_{day}.txt"
         file_name = f"AOC2019/{year}_{day}.in"
     else:
@@ -64,7 +63,7 @@ def get_input(day: int, year: int = 2019, overwrite: bool = False, filename: str
     if not data:
         response = requests.get(
                 f"https://adventofcode.com/{year}/day/{day}/input",
-                cookies={"session": SESSION})
+                cookies={"session": SESSION}, timeout=30)
         if not response.ok:
             if response.status_code == 404:
                 raise FileNotFoundError(response.text)
@@ -77,7 +76,6 @@ def get_input(day: int, year: int = 2019, overwrite: bool = False, filename: str
     return data
 
 
-# rotate a 2-dimensional list 90 degrees clockwise
 def rotate_cw(data: list) -> list:
     """Rotate a 2-dimensional list clockwise.
     Note: Works on other-dimensional lists, too, but
@@ -117,7 +115,6 @@ def intersecting_points(src: list, dst:list) -> list:
             points.append([round(x),round(y)])
         x += x_increment
         y += y_increment
-    
     return points
 
 
