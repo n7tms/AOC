@@ -125,3 +125,7 @@ def calc_heading(src: list, dst: list) -> float:
     if heading < 0:
         return 360 + heading
     return heading
+
+def is_palidrome(word: str) -> bool:
+    """Check if the word is a palindrome by comparing the original to its reversed."""
+    return word == "".join(reversed(word))
