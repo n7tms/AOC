@@ -2,7 +2,7 @@
 
 AOC puzzle, 2019, day 11 -- Paint Robot
 """
-
+import logging
 import getaoc as ga
 import intcode_c as ic
 
@@ -19,6 +19,8 @@ def get_input():
 
 def part1(program):
     """Solve part 1"""
+    logging.info(f"Entering part1()...")
+
     code = ic.Intcode('Paint Robot',program,[1])
     print(code.run())
 
@@ -32,7 +34,17 @@ def part2() -> None:
 
 def main():
     """solve each part and print the solutions"""
-    program = get_input()
+
+    # Instantiate the logger  (Look at this for color: https://stackoverflow.com/questions/384076/how-can-i-color-python-logging-output)
+    log_level = logging.DEBUG
+    # log_level = logging.INFO
+    # log_level = logging.WARNING
+    log_format = '%(name)s - %(levelname)s - %(message)s'
+    logging.basicConfig(level=log_level, format=log_format)
+
+
+    # program = get_input()
+    program = ""
     part1(program)
     part2()
 

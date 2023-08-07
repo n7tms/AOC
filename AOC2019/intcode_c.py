@@ -1,3 +1,5 @@
+import logging
+
 class Intcode:
 
     def __init__(self, name, program, inputs=[]) -> None:
@@ -10,6 +12,10 @@ class Intcode:
         self.output = []
         self.relative_base = 0
         self.parameter_count = {1:3,2:3,3:1,4:1,5:2,6:2,7:3,8:3,9:1,99:0}
+
+        # Logging Configuration
+        self.log = logging.getLogger(__name__)
+        
 
     def get_parameters(self, param_modes: str, opcode: int) -> list:
         """Parse the needed parameters and return a list"""
@@ -50,6 +56,7 @@ class Intcode:
 
             # troubleshooting
             # print(f"pc: {self.pc}, oc: {opcode}, pmodes: {param_modes}, params: {parameters}")
+            self.log.INFO(f"[{self.name}] pc: {self.pc}, oc: {opcode}, pmodes: {param_modes}, params: {parameters}")
 
             match opcode:
                 case 1:
