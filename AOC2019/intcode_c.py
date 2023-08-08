@@ -8,6 +8,7 @@ class Intcode:
         self.prgm[:len(program)] = program  # copy the program into memory
         self.pc = 0
         self.done = False
+        self.waiting = False
         self.inputs = inputs
         self.output = []
         self.relative_base = 0
@@ -44,7 +45,7 @@ class Intcode:
     
     def run(self):
         """Run the program"""
-        while not self.done:
+        while not self.waiting:
             # get opcode
             instr = self.prgm[self.pc]
 
@@ -56,7 +57,7 @@ class Intcode:
 
             # troubleshooting
             # print(f"pc: {self.pc}, oc: {opcode}, pmodes: {param_modes}, params: {parameters}")
-            self.log.INFO(f"[{self.name}] pc: {self.pc}, oc: {opcode}, pmodes: {param_modes}, params: {parameters}")
+            self.log.info(f"[{self.name}] pc: {self.pc}, oc: {opcode}, pmodes: {param_modes}, params: {parameters}")
 
             match opcode:
                 case 1:
@@ -81,7 +82,7 @@ class Intcode:
                     self.oc99()
                 case other:
                     return f"Opcode {opcode} is not defined."
-        return self.prgm[0], self.inputs
+        return self.prgm[0], self.output
 
     def oc1(self, prm):        # Add
         """ ADD: pc[+1] + pc[+2] = pc[+3]"""
@@ -100,15 +101,18 @@ class Intcode:
         # dest = self.prgm[prm[0]]
         
         if not self.inputs:
-            self.done = True
+            self.waiting = True
             return "waiting"    # waiting on an input
         self.prgm[prm[0]] = self.inputs.pop(0)
         self.pc += 2
 
     def oc4(self, prm):         # Output
         """OUTPUT"""
-        print(f"{self.name} Output: {self.prgm[prm[0]]}")
-        self.inputs.append(self.prgm[prm[0]])
+        # print(f"{self.name} Output: {self.prgm[prm[0]]}")
+        self.log.info(f"[{self.name}]  Output: {self.prgm[prm[0]]}")
+
+        # self.inputs.append(self.prgm[prm[0]])
+        self.output.append(self.prgm[prm[0]])
         self.pc += 2
 
     def oc5(self, prm):         # JT
@@ -155,5 +159,6 @@ class Intcode:
     def oc99(self):             # Terminate
         """Terminate the program"""
         self.done = True
+        self.waiting = True
 
 
