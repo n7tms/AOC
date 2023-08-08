@@ -6,6 +6,7 @@ import logging
 import getaoc as ga
 import intcode_c as ic
 import numpy as np
+from matplotlib import pyplot as plt
 
 def get_input():
     """Using the get_input from my getaoc module, read the input from the web
@@ -26,11 +27,58 @@ def part1(program):
     logging.info(f"Entering part1()...")
 
     # define the ship, a 100x100 array
-    ship = np.zeros((100,100),dtype=int)
+    ship = np.zeros((200,200),dtype=int)
     pixel = (50,50)             # the robot's starting location (middle)
     painted = set()             # set of all the pixels that have been painted
     facing = 0                  # facing direction 0=U, 1=R, 2=D, 3=L
-    moves = [(0,-1),(1,0),(0,1),(-1,0)]
+    moves = [(-1,0),(0,1),(1,0),(0,-1)]
+
+    # initialize the robot
+    code = ic.Intcode('Paint Robot',program,[1])
+    while True:
+        code.inputs = [ship[pixel]]
+        _, output = code.run()
+        color, direction = output
+        if color == 1:
+            painted.add(pixel)
+        
+        # paint the current position
+        ship[pixel] = color
+
+        # move the robot
+        if direction == 0:
+            facing -= 1
+        else:
+            facing += 1
+        
+        facing = facing % 4
+        pixel = list(pixel)
+        pixel[0] += moves[facing][0]
+        pixel[1] += moves[facing][1]
+        pixel = tuple(pixel)
+        
+        code.output = []    # clear the current outputs
+        code.waiting = False   # prep the robot to continue execution
+
+        # out clause
+        if code.done:
+            break
+
+    return len(painted)
+
+
+def part2(program) -> None:
+    """Solve part 2"""
+    logging.info(f"Entering part2()...")
+
+    # define the ship, a 100x100 array
+    ship = np.zeros((200,200),dtype=int)
+    pixel = (50,50)             # the robot's starting location (middle)
+    painted = set()             # set of all the pixels that have been painted
+    facing = 0                  # facing direction 0=U, 1=R, 2=D, 3=L
+    moves = [(-1,0),(0,1),(1,0),(0,-1)]
+
+    ship[pixel] = 1
 
     # initialize the robot
     code = ic.Intcode('Paint Robot',program,[1])
@@ -64,29 +112,28 @@ def part1(program):
             break
 
 
-    return len(painted)
-
-
-
-def part2() -> None:
-    """Solve part 2"""
-    ...
+    return ship
 
 def main():
     """solve each part and print the solutions"""
 
     # Instantiate the logger  (Look at this for color: https://stackoverflow.com/questions/384076/how-can-i-color-python-logging-output)
-    log_level = logging.DEBUG
+    # log_level = logging.DEBUG
     # log_level = logging.INFO
-    # log_level = logging.WARNING
+    log_level = logging.WARNING
     log_format = '%(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=log_level, format=log_format)
 
 
-    program = get_input()
+    program1 = get_input()
+    print(f"Part 1: Painted = {part1(program1)}")
+    
+    program2 = get_input()
+    ship = part2(program2)
+    # plot the painted ship
+    plt.imshow(ship, interpolation='none')
+    plt.show()
 
-    part1(program)
-    part2()
 
 if __name__ == "__main__":
     main()
