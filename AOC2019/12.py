@@ -2,11 +2,10 @@
 
     AOC puzzle, 2019, day 12 -- The N-Body Problem
 """
-import logging
-import getaoc as ga
-import intcode_c as ic
-import re
 from itertools import combinations
+import getaoc as ga
+import logging
+import re
 import time
 
 def get_input():
@@ -77,14 +76,10 @@ class Moon:
         self.posx += self.velx
         self.posy += self.vely
         self.posz += self.velz
-
-    # def save_state(self):
-    #     self.states.append(self.state)
-
+    
     def potential_energy(self) -> int:
         """sum of abs of postions"""
         return abs(self.posx) + abs(self.posy) + abs(self.posz)
-
     
     def kinetic_energy(self) -> int:
         """sum of abs of velocities"""
@@ -95,10 +90,7 @@ class Moon:
 
     def state(self) -> str:
         return f"{self.posx},{self.posy},{self.posz} ({self.velx},{self.vely},{self.velz})"
-    
-    # def previous_state(self) -> bool:
-    #     return True if self.state in self.states else False
-           
+          
     def __str__(self):
         return f"{self.posx},{self.posy},{self.posz} ({self.velx},{self.vely},{self.velz})"
 
