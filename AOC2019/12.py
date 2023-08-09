@@ -5,6 +5,7 @@
 import logging
 import getaoc as ga
 import intcode_c as ic
+import time
 
 def get_input():
     """Using the get_input from my getaoc module, read the input from the web
@@ -24,7 +25,8 @@ class Moon:
         self.velx = 0
         self.vely = 0
         self.velz = 0
-        self.states = list()
+        # self.states = list()
+        # self.save_state()
 
     def compare(self, other_moon):
         """ Compare 'this' moon to the other moon.
@@ -57,8 +59,8 @@ class Moon:
         self.posy += self.vely
         self.posz += self.velz
 
-    def save_state(self):
-        self.states.append(self.state)
+    # def save_state(self):
+    #     self.states.append(self.state())
 
     def potential_energy(self) -> int:
         """sum of abs of postions"""
@@ -75,12 +77,11 @@ class Moon:
     def state(self) -> str:
         return f"{self.posx},{self.posy},{self.posz} ({self.velx},{self.vely},{self.velz})"
     
-    def previous_state(self) -> bool:
-        return True if self.state in self.states else False
-            
+    # def previous_state(self) -> bool:
+    #     return True if self.state() in self.states else False
 
     def __str__(self):
-        return f"{self.posx},{self.posy},{self.posz} ({self.velx},{self.vely},{self.velz})"
+        return self.state()
 
 
 def compare_moons(moon1, moon2) -> list:
@@ -121,11 +122,17 @@ def part1():        # -> 9958
 
 def part2():
     """"""
+    # m1 = Moon(-1,0,2)
+    # m2 = Moon(2,-10,-7)
+    # m3 = Moon(4,-8,8)
+    # m4 = Moon(3,5,-1)
     m1 = Moon(7,10,17)
     m2 = Moon(-2,7,0)
     m3 = Moon(12,5,12)
     m4 = Moon(5,-8,6)
 
+    states = list()
+    states.append(f"{m1} {m2} {m3} {m4}")
     steps = 0
     while True:
         m2 = m1.compare(m2)
@@ -140,16 +147,33 @@ def part2():
         m3.update_positions()
         m4.update_positions()
 
-        if m1.previous_state():
-            break
-
-        m1.save_state()
-        m2.save_state()
-        m3.save_state()
-        m4.save_state()
-        
         steps += 1
+        if steps % 1000000 == 0:
+            print(steps // 1000000, end=" ")
 
+        current_state = f"{m1} {m2} {m3} {m4}"
+        if current_state in states:
+            print(current_state)
+            return steps
+
+        # if m1.previous_state():
+        #     print(f"m1 after {steps} steps. State: {m1}")
+        # if m2.previous_state():
+        #     print(f"m2 after {steps} steps. State: {m2}")
+        # if m3.previous_state():
+        #     print(f"m3 after {steps} steps. State: {m3}")
+        # if m4.previous_state():
+        #     print(f"m4 after {steps} steps. State: {m4}")
+
+        # if m1.previous_state() and m2.previous_state() and m3.previous_state() and m4.previous_state():
+        #     print(f"all at previous state after {steps}")
+        #     break
+
+        # m1.save_state()
+        # m2.save_state()
+        # m3.save_state()
+        # m4.save_state()
+        
     return steps
 
 
@@ -169,8 +193,12 @@ def main():
     # part1(program1)
     # part2(program2)
 
-    print(f"Total Energy: {part1()}")
+    # print(f"Total Energy: {part1()}")
+
+    st = time.time()    # start time
     print(f"Steps: {part2()}")
+    et = time.time()    # end time
+    print(f"Execution time: {et - st} seconds")
 
 if __name__ == "__main__":
     main()
