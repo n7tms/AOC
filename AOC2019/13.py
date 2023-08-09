@@ -16,9 +16,6 @@ def get_input():
     return data
 
 
-
-
-
 def part1(program) -> None:
     """ """
     
