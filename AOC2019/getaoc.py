@@ -129,3 +129,18 @@ def calc_heading(src: list, dst: list) -> float:
 def is_palidrome(word: str) -> bool:
     """Check if the word is a palindrome by comparing the original to its reversed."""
     return word == "".join(reversed(word))
+
+def haversine(src_point: tuple, dst_point: tuple, radius: float) -> float:
+    """ Given to points on a sphere and the radius of the sphere, 
+        calculate the distance along the surface of the sphere
+        between the two points.
+    """
+    # from: https://realpython.com/python-data-classes/
+    
+    # r = 6371  # Earth radius in kilometers
+    r = radius
+    lam_1, lam_2 = math.radians(src_point[0]), math.radians(dst_point[0])
+    phi_1, phi_2 = math.radians(src_point[1]), math.radians(dst_point[1])
+    h = (math.sin((phi_2 - phi_1) / 2)**2
+            + math.cos(phi_1) * math.cos(phi_2) * math.sin((lam_2 - lam_1) / 2)**2)
+    return 2 * r * math.asin(math.sqrt(h))
