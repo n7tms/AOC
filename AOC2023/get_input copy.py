@@ -1,8 +1,9 @@
 # aoc_utils.py
 import os
 import subprocess
+import time
 
-COOKIE = '53616c7465645f5fa81b69e51cebf457a669874ce2a15e1038f8f07c7b2c764fbdd4ebf3fdba2a0351327ebe2f78f40fd0196440f065c82c90bc05836750f14d'
+COOKIE = '53616c7465645f5f141dd45ab20dfb545e65b2aa8bd07bba88954eea1c6e1f4b123aba791fd4f90fa961c1ee8228ee2cbc8d44e47a9540ecb7b63af2364464ce'
 
 
 # def retrieve(year, day):
@@ -18,7 +19,7 @@ def get_input(year, day, force=False):
     # Does the file exist and force=False?
     #   Yes: return None
 
-    target_file = str(year) + str(day).zfill(2) + ".txt"
+    target_file = "AOC2023\\inputs\\" + str(year) + str(day).zfill(2) + ".txt"
     print(target_file)
     if os.path.exists(target_file) and not force:
         print("retrieve(): \'" + target_file + "\' already exists. (force not True)")
@@ -27,8 +28,10 @@ def get_input(year, day, force=False):
         cmd = "curl https://adventofcode.com/" + str(year) + "/day/" + str(day) + "/input --cookie \"session=" + COOKIE + "\" > " + target_file 
         print(cmd)
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-        
 
-get_input(2023,1,True)
+        # give the subprocess time to finish
+        time.sleep(5)
+
+get_input(2023,1,true)
     
 
