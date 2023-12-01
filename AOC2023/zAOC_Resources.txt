@@ -1,0 +1,6 @@
+Some good tools and libraries to review
+https://github.com/morgoth1145/advent-of-code/tree/2022-python
+https://github.com/narimiran/AdventOfCode2022/blob/main/python/aoc.py
+
+https://aoc.just2good.co.uk/python/
+
