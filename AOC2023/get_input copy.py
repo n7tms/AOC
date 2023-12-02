@@ -32,6 +32,6 @@ def get_input(year, day, force=False):
         # give the subprocess time to finish
         time.sleep(5)
 
-get_input(2023,1,true)
+get_input(2023,2,True)
     
 
