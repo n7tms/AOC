@@ -3,11 +3,11 @@
 
 import numpy as np
 
-IN_FILE = "AOC2023\\inputs\\202302.txt"
-# IN_FILE = "AOC2023\\inputs\\202302.sample.txt"
+IN_FILE = "AOC2023\\inputs\\202302.in"
+# IN_FILE = "AOC2023\\inputs\\202302.sample.in"
 
-# IN_FILE = "./inputs/202302.txt"
-# IN_FILE = "./inputs/202302.sample.txt"
+# IN_FILE = "./inputs/202302.in"
+# IN_FILE = "./inputs/202302.sample.in"
 
 
 def parse(puzzle_input):

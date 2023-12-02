@@ -4,12 +4,12 @@
 import pathlib
 import sys
 
-IN_FILE = "AOC2023\\inputs\\202301.txt"
-# IN_FILE = "AOC2023\\inputs\\202301.sample.txt"
-# IN_FILE = "AOC2023\\inputs\\202301.sample2.txt"
+IN_FILE = "AOC2023\\inputs\\202301.in"
+# IN_FILE = "AOC2023\\inputs\\202301.sample.in"
+# IN_FILE = "AOC2023\\inputs\\202301.sample2.in"
 
-# IN_FILE = "./inputs/202301.txt"
-# IN_FILE = "./inputs/202301.sample.txt"
+# IN_FILE = "./inputs/202301.in"
+# IN_FILE = "./inputs/202301.sample.in"
 
 digit_text = {"one":"1", "two":"2", "three":"3", "four":"4", "five":"5", "six":"6", "seven":"7", "eight":"8", "nine":"9"}
 
