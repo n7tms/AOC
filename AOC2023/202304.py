@@ -1,4 +1,4 @@
-# AOC 2023 day 4: 
+# AOC 2023 day 4: Scratchcards
 #
 
 import aoc_utils as aoc
@@ -56,12 +56,12 @@ def part2(data):            # => 5571760
     """
     count_of_cards = {}
 
-    total_points = 0
     for card in data:
         c,line = card.split(":")
 
         # get the card number and add it to the dictionary (count_of_cards), if it isn't already there.
-        _,s_card_num = c.strip().split("Card ")
+        # if it is there, increment the count (+1) for the original card.
+        _,s_card_num = c.split("Card ")
         i_card_num = int(s_card_num.strip())
         if not i_card_num in count_of_cards:
             count_of_cards[i_card_num] = 1

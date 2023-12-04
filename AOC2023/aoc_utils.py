@@ -3,7 +3,7 @@ import os
 import subprocess
 import time
 
-COOKIE = '53616c7465645f5f141dd45ab20dfb545e65b2aa8bd07bba88954eea1c6e1f4b123aba791fd4f90fa961c1ee8228ee2cbc8d44e47a9540ecb7b63af2364464ce'
+COOKIE = ''
 DIRS = ([-1,-1],[0,-1],[1,-1],[-1,0],[0,0],[1,0],[-1,1],[0,1],[1,1])
 
 
@@ -13,6 +13,11 @@ DIRS = ([-1,-1],[0,-1],[1,-1],[-1,0],[0,0],[1,0],[-1,1],[0,1],[1,1])
 #     print(cmd)
 
 
+def read_cookie():
+    with open('AOC2023/cookie.in') as fp:
+        data = fp.read()
+    return data
+
 
 def get_input(year, day, force=False):
     # Does force=True? or Does the file not exist?
@@ -20,13 +25,15 @@ def get_input(year, day, force=False):
     # Does the file exist and force=False?
     #   Yes: return None
 
-    target_file = "AOC2023\\inputs\\" + str(year) + str(day).zfill(2) + ".txt"
+    cookie = read_cookie()
+
+    target_file = "AOC2023\\inputs\\" + str(year) + str(day).zfill(2) + ".in"
     print(target_file)
     if os.path.exists(target_file) and not force:
         print("retrieve(): \'" + target_file + "\' already exists. (force not True)")
         return None
     else:
-        cmd = "curl https://adventofcode.com/" + str(year) + "/day/" + str(day) + "/input --cookie \"session=" + COOKIE + "\" > " + target_file 
+        cmd = "curl https://adventofcode.com/" + str(year) + "/day/" + str(day) + "/input --cookie \"session=" + cookie + "\" > " + target_file 
         print(cmd)
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
 
