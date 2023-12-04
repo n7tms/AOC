@@ -4,11 +4,13 @@
 import aoc_utils as aoc
 import numpy as np
 
-IN_FILE = "AOC2023\\inputs\\202303.in"
-# IN_FILE = "AOC2023\\inputs\\202303.sample.in"
+IN_FILE = "AOC2023\\inputs\\202304.txt"
+# IN_FILE = "AOC2023\\inputs\\202304.sample.in"
 
-# IN_FILE = "./inputs/202303.in"
-# IN_FILE = "./inputs/202303.sample.in"
+# IN_FILE = "./inputs/202304.txt"
+# IN_FILE = "./inputs/202304.sample.in"
+
+
 
 
 def parse(puzzle_input):
