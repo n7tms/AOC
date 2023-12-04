@@ -20,7 +20,7 @@ def get_input(year, day, force=False):
     # Does the file exist and force=False?
     #   Yes: return None
 
-    target_file = "AOC2023\\inputs\\" + str(year) + str(day).zfill(2) + ".in"
+    target_file = "AOC2023\\inputs\\" + str(year) + str(day).zfill(2) + ".txt"
     print(target_file)
     if os.path.exists(target_file) and not force:
         print("retrieve(): \'" + target_file + "\' already exists. (force not True)")
