@@ -4,11 +4,11 @@
 import aoc_utils as aoc
 import numpy as np
 
-IN_FILE = "AOC2023\\inputs\\202303.in"
+# IN_FILE = "AOC2023\\inputs\\202303.in"
 # IN_FILE = "AOC2023\\inputs\\202303.sample.in"
 
-# IN_FILE = "./inputs/202303.in"
-# IN_FILE = "./inputs/202303.sample.in"
+IN_FILE = "AOC2023/inputs/202303.in"
+# IN_FILE = "AOC2023/inputs/202303.sample.in"
 
 
 def parse(puzzle_input):
@@ -178,7 +178,7 @@ def part1(data):            # => 521601
     return sum_of_part_numbers
 
 
-def part2(data):            # => >69,616,591   <81,685,336
+def part2(data):            # => 80694070
     """
     Solve part 2
     
@@ -196,13 +196,57 @@ def part2(data):            # => >69,616,591   <81,685,336
 
     return sum_gear_ratios
 
+import re
+from math import prod
+from string import punctuation
+
+def part22():
+    # Courtesy of https://www.reddit.com/user/joshbduncan/
+
+    data = open(IN_FILE).read().strip()
+
+    nums = []
+    symbols = set()
+    re_symbols = "|".join(re.escape(s) for s in punctuation if s != ".")
+    width = len(data.split("\n")[0])
+    height = len(data.split("\n"))
+
+    for i, line in enumerate(data.split("\n")):
+        for m in re.finditer(r"\d+", line):
+            nums.append((m.group(), i, m.start()))
+        for m in re.finditer(re_symbols, line):
+            symbols.add((i, m.start()))
+
+
+    def coverage(num, row, col):
+        return [
+            (y, x)
+            for y in range(row - 1, row + 2)
+            for x in range(col - 1, col + len(num) + 1)
+            if 0 <= y <= width and 0 <= x <= height
+        ]
+
+    p2 = 0
+    for s in symbols:
+        matching_nums = set()
+        for n in nums:
+            num, row, col = n
+            if s in coverage(*n):
+                matching_nums.add(int(num))
+            if len(matching_nums) == 2:
+                p2 += prod(matching_nums)
+                break
+    return p2
+
+
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
 
     print(f"part 1: {str(part1(data))}")
-    print(f"part 2: {str(part2(data))}")
+    # print(f"part 2: {str(part2(data))}")
+    print(f"part 2: {str(part22())}")
 
 
 if __name__ == "__main__":
