@@ -28,7 +28,7 @@ def parse(puzzle_input):
             cat,maps = line.split(":")
 
             if cat == "seeds":
-                seeds = maps.strip().split(" ")
+                seeds = [int(i) for i in maps.strip().split(" ")]
             else:
                 cat_name,_ = cat.split(" ")
                 name_from,_,name_to = cat_name.strip().split("-")
@@ -43,14 +43,45 @@ def parse(puzzle_input):
 
 
 
-    return seeds,categories
+    return (seeds,categories)
 
+def get_ranges(data,src):
+    _,categories = data
+    for x in categories:
+        if src == x[0]:
+            return (x[1],categories[x])
 
 def part1(data):            # => 
     """
     Solve part 1
     
     """
+    seeds,categories = data
+
+    min_location = -1
+    source = "seed"
+    destination = ""
+
+# Seed 79, soil 81, fertilizer 81, water 81, light 74, temperature 78, humidity 78, location 82.
+    for seed in seeds:
+        tmp_seed = seed
+        while source != "location":
+            new_seed = tmp_seed
+            destination,ranges = get_ranges(data,source)
+
+            for r in ranges:
+                d,s,l = r
+                if tmp_seed in range(s,s+l):
+                    new_seed = d + (tmp_seed-s)
+                    break
+
+            tmp_seed = new_seed
+            source,destination = destination,""
+
+        if min_location == -1 or min_location > new_seed:
+            min_location = new_seed
+
+
 
     return 
 
