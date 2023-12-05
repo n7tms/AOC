@@ -56,11 +56,10 @@ def part1(data):            # =>
     Solve part 1
     
     """
-    seeds,categories = data
+    seeds,_ = data
 
     min_location = -1
 
-# Seed 79, soil 81, fertilizer 81, water 81, light 74, temperature 78, humidity 78, location 82.
     for seed in seeds:
         tmp_seed = seed
         source = "seed"
@@ -90,8 +89,37 @@ def part2(data):            # =>
     """
     Solve part 2
     """
+    seeds,_ = data
 
-    return 
+    min_location = -1
+
+    seed_pairs = list(zip(*[iter(seeds)]*2)    )
+
+    for i,j in seed_pairs:
+        for seed in range(i,i+j):
+            tmp_seed = seed
+            source = "seed"
+            # destination = ""
+
+            while source != "location":
+                new_seed = tmp_seed
+                destination,ranges = get_ranges(data,source)
+
+                for r in ranges:
+                    d,s,l = r
+                    if tmp_seed in range(s,s+l):
+                        new_seed = d + (tmp_seed-s)
+                        break
+
+                tmp_seed = new_seed
+                source,destination = destination,""
+
+            if min_location == -1 or min_location > new_seed:
+                min_location = new_seed
+
+
+
+    return min_location
 
 
 def solve(puzzle_input):
