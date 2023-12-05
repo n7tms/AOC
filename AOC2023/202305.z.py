@@ -5,7 +5,8 @@ import pathlib
 from functools import reduce
 
 
-with open("AOC2023/inputs/202305.in") as fp:
+# with open("AOC2023/inputs/202305.in") as fp:
+with open("AOC2023/inputs/202305.sample.txt") as fp:
     out = []
     puzzle_input = fp.read().split("\n\n")
 # puzzle_input = pathlib.Path('/Users/benjamin/Documents/GitHub/aoc-23/day-5-input-1.txt').read_text().split('\n\n')
