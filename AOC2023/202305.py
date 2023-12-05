@@ -6,10 +6,10 @@ import numpy as np
 from collections import defaultdict
 
 # IN_FILE = "AOC2023\\inputs\\202305.in"
-IN_FILE = "AOC2023\\inputs\\202305.sample.in"
+# IN_FILE = "AOC2023\\inputs\\202305.sample.txt"
 
-# IN_FILE = "AOC2023/inputs/202305.in"
-# IN_FILE = "AOC2023/inputs/202305.sample.in"
+IN_FILE = "AOC2023/inputs/202305.in"
+# IN_FILE = "AOC2023/inputs/202305.sample.txt"
 
 def parse(puzzle_input):
     """
@@ -59,12 +59,13 @@ def part1(data):            # =>
     seeds,categories = data
 
     min_location = -1
-    source = "seed"
-    destination = ""
 
 # Seed 79, soil 81, fertilizer 81, water 81, light 74, temperature 78, humidity 78, location 82.
     for seed in seeds:
         tmp_seed = seed
+        source = "seed"
+        # destination = ""
+
         while source != "location":
             new_seed = tmp_seed
             destination,ranges = get_ranges(data,source)
@@ -83,7 +84,7 @@ def part1(data):            # =>
 
 
 
-    return 
+    return min_location
 
 def part2(data):            # => 
     """
