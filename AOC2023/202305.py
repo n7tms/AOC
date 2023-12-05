@@ -8,8 +8,8 @@ from collections import defaultdict
 # IN_FILE = "AOC2023\\inputs\\202305.in"
 # IN_FILE = "AOC2023\\inputs\\202305.sample.txt"
 
-IN_FILE = "AOC2023/inputs/202305.in"
-# IN_FILE = "AOC2023/inputs/202305.sample.txt"
+# IN_FILE = "AOC2023/inputs/202305.in"
+IN_FILE = "AOC2023/inputs/202305.sample.txt"
 
 def parse(puzzle_input):
     """
@@ -114,6 +114,7 @@ def part2(data):            # =>
                 tmp_seed = new_seed
                 source,destination = destination,""
 
+            print(f"Seed {seed}: Location {new_seed}")
             if min_location == -1 or min_location > new_seed:
                 min_location = new_seed
 
