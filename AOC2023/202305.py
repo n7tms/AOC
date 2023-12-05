@@ -8,8 +8,8 @@ from collections import defaultdict
 # IN_FILE = "AOC2023\\inputs\\202305.in"
 # IN_FILE = "AOC2023\\inputs\\202305.sample.txt"
 
-# IN_FILE = "AOC2023/inputs/202305.in"
-IN_FILE = "AOC2023/inputs/202305.sample.txt"
+IN_FILE = "AOC2023/inputs/202305.in"
+# IN_FILE = "AOC2023/inputs/202305.sample.txt"
 
 def parse(puzzle_input):
     """
@@ -51,7 +51,7 @@ def get_ranges(data,src):
         if src == x[0]:
             return (x[1],categories[x])
 
-def part1(data):            # => 
+def part1(data):            # => 324724204
     """
     Solve part 1
     
@@ -85,7 +85,7 @@ def part1(data):            # =>
 
     return min_location
 
-def part2(data):            # => 
+def part2(data):            # => 104070862
     """
     Solve part 2
     """
@@ -105,17 +105,23 @@ def part2(data):            # =>
                 new_seed = tmp_seed
                 destination,ranges = get_ranges(data,source)
 
+                limit = 0
                 for r in ranges:
                     d,s,l = r
                     if tmp_seed in range(s,s+l):
                         new_seed = d + (tmp_seed-s)
                         break
+                    limit += 1
+                    if limit > 1000000:
+                        limit = 0
+                        break
 
                 tmp_seed = new_seed
                 source,destination = destination,""
 
-            print(f"Seed {seed}: Location {new_seed}")
+            # print(f"Seed {seed}: Location {new_seed}")
             if min_location == -1 or min_location > new_seed:
+                print(f"...{min_location}")
                 min_location = new_seed
 
 
