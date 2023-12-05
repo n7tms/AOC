@@ -13,7 +13,7 @@ DIRS = ([-1,-1],[0,-1],[1,-1],[-1,0],[0,0],[1,0],[-1,1],[0,1],[1,1])
 
 
 def read_cookie():
-    with open('AOC2023/cookie.in') as fp:
+    with open('AOC2023\\cookie.in') as fp:
         data = fp.read()
     return data
 
