@@ -1,4 +1,4 @@
-# AOC 2023 day 6: 
+# AOC 2023 day 6: Wait for it
 #
 
 import aoc_utils as aoc
