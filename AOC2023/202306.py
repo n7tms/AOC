@@ -8,7 +8,7 @@ import numpy as np
 # IN_FILE = "AOC2023\\inputs\\202306.in"
 # IN_FILE = "AOC2023\\inputs\\202306.sample.txt"
 
-IN_FILE = "AOC2023/inputs/202306.txt"
+IN_FILE = "AOC2023/inputs/202306.in"
 # IN_FILE = "AOC2023/inputs/202306.sample.txt"
 
 def parse(puzzle_input):
