@@ -26,7 +26,8 @@ def get_input(year, day, force=False):
 
     cookie = read_cookie()
 
-    target_file = "AOC2023\\inputs\\" + str(year) + str(day).zfill(2) + ".in"
+    # target_file = "AOC2023\\inputs\\" + str(year) + str(day).zfill(2) + ".in"
+    target_file = os.path.join("AOC2023","inputs",str(year) + str(day).zfill(2) + ".in")
     print(target_file)
     if os.path.exists(target_file) and not force:
         print("retrieve(): \'" + target_file + "\' already exists. (force not True)")
