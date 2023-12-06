@@ -1,4 +1,4 @@
-# AOC 2023 day 5: 
+# AOC 2023 day 5: If you give a seed a fertilizer...
 #
 
 import aoc_utils as aoc
