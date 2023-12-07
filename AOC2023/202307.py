@@ -3,12 +3,11 @@
 
 import aoc_utils as aoc
 import time
+import os
 
-# IN_FILE = "AOC2023\\inputs\\202307.in"
-# IN_FILE = "AOC2023\\inputs\\202307.sample.txt"
 
-IN_FILE = "AOC2023/inputs/202307.in"
-# IN_FILE = "AOC2023/inputs/202307.sample.txt"
+# IN_FILE = os.path.join("AOC2023","inputs","202307.in")
+IN_FILE = os.path.join("AOC2023","inputs","202307.sample.txt")
 
 def parse(puzzle_input):
     """
@@ -19,11 +18,7 @@ def parse(puzzle_input):
     with open(IN_FILE) as fp:
         out = []
         # data = fp.read().splitlines()
-        data = fp.read().split("\n")
-
-        # times = [x for x in data[0].split(":")[1].split(" ") if x]
-        # distances = [x for x in data[1].split(":")[1].split(" ") if x]
-
+        data = fp.read().splitlines()
 
     return data
 
