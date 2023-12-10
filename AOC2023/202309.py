@@ -1,4 +1,4 @@
-# AOC 2023 day 8: Mirage Maintenance
+# AOC 2023 day 9: Mirage Maintenance
 #
 
 import aoc_utils as aoc
