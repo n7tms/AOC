@@ -22,8 +22,6 @@ def parse(puzzle_input):
     
     return data
 
-def manhattan(a, b):
-    return sum(abs(val1-val2) for val1, val2 in zip(a,b))
 
 def rotate90Clockwise(A):
     N = len(A[0])
@@ -36,7 +34,7 @@ def rotate90Clockwise(A):
             A[j][N - 1 - i] = temp
     return A
 
-def part1(data):        # => <9326656
+def part1(data):        # => 9312968
     """
     Solve part 1
     
@@ -44,7 +42,6 @@ def part1(data):        # => <9326656
     # add a row for the empty rows
     # rotate the galaxy
     # add a row for the empty rows
-    # (rotate the galaxy back?)
     tmp = data.copy()
     number_of_inserts = 0
     for i,row in enumerate(data):
@@ -52,8 +49,6 @@ def part1(data):        # => <9326656
             tmp.insert(i+number_of_inserts,row)
             number_of_inserts += 1
     
-    # tmp2 = list(zip(*tmp[::-1]))
-
     tmp3 = []
     for r in tmp:
         new_row = []
@@ -61,8 +56,8 @@ def part1(data):        # => <9326656
             new_row.append(c)
         tmp3.append(new_row)
 
+    tmp2 = list(np.rot90(tmp3,k=-1))
 
-    tmp2 = rotate90Clockwise(tmp3)
     galaxy = tmp2.copy()
     number_of_inserts = 0
     for i,row in enumerate(tmp2):
@@ -74,7 +69,6 @@ def part1(data):        # => <9326656
     galaxies = []
     for i,row in enumerate(galaxy):
         this_row = [ind for ind, ele in enumerate(row) if ele == '#']
-        # this_row = np.where(row == '#')[0]
         for j in this_row:
             galaxies.append((i,j))
     
@@ -83,7 +77,7 @@ def part1(data):        # => <9326656
 
     total_distance = []
     for pair in unique_pairs:
-        distance = manhattan(pair[0], pair[1])
+        distance = aoc.manhattan_distance(pair[0], pair[1])
         total_distance.append(distance)
 
     return sum(total_distance)
@@ -94,8 +88,63 @@ def part2(data):            # =>
     Solve part 2
     """
 
-    return 
+# https://imgur.com/a/p6QcTbY#7YLs0yw
+# create a dictionary of all of the galaxyies coordinates (r,c)
+# iterate through the data
+# if there is a galaxy,
+#   update the coordinates, (r*blank_rows*multiplier) (part 1 mult = 1; part 2 mult = 1M)
+# if there is a blank row, 
+#   increase the r in all subsquent galaxies
+#
+# rotate the data
+# iterate through the data again
+# if there is a galaxy,
+#   update the coordinates, (c*blank_cols*multiplier)
+# if there is a blank [column],
+#   increase the c in all subsequent galaxies
 
+
+    tmp = data.copy()
+    blank_rows = 0
+    for i,row in enumerate(data):
+        if '#' not in row:
+            for _ in range(1000000):
+                tmp.insert(i+number_of_inserts,row)
+            number_of_inserts += 1000000
+    
+    tmp3 = []
+    for r in tmp:
+        new_row = []
+        for c in r:
+            new_row.append(c)
+        tmp3.append(new_row)
+
+    tmp2 = list(np.rot90(tmp3,k=-1))
+
+    galaxy = tmp2.copy()
+    number_of_inserts = 0
+    for i,row in enumerate(tmp2):
+        if '#' not in row:
+            for _ in range(1000000):
+                galaxy.insert(i+number_of_inserts,row)
+            number_of_inserts += 1000000
+
+    # Map the Galaxy
+    galaxies = []
+    for i,row in enumerate(galaxy):
+        this_row = [ind for ind, ele in enumerate(row) if ele == '#']
+        for j in this_row:
+            galaxies.append((i,j))
+    
+
+    unique_pairs = list(combinations(galaxies,2))
+
+    total_distance = []
+    for pair in unique_pairs:
+        distance = aoc.manhattan_distance(pair[0], pair[1])
+        total_distance.append(distance)
+
+    return sum(total_distance)
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""

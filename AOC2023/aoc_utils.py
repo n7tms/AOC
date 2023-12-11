@@ -44,4 +44,11 @@ def get_input(year, day, force=False):
 def empty_matrix(x,y):
     return [[0] * y] * x
 
+def manhattan_distance(a: tuple, b: tuple) -> int:
+    """
+    Give two tuples or lists, each consisting of 1 pair of integers,
+    return the Manhattan distance between the two points.
+    abs(a[0] - b[0]) + abs(a[1] - b[1])
+    """
+    return abs(a[0]-b[0]) + abs(a[1]-b[1])
     
