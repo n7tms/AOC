@@ -48,40 +48,50 @@ def part1(tiles):        # =>
     
     # find the next pipe off of S
     # n,s,e,w = 0,1,2,3
-    facing = 0
-
     # I could add code to determine where the next pipe next to S is, but
     # I visually (manually) found it going north (facing=0)
+    facing = 0
     next_tile = np.add(np.array(start),np.array(DIRS[facing]))
+    next_pipe = tiles[next_tile[0]][next_tile[1]]
+    steps = 0
 
-    while next_tile != start:
-        pipe = tiles[next_tile[0]][next_tile[1]]
-        match pipe:
-            case "|":
-                pass
-            case "-":
-                pass
-            case "L":
-                pass
-            case "J":
-                pass
-            case "7":
-                pass
-            case "F":
-                pass
-            case "S":
-                pass
-            
+    while next_pipe != "S":
+        steps += 1
+        match facing:           # TODO change this into a dictionary
+            case 0: # n
+                if next_pipe == "F":
+                    facing = 2
+                if next_pipe == "|":
+                    facing = 0
+                if next_pipe == "7":
+                    facing = 3
+            case 1: # s
+                if next_pipe == "|":
+                    facing = 1
+                if next_pipe == "J":
+                    facing = 3
+                if next_pipe == "L":
+                    facing = 2
+            case 2: # e
+                if next_pipe == "7":
+                    facing = 1
+                if next_pipe == "-":
+                    facing = 2
+                if next_pipe == "J":
+                    facing = 0
+            case 3: # w
+                if next_pipe == "F":
+                    facing = 1
+                if next_pipe == "-":
+                    facing = 3
+                if next_pipe == "L":
+                    facing = 0
 
+        next_tile = np.add(np.array(next_tile),np.array(DIRS[facing]))
+        next_pipe = tiles[next_tile[0]][next_tile[1]]
 
-        
-    
-
-
-    print(start)
-    
-
-    return 
+    furthest_point = (steps // 2) + 1
+    return furthest_point
 
 
 
