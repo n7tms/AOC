@@ -23,58 +23,55 @@ def parse(puzzle_input):
     return data
 
 
-def rotate90Clockwise(A):
-    N = len(A[0])
-    for i in range(N // 2):
-        for j in range(i, N - i - 1):
-            temp = A[i][j]
-            A[i][j] = A[N - 1 - j][i]
-            A[N - 1 - j][i] = A[N - 1 - i][N - 1 - j]
-            A[N - 1 - i][N - 1 - j] = A[j][N - 1 - i]
-            A[j][N - 1 - i] = temp
-    return A
+# def part1(data):        # => 9312968
 
-def part1(data):        # => 9312968
+def adjust_coord(coord, er, ec, mult):
+    r,c = coord
+    e_rows = sum(i<r for i in er)
+    e_cols = sum(j<c for j in ec)
+
+    r += (e_rows * mult) - e_rows
+    c += (e_cols * mult) - e_cols
+    return (r,c)
+
+
+def part12(data, mult):            # => 597714117556
     """
-    Solve part 1
-    
+    Solve parts 1 & 2
     """
-    # add a row for the empty rows
-    # rotate the galaxy
-    # add a row for the empty rows
-    tmp = data.copy()
-    number_of_inserts = 0
+
+    # create a list of all of the rows without any galaxies
+    empty_rows = []
     for i,row in enumerate(data):
         if '#' not in row:
-            tmp.insert(i+number_of_inserts,row)
-            number_of_inserts += 1
-    
-    tmp3 = []
-    for r in tmp:
+            empty_rows.append(i)
+
+    # rotate the data and create a list of all of the "columns" without galaxies
+    tmp = []
+    for r in data:
         new_row = []
         for c in r:
             new_row.append(c)
-        tmp3.append(new_row)
+        tmp.append(new_row)
+    tmp2 = list(np.rot90(tmp,k=-1))
 
-    tmp2 = list(np.rot90(tmp3,k=-1))
-
-    galaxy = tmp2.copy()
-    number_of_inserts = 0
-    for i,row in enumerate(tmp2):
-        if '#' not in row:
-            galaxy.insert(i+number_of_inserts,row)
-            number_of_inserts += 1
-
-    # Map the Galaxy
-    galaxies = []
-    for i,row in enumerate(galaxy):
-        this_row = [ind for ind, ele in enumerate(row) if ele == '#']
-        for j in this_row:
-            galaxies.append((i,j))
+    empty_cols = []
+    for j,col in enumerate(tmp2):
+        if '#' not in col:
+            empty_cols.append(j)
     
+    # get the coordinates for each galaxy; compensate for empty rows/cols
+    new_coords = []
+    for r,row in enumerate(data):
+        for c,col in enumerate(row):
+            if col == "#":
+                new_coords.append(adjust_coord((r,c), empty_rows, empty_cols, mult))
+    
+    # create a collection of each pair of galaxies
+    unique_pairs = list(combinations(new_coords,2))
 
-    unique_pairs = list(combinations(galaxies,2))
-
+    # measure the (manhattan) distance between each galaxy
+    # and keep track of the total.
     total_distance = []
     for pair in unique_pairs:
         distance = aoc.manhattan_distance(pair[0], pair[1])
@@ -83,41 +80,18 @@ def part1(data):        # => 9312968
     return sum(total_distance)
 
 
-def part2(data):            # => 
-    """
-    Solve part 2
-    """
-
-# https://imgur.com/a/p6QcTbY#7YLs0yw
-# create a dictionary of all of the galaxyies coordinates (r,c)
-# iterate through the data
-# if there is a galaxy,
-#   update the coordinates, (r*blank_rows*multiplier) (part 1 mult = 1; part 2 mult = 1M)
-# if there is a blank row, 
-#   increase the r in all subsquent galaxies
-#
-# rotate the data
-# iterate through the data again
-# if there is a galaxy,
-#   update the coordinates, (c*blank_cols*multiplier)
-# if there is a blank [column],
-#   increase the c in all subsequent galaxies
-
-
-
-    return 
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
 
     start_time = time.time()
-    p1 = str(part1(data))
+    p1 = str(part12(data,2))
     exec_time = time.time() - start_time
     print(f"part 1: {p1} ({exec_time:.4f} sec)")
 
     start_time = time.time()
-    p2 = str(part2(data))
+    p2 = str(part12(data,1000000))
     exec_time = time.time() - start_time
     print(f"part 2: {p2} ({exec_time:.4f} sec)")
 
