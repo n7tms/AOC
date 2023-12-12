@@ -104,47 +104,8 @@ def part2(data):            # =>
 #   increase the c in all subsequent galaxies
 
 
-    tmp = data.copy()
-    blank_rows = 0
-    for i,row in enumerate(data):
-        if '#' not in row:
-            for _ in range(1000000):
-                tmp.insert(i+number_of_inserts,row)
-            number_of_inserts += 1000000
-    
-    tmp3 = []
-    for r in tmp:
-        new_row = []
-        for c in r:
-            new_row.append(c)
-        tmp3.append(new_row)
 
-    tmp2 = list(np.rot90(tmp3,k=-1))
-
-    galaxy = tmp2.copy()
-    number_of_inserts = 0
-    for i,row in enumerate(tmp2):
-        if '#' not in row:
-            for _ in range(1000000):
-                galaxy.insert(i+number_of_inserts,row)
-            number_of_inserts += 1000000
-
-    # Map the Galaxy
-    galaxies = []
-    for i,row in enumerate(galaxy):
-        this_row = [ind for ind, ele in enumerate(row) if ele == '#']
-        for j in this_row:
-            galaxies.append((i,j))
-    
-
-    unique_pairs = list(combinations(galaxies,2))
-
-    total_distance = []
-    for pair in unique_pairs:
-        distance = aoc.manhattan_distance(pair[0], pair[1])
-        total_distance.append(distance)
-
-    return sum(total_distance)
+    return 
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""
