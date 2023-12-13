@@ -2,6 +2,7 @@
 import os
 import subprocess
 import time
+import numpy as np
 
 DIRS = ([-1,-1],[0,-1],[1,-1],[-1,0],[0,0],[1,0],[-1,1],[0,1],[1,1])
 
@@ -51,4 +52,22 @@ def manhattan_distance(a: tuple, b: tuple) -> int:
     abs(a[0] - b[0]) + abs(a[1] - b[1])
     """
     return abs(a[0]-b[0]) + abs(a[1]-b[1])
-    
+
+
+def rotate90(data: list, dir=-1) -> list:
+    tmp = []
+    for r in data:
+        new_row = []
+        for c in r:
+            new_row.append(c)
+        tmp.append(new_row)
+
+    tmp = list(np.rot90(tmp,dir))
+    # mash everything back together
+    final_array = []
+    for r in tmp:
+        final_array.append("".join([str(item) for item in r]))
+
+    return final_array
+
+
