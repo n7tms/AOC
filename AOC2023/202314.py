@@ -141,6 +141,32 @@ def part2(data):            # => <104345
 
     return total_load
 
+def part22(data):
+    history = defaultdict()
+    
+    cycles = 0
+    while repr(data) not in history:
+        out = spin(deepcopy(data))
+        ld = calc_load(out)
+        history[repr(data)] = [out,cycles,ld]
+        print(f"{cycles}: {ld}")
+        data = deepcopy(out)
+        cycles += 1
+
+    _, offset, ld = history[repr(data)]
+    length_of_repeat = len(history) - offset
+    index = (1000000000 % length_of_repeat) + offset
+    print(f'{offset} {length_of_repeat} {index}')
+    
+    # find the right index
+    for k,v in history.items():
+        if v[1] == index:
+            total_load = calc_load(history[k][0])
+            break
+    return total_load
+
+
+
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""
     data = parse(puzzle_input)
@@ -152,7 +178,7 @@ def solve(puzzle_input):
     print(f"part 1: {p1} ({exec_time:.4f} sec)")
 
     start_time = time.time()
-    p2 = str(part2(part2_data))
+    p2 = str(part22(part2_data))
     exec_time = time.time() - start_time
     print(f"part 2: {p2} ({exec_time:.4f} sec)")
 
