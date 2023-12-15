@@ -7,8 +7,8 @@ import os
 import numpy as np
 
 DAY = 
-IN_FILE = os.path.join("AOC2023","inputs","2023"+DAY+".in")
-# IN_FILE = os.path.join("AOC2023","inputs","2023"+DAY+".sample.txt")
+IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".in")
+# IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".sample.txt")
 
 def parse(puzzle_input):
     """
