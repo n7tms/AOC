@@ -6,6 +6,7 @@ import time
 import os
 import numpy as np
 from collections import defaultdict
+import re
 
 DAY = 15
 IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".in")
@@ -31,43 +32,67 @@ def calc_hash(data) -> int:
     return cv
 
 
-def part1(data):        # => 
+def part1(data):        # => 516657
     """
     Solve part 1
     
     """
-    data = ["rn=1,cm-,qp=3,cm=2,qp-,pc=4,ot=9,ab=5,pc-,pc=6,ot=7"]
-    cmds = data[0].split(',')
-    hash_sum = 0
-    for c in cmds:
-        hash_sum += calc_hash(c)
-
-    return hash_sum
+    # data = ["rn=1,cm-,qp=3,cm=2,qp-,pc=4,ot=9,ab=5,pc-,pc=6,ot=7"]
+    return sum([calc_hash(c) for c in data[0].split(',')])
 
 
-def part2(data):            # => 
+def part2(data):        # => 210906
     """
     Solve part 2
     """
-    # create a dictionary of 256 lens boxes
+    # create a dictionary of 256 lens boxes (a dictionary of lists)
+    # {boxno: [(label,focal), (label,focal), ...]
     boxes = defaultdict()
     for i in range(256):
         boxes[i] = []
+   
 
-    data = ["rn=1,cm-,qp=3,cm=2,qp-,pc=4,ot=9,ab=5,pc-,pc=6,ot=7"]
+    # data = ["rn=1,cm-,qp=3,cm=2,qp-,pc=4,ot=9,ab=5,pc-,pc=6,ot=7"]
     cmds = data[0].split(',')
 
-    for p in data:
+    for cmd in cmds:
         # use re to parse p
         #    [label] [op] [focal]
         # get hash of label
         # if op == '-', remove it from the box (hash) if it's there
         # if op == '=', 
         #   check if a lens with that label already exists in the box (hash)
-        #   if so, remove it (and/or) put this [label, focal] in its place.
-        #   if not, insert(0, [label, focal]) to this box (hash)
-        pass
+        #   if so, remove it (and/or) put this (label, focal) in its place.
+        #   if not, append (label, focal) to this box (hash)
 
+        c = [x for x in re.split('^(\w+)([-|=])([0-9]*)', cmd) if x != '']
+        c_hash = calc_hash(c[0])
+
+        if len(c) == 2 and c[1] == '-':
+            # remove label if it exists
+            new_t = []
+            for lens in boxes[c_hash]:
+                if lens[0] != c[0]:
+                    new_t.append(lens)
+            boxes[c_hash] = new_t
+        elif len(c) == 3 and c[1] == '=':
+            # replace if exists; append if it doesn't
+            lens = (c[0],int(c[2]))
+            found = False
+            new_lenses = []
+            for k,v in boxes[c_hash]:
+                if k == lens[0]:
+                    new_lenses.append(lens)
+                    found = True
+                else:
+                    new_lenses.append((k,v))
+            if not found:
+                new_lenses.append(lens)
+
+            boxes[c_hash] = new_lenses
+
+
+    # iterate through the boxes; calculate the total focusing power; return the sum
     total_focusing_power = 0
     for k,lenses in boxes.items():
         for m,l in enumerate(lenses,1):
