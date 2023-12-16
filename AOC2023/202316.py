@@ -1,4 +1,4 @@
-# AOC 2023 day xx: 
+# AOC 2023 day 16: The Floor Will Be Lava 
 #
 
 import aoc_utils as aoc
@@ -6,7 +6,7 @@ import time
 import os
 import numpy as np
 
-DAY = 
+DAY = 16
 IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".in")
 # IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".sample.txt")
 
@@ -17,8 +17,9 @@ def parse(puzzle_input):
     aoc.get_input(2023,DAY,False)
 
     with open(IN_FILE) as fp:
-        data = fp.read().split("\n")
-    
+        data = fp.read().strip().split("\n")
+
+    data = [[c for c in row] for row in data]
     return data
 
 
@@ -29,6 +30,11 @@ def part1(data):        # =>
     Solve part 1
     
     """
+    # create an array the same size as data to store the coords touched by the beam
+    # Trace the beam, storing {(coords): [beam_directions]} in array
+    # how to deal with splitters .... ??   recursion??
+    # if recursion, what is the exit trigger?
+    # count the number of unique keys
 
     return
 
