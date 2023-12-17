@@ -7,8 +7,8 @@ import os
 import numpy as np
 
 DAY = 16
-IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".in")
-# IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".sample.txt")
+# IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".in")
+IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".sample.txt")
 
 def parse(puzzle_input):
     """
@@ -35,6 +35,8 @@ def part1(data):        # =>
     # how to deal with splitters .... ??   recursion??
     # if recursion, what is the exit trigger?
     # count the number of unique keys
+    beams = aoc.empty_matrix(len(data[0]), len(data))
+
 
     return
 

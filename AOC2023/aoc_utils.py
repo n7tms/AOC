@@ -48,8 +48,8 @@ def get_input(year, day, force=False):
         time.sleep(3)
 
 
-def empty_matrix(x,y):
-    return [[0] * y] * x
+def empty_matrix(rows: int,cols: int, fill_value=0) -> list:
+    return [[fill_value] * cols] * rows
 
 def manhattan_distance(a: tuple, b: tuple) -> int:
     """
