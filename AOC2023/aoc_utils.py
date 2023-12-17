@@ -49,7 +49,9 @@ def get_input(year, day, force=False):
 
 
 def empty_matrix(rows: int,cols: int, fill_value=0) -> list:
-    return [[fill_value] * cols] * rows
+    return [[fill_value] * cols for _ in range(rows)]
+    # return [[fill_value] * cols] * rows
+
 
 def manhattan_distance(a: tuple, b: tuple) -> int:
     """
