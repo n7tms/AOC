@@ -1,4 +1,4 @@
-# AOC 2023 day xx: 
+# AOC 2023 day 17: Clumsy Crucible
 #
 
 import aoc_utils as aoc
@@ -6,7 +6,7 @@ import time
 import os
 import numpy as np
 
-DAY = 
+DAY = 17
 IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".in")
 # IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".sample.txt")
 
