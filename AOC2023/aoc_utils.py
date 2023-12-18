@@ -112,3 +112,42 @@ def shoelace_formula(data: list, include_border=False) -> float:
         area += perimeter//2 + 1
 
     return area
+
+
+
+def flood_fill(data: list, start: tuple, old: any, new:any) -> list:
+    """
+    Fill an area of an array with a value.
+    flood_fill assumes the boundary is one value (old).
+
+    Args:
+        data (list):   a 2D array of values
+        start (tuple):  a 2-element tuple representing the coordinate (r,c) to start flooding
+        old (any):      the value representing the boundary of the field to flood
+        new (any):      the value to flood the field with
+
+    Returns:
+        (list):         returns the flooded field
+    """
+    # starting coords
+    r,c = start
+
+    # make sure the current coords are inside the array.
+    if not (0 <= c < len(data[0])) or not (0 <= r < len(data)):
+        return
+
+    # if the current coords are on the boundary (or don't match the old value),
+    # return without doing anything.
+    if data[r][c] != old:
+        return
+
+    # change the value at the current coords to the new value
+    data[r][c] = new
+
+    # recursively flood the surrounding cells
+    flood_fill(data, (r+1, c), old, new)
+    flood_fill(data, (r-1, c), old, new)
+    flood_fill(data, (r, c+1), old, new)
+    flood_fill(data, (r, c-1), old, new)        
+
+    return data
