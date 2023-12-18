@@ -82,7 +82,7 @@ def shoelace_formula(data: list, include_border=False) -> float:
     """
     Calculates the area of an irregular polygon
     (Based on: https://www.themathdoctors.org/polygon-coordinates-and-areas/)
-    This is similar to Pick's Theorem, but Pick's integer coordinates; Shoelace does not.
+    This is similar to Pick's Theorem, but Pick's requires integer coordinates; Shoelace does not.
 
     Args:
         data (list):            an array of vertices [[(x1,y1),(x2,y2)], [(x2,y2),(x3,y3)], ...]
@@ -91,7 +91,7 @@ def shoelace_formula(data: list, include_border=False) -> float:
     
     Returns:
         float: the area of the polygon
-        
+
     Note: each row in data may consist of additional information. Only the first
           two elements in each row are used to calculate the area.
     """
