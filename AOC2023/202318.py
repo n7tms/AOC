@@ -1,6 +1,5 @@
 # AOC 2023 day 18: Lavaduct Lagoon
 #
-# shoelace formula: https://www.themathdoctors.org/polygon-coordinates-and-areas/
 
 import aoc_utils as aoc
 import time
@@ -22,14 +21,12 @@ def parse(puzzle_input):
         data = fp.read().strip().split("\n")
     
     # Create array of vertices (and colors)
-    # R 6 (#70c710)
+    # R 6 (#70c710) => [(0,0),(0,6),"#70c710"]
     vertices = []
-    trench_length = 0
     x1,y1 = 0,0
     for line in data:
         results = re.match(r"([LURD]) (\d+) \((#[0-9a-f]{6})\)", line)
         dir,mag,color = results.groups()
-        # print(f"{dir} {mag} {color}")
 
         x2,y2 = x1,y1        
         match dir:
@@ -43,9 +40,8 @@ def parse(puzzle_input):
                 x2 = x1 - int(mag)
         vertices.append([(x1,y1),(x2,y2),color])
         x1,y1 = x2,y2
-        trench_length += int(mag)
 
-    return vertices,trench_length
+    return vertices
 
 
 
@@ -54,15 +50,7 @@ def part1(data):        # => 62573
     Solve part 1
     
     """
-    data,trench_length = data
-    # Shoelace Formula
-    s1,s2 = 0,0
-    for line in data:
-        s1 += (line[0][0] * line[1][1])
-        s2 += (line[1][0] * line[0][1])
-
-    area = .5 * abs(s1 - s2)
-    area += trench_length//2 + 1
+    area = aoc.shoelace_formula(data,True)
     return int(area)
 
 
@@ -70,11 +58,10 @@ def part2(data):        # => 54662804037719
     """
     Solve part 2
     """
-    data,trench_length = data
     vertices = []
-    trench_length = 0
     x1,y1 = 0,0
 
+    # recreate the vertices based on the coding in the color
     for line in data:
         color = line[2]
         mag = int(color[1:6],16)
@@ -82,29 +69,19 @@ def part2(data):        # => 54662804037719
 
         x2,y2 = x1,y1        
         match dir:
-            case '0':
+            case '0': # R
                 y2 = y1 + int(mag)
-            case '1':
+            case '1': # D
                 x2 = x1 + int(mag)
-            case '2':
+            case '2': # 
                 y2 = y1 - int(mag)
             case '3':
                 x2 = x1 - int(mag)
         vertices.append([(x1,y1),(x2,y2),color])
         x1,y1 = x2,y2
-        trench_length += int(mag)
 
-    # Shoelace Formula
-    s1,s2 = 0,0
-    for line in vertices:
-        s1 += (line[0][0] * line[1][1])
-        s2 += (line[1][0] * line[0][1])
-
-    area = .5 * abs(s1 - s2)
-    area += trench_length//2 + 1
+    area = aoc.shoelace_formula(vertices,True)
     return int(area)
-
-
 
 
 def solve(puzzle_input):
