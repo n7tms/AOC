@@ -16,27 +16,58 @@ def parse(puzzle_input):
     aoc.get_input(2023,9,False)
 
     with open(IN_FILE) as fp:
-        data = fp.read().split("\n")
+        data = fp.read().strip().split("\n")
     
-    return data
+    histories = []
+    for d in data:
+        
+        histories.append([int(i) for i in d.split(' ')])
+
+    return histories
 
 
-def part1(data):        # => 
+def next_term(history: list) -> int:
+    if sum(history) == 0:
+        return 0
+    else:
+        cmp = [[x,y] for x,y in zip(history,history[1:])]
+        new_hist = [y-x for x,y in cmp]
+        out = next_term(new_hist)
+        return new_hist[-1] + out
+
+def prev_term(history: list) -> int:
+    if sum(history) == 0:
+        return 0
+    else:
+        cmp = [[x,y] for x,y in zip(history,history[1:])]
+        new_hist = [y-x for x,y in cmp]
+        out = prev_term(new_hist)
+        return new_hist[0] - out
+
+
+def part1(histories):        # => 1702218515
     """
     Solve part 1
     
     """
+    total = 0
+    for history in histories:
+        total += next_term(history) + history[-1]
 
-    return 
+    return total
 
 
 
-def part2(data):            # => 
+def part2(histories):            # => 925
     """
     Solve part 2
     """
 
-    return 
+    total = 0
+    for history in histories:
+        total += history[0] - prev_term(history)
+
+    return total
 
 
 def solve(puzzle_input):
