@@ -37,7 +37,7 @@ def get_input(year, day, force=False):
     target_file = os.path.join("AOC2023","inputs",str(year) + str(day).zfill(2) + ".in")
     # print(target_file)
     if os.path.exists(target_file) and not force:
-        print(f"retrieve(): '{target_file}' already exists. (force not True)")
+        # print(f"retrieve(): '{target_file}' already exists. (force not True)")
         return None
     else:
         cmd = "curl https://adventofcode.com/" + str(year) + "/day/" + str(day) + "/input --cookie \"session=" + cookie + "\" > " + target_file 
