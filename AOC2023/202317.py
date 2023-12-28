@@ -30,42 +30,88 @@ def parse(puzzle_input):
     return data
 
 def min_cost(data,src: tuple, dst: tuple) -> int:
-    # Dynamic Programming Python implementation of Min Cost Path
-    # problem
+
+    # the order of these directions ensures the crucible will not reverse on itself.
+    DIRS = [[-1,0],[0,1],[1,0],[0,-1]]
+
+    # cur_dir is the index of DIRS that we are currently moving
+    cur_dir = 1
+    moves = 0
+
     R = len(data)
     C = len(data[0])
 
-    # def minCost(cost, m, n):
-    m,n = dst
+    m,n = dst   # target, destination
+    r,c = 0,0   # origin, starting location
 
-	# Instead of following line, we can use int tc[m + 1][n + 1] or
-	# dynamically allocate memory to save space. The following
-	# line is used to keep te program simple and make it working
-	# on all compilers.
     tc = [[0 for x in range(C)] for x in range(R)]
 
-    tc[0][0] = data[0][0]
+    # calc the index of the DIRS to check -- straight (ds), left (dl), right (dr)
+    ds = cur_dir
+    dl = (cur_dir - 1) % 4
+    dr = (cur_dir + 1) % 4
+    
+    # if moves=3, check value of left and right; otherwise check, straight, left, and right.
+    # Figure out the least cost of the 2 (or 3) directions
+    # if the cur_dir is the same as the least cost direction, inc moves
+    # if the cur_dir is different from the least cost direction, moves = 1
 
-	# Initialize first column of total cost(tc) array
-    for i in range(1, m + 1):
-        tc[i][0] = tc[i-1][0] + data[i][0]
+    while [r,c] != [m,n]:
+        rs,cs = [sum(i) for i in zip([r,c],DIRS[ds])]
+        rl,cl = [sum(i) for i in zip([r,c],DIRS[dl])]
+        rr,cr = [sum(i) for i in zip([r,c],DIRS[dr])]
 
-	# Initialize first row of tc array
-    for j in range(1, n + 1):
-        tc[0][j] = tc[0][j-1] + data[0][j]
+        # get the cost (cx) of the data in each of those directions
+        cost_s = 99 if not (0<=rs<R) or not (0<=cs<C) else data[rs][cs]
+        cost_r = 99 if not (0<=rr<R) or not (0<=cr<C) else data[rr][cr]
+        cost_l = 99 if not (0<=rl<R) or not (0<=cl<C) else data[rl][cl]
+    
+        if cost_s <= cost_r and cost_s <= cost_l and moves < 3:
+            # continue straight
+            moves += 1
+            cur_dir = ds
+            tc[r][c] = cost_s
+            r,c = rs,cs
+        elif cost_r <= cost_s and cost_r <= cost_l:
+            # turn right
+            moves = 0
+            cur_dir = dr
+            tc[r][c] = cost_r
+            r,c = rr,cr
+        else:
+            # turn left
+            moves = 0
+            cur_dir = dl
+            tc[r][c] = cost_l
+            r,c = rl,cl
+
+            
+    
+    
+    
+    
+    # tc[0][0] = data[0][0]
+
+	# # Initialize first column of total cost(tc) array
+    # for i in range(1, m + 1):
+    #     tc[i][0] = tc[i-1][0] + data[i][0]
+
+	# # Initialize first row of tc array
+    # for j in range(1, n + 1):
+    #     tc[0][j] = tc[0][j-1] + data[0][j]
 
 
-    direction = -1  # current diction we just moved
-    dir_times = 0   # number of times we've moved in that direction
-	# Construct rest of the tc array
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            # tc[i][j] = min(tc[i-1][j-1], tc[i-1][j],tc[i][j-1]) + data[i][j]
-            up = 99 if not (0<=i<R) else tc[i-1][j]
-            dn = 99 if not (0<=i<R) else tc[i+1][j]
-            lt = 99 if not (0<=j<C) else tc[i][j-1]
-            rt = 99 if not (0<=j<C) else tc[i][j+1]
-            tc[i][j] = min(tc[i-1][j],tc[i][j-1]) + data[i][j]
+    # direction = -1  # current direction we just moved
+    # dir_times = 0   # number of times we've moved in that direction
+	# # Construct rest of the tc array
+    # for i in range(1, m + 1):
+    #     for j in range(1, n + 1):
+    #         # tc[i][j] = min(tc[i-1][j-1], tc[i-1][j],tc[i][j-1]) + data[i][j]
+    #         up = 99 if not (0<=i<R) else tc[i-1][j]
+    #         dn = 99 if not (0<=i<R) else tc[i+1][j]
+    #         lt = 99 if not (0<=j<C) else tc[i][j-1]
+    #         rt = 99 if not (0<=j<C) else tc[i][j+1]
+    #         tc[i][j] = min(tc[i-1][j],tc[i][j-1]) + data[i][j]
 
             
 
