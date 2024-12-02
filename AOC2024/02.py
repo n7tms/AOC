@@ -8,42 +8,63 @@ import os
 
 DAY = '02'
 IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".in")
-# IN_FILE = os.path.join("AOC2023","inputs","2023"+str(DAY)+".sample.txt")
+# IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".sample.txt")
 
 def parse(puzzle_input):
     """
     Parse
     """
-    # aoc.get_input(2024,DAY,False)
+    aoc.get_input(2024,DAY,False)
 
     with open(IN_FILE) as fp:
         data = fp.read().strip().split("\n")
 
-
-    
-    return data
-
+    reports = [[int(x) for x in line.split(" ")] for line in data]
+    return reports
 
 
+def is_safe(report):
+    if all(report[i] < report[i+1] and (report[i+1] - report[i] <= 3) for i in range(len(report)-1)) or \
+    all(report[i] > report[i+1] and (report[i] - report[i+1] <= 3) for i in range(len(report)-1)):
+        return True
+    else:
+        return False
 
-def part1(data):        # => 
+
+def part1(reports):        # => 326
     """
     Solve part 1
     
     """
-
-
-    return 
+    # safe = 0
+    # for report in reports:
+    #     if is_safe(report):
+    #         safe += 1
+    safe = sum(1 for report in reports if is_safe(report))
+    return safe
         
 
+def made_safe(rpt):
+    for idx in range(len(rpt)):
+        r = rpt.copy()
+        popped = r.pop(idx)
+        if is_safe(r):
+            return True
+    return False
 
-def part2(data):            # => 
+
+def part2(reports):       # => 381
     """
     Solve part 2
     """
+    # safe = 0
+    # for report in reports:
+    #     if is_safe(report) or made_safe(report):
+    #         safe += 1
+    safe = sum(1 for report in reports if is_safe(report) or made_safe(report))
 
+    return safe
 
-    return 
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""

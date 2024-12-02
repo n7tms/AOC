@@ -14,8 +14,8 @@ import logging
 #     print(cmd)
 
 
-def read_cookie():
-    with open('AOC2023/cookie.in') as fp:
+def read_cookie(year):
+    with open('AOC' + str(year) + '/cookie.in') as fp:
         data = fp.read()
     return data
 
@@ -26,16 +26,15 @@ def get_input(year, day, force=False):
     # Does the file exist and force=False?
     #   Yes: return None
 
-    cookie = read_cookie()
+    cookie = read_cookie(year)
 
-    # target_file = "AOC2023\\inputs\\" + str(year) + str(day).zfill(2) + ".in"
-    target_file = os.path.join("AOC2023","inputs",str(year) + str(day).zfill(2) + ".in")
+    target_file = os.path.join("AOC"+str(year),"inputs",str(year) + "-" + str(day).zfill(2) + ".in")
     # print(target_file)
     if os.path.exists(target_file) and not force:
         # print(f"retrieve(): '{target_file}' already exists. (force not True)")
         return None
     else:
-        cmd = "curl https://adventofcode.com/" + str(year) + "/day/" + str(day) + "/input --cookie \"session=" + cookie + "\" > " + target_file 
+        cmd = "curl https://adventofcode.com/" + str(year) + "/day/" + str(int(day)) + "/input --cookie \"session=" + cookie + "\" > " + target_file 
         print(cmd)
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
 
