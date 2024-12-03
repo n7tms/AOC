@@ -4,6 +4,7 @@
 import aoc_utils as aoc
 import time
 import os
+from itertools import cycle
 
 DAY = '01'
 IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".in")
@@ -23,34 +24,48 @@ def parse(puzzle_input):
 
 
 def part1(data):        # => 408
-    """
-    Solve part 1
-    """
-    freq = 0
-    for d in data:
-        change = int(d)
-        freq += change
+    # freq = 0
+    # for d in data:
+    #     change = int(d)
+    #     freq += change
     
+    freq = sum([int(d) for d in data])
 
     return freq
         
 
 
 def part2(data):       # => 55250
-    """
-    Solve part 2
-    """
-    freqs = []
-    freq = 0
-    while True:
-        for d in data:
-            change = int(d)
-            freq += change
-            if freq in freqs:
-                return freq
-            else:
-                freqs.append(freq)
+    # convert the list of data to integers
+    data1 = list(map(int, data))
 
+    # tracking the frequencies in a set rather than a list shaved 98 seconds off the run time!!!
+    freqs = set()
+    freq = 0
+    
+    # while True:
+    #     for d in data1:
+    #         freq += d
+    #         if freq in freqs:
+    #             return freq
+    #         else:
+    #             freqs.add(freq)
+
+    # This is the most pythonic way to execute this code.
+    for d in cycle(data1):
+        freq += d
+        if freq in freqs:
+            return freq
+        else:
+            freqs.add(freq)
+
+    # cycled_data = cycle(data1)
+    # while True:
+    #     freq += next(cycled_data)
+    #     if freq in freqs:
+    #         return freq
+    #     else:
+    #         freqs.add(freq)
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""
