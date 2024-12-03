@@ -44,18 +44,16 @@ def parse(puzzle_input):
 
         if report[0] == 'G':
             if asleep:
-                # make the last guard sleep through 59
+                # if the last guard did not wake up for this new guard started, make the last guard sleep through 59
                 for m in range(last_min, 60):
                     activity[m] = 1
                 
             if guard_num not in guards and guard_num > -1:
                 guards[guard_num] = activity
             elif guard_num > -1:
-                # guards[guard_num].append({'timestamp':last_date,'asleep':activity})
                 guards[guard_num] = [a + b for a,b in zip(guards[guard_num], activity)]
 
-
-            # get the new guard number
+            # get the new guard number and initialize all the variables for him
             guard_num = int(re.findall(r"\d+",report)[0])
             asleep = False
             last_min = 0 if int(hr) == 23 else int(mn)
@@ -71,8 +69,6 @@ def parse(puzzle_input):
                 activity[m] = 1
             asleep = False
             
-
-
     return guards
 
 
@@ -94,14 +90,21 @@ def part1(guards):        # => 76357
         
 
 def part2(guards):       # => 41668
-    most_freq = 0
-    most_guard = 0
-    for g,v in guards.items():
-        if max(v) > most_freq:
-            most_freq = max(v)
-            most_guard = g
+    # Find the guard that slept the most in one particular minute
+    
+    # most_freq = 0
+    # most_guard = 0
+    # for g,v in guards.items():
+    #     if max(v) > most_freq:
+    #         most_freq = max(v)
+    #         most_guard = g
+    # most_freq = guards[most_guard].index(max(guards[most_guard]))
+    
+    # the following more pythonic code is 4x faster than above code.
+    most_guard, values = max(guards.items(), key=lambda item: max(item[1]))
+    most_freq = values.index(max(values))
 
-    return most_guard * np.argmax(guards[most_guard])
+    return most_guard * most_freq
 
 
 def solve(puzzle_input):
