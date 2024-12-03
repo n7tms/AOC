@@ -25,45 +25,49 @@ def parse(puzzle_input):
 
 def part1(data):        # => 8715
 
-    twos = 0
-    threes = 0
-    for line in data:
-        freq = Counter(line)
-        f = set()
-        for _,v in freq.items():
-            f.add(v)
-        if 2 in f:
-            twos += 1
-        if 3 in f:
-            threes += 1
+    # twos = 0
+    # threes = 0
+    # for line in data:
+    #     freq = Counter(line)
+    #     f = set()
+    #     for _,v in freq.items():
+    #         f.add(v)
+    #     if 2 in f:
+    #         twos += 1
+    #     if 3 in f:
+    #         threes += 1
     
+    twos = sum(2 in Counter(line).values() for line in data)
+    threes = sum(3 in Counter(line).values() for line in data)
     return twos * threes
         
 
 def compare_strings(x,y):
-    differences = 0
-    z = list(zip(x,y))
-    output = ''
-    for a,b in z:
-        if a != b: 
-            differences += 1
-        else:
-            output = output + a
+    # differences = 0
+    # z = list(zip(x,y))
+    # output = ''
+    # for a,b in z:
+    #     if a != b: 
+    #         differences += 1
+    #     else:
+    #         output = output + a
 
-    if differences == 1: 
-        return output
-    else:
-        return False
+    # if differences == 1: 
+    #     return output
+    # else:
+    #     return False
 
+    # differences = sum(1 for a,b in zip(x,y) if a != b)
+    if 1 == sum(1 for a,b in zip(x,y) if a != b):
+        return ''.join(a for a, b in zip(x,y) if a == b)
 
 def part2(data):       # => fvstwblgqkhpuixdrnevmaycd
 
-    for idx in range(len(data)-1):
-        for idx2 in range(idx+1,len(data)):
-            diff = compare_strings(data[idx],data[idx2])
-            if diff:
+    for idx, x in enumerate(data):
+        for y in data[idx+1:]:
+            # Walrus operator ( := ) -- assigns the value of the function to diff and then tests diff in the if statement
+            if diff := compare_strings(x,y):
                 return diff
-    
     return 0
 
 
