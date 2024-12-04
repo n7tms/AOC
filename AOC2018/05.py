@@ -7,8 +7,8 @@ import os
 
 
 DAY = '05'
-# IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".in")
-IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".sample.txt")
+IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".in")
+# IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".sample.txt")
 
 def parse(puzzle_input):
     """
@@ -25,28 +25,16 @@ def parse(puzzle_input):
 def opposites(p1,p2):
     return abs(ord(p1) - ord(p2)) == 32
 
-def part1(polymer):        # => >7911
+def part1(polymer):        # => 9296
 
-    changed = True
-    while changed:
-        changed = False
-        new_polymer = ''
-        idx = 0
-        while idx < len(polymer)-1:
-            if not opposites(polymer[idx], polymer[idx+1]):
-                new_polymer = new_polymer + polymer[idx]
-                idx += 1
-            else:
-                changed = True
-                if idx > 0:
-                    idx -= 1
-                    new_polymer = new_polymer[:-1]
-                else:
-                    idx += 2
-
-        polymer = new_polymer
-
-
+    idx = 0
+    while idx < len(polymer)-1:
+        if not opposites(polymer[idx], polymer[idx+1]):
+            idx += 1
+        else:
+            polymer = polymer[:idx] + polymer[idx+2:]
+            if idx > 0:
+                idx -= 1
 
     return len(polymer)     
 
