@@ -4,6 +4,7 @@
 import aoc_utils as aoc
 import time
 import os
+from collections import defaultdict
 
 
 DAY = '06'
@@ -22,12 +23,56 @@ def parse(puzzle_input):
     coordinates = []
     max_r, max_c = 0, 0
     for line in data:
-        y,x = line.split(',')
-        coordinates.append((int(x),int(y)))
-        max_c = int(x) if int(x) > max_r else max_r
-        max_r = int(y) if int(y) > max_c else max_c
+        y,x = map(int, line.split(','))
+        coordinates.append((x,y))
+        max_c = max(max_c, y)
+        max_r = max(max_r, x)
 
     return coordinates, max_r, max_c
+
+def part1b(data, max_r, max_c): 
+    # I asked ChatGPT's to make my part 1 code more efficient and pythonic. 
+    # This is what it came up with:
+    # (It runs about 2 seconds faster than mine.)
+
+    # Step 1: Create a defaultdict to store grid info
+    grid = defaultdict(lambda: [None, float('inf'), 0])
+    
+    # Step 2: Iterate through the grid and calculate Manhattan distances
+    for rc in data:
+        for rd in range(max_r + 1):
+            for cd in range(max_c + 1):
+                man_dist = aoc.manhattan_distance(rc, (rd, cd))
+                if man_dist < grid[(rd, cd)][1]:  # New closest point
+                    grid[(rd, cd)] = [rc, man_dist, 1]
+                elif man_dist == grid[(rd, cd)][1]:  # Tied distance
+                    grid[(rd, cd)][2] += 1
+
+    # Step 3: Identify edges to exclude grids
+    excluded_grids = set()
+    edges = (
+        [(0, col) for col in range(max_c + 1)] +                # Top edge
+        [(max_r, col) for col in range(max_c + 1)] +            # Bottom edge
+        [(row, 0) for row in range(max_r + 1)] +                # Left edge
+        [(row, max_c) for row in range(max_r + 1)]              # Right edge
+    )
+    
+    for edge in edges:
+        point, _, count = grid[edge]
+        if count < 2:  # Exclude points with unique closest association
+            excluded_grids.add(point)
+
+    # Step 4: Count marked points for non-excluded grids
+    grid_counts = defaultdict(int)
+    for cell, (point, _, count) in grid.items():
+        if point not in excluded_grids and count < 2:
+            grid_counts[point] += 1
+
+    # Step 5: Return the maximum marked points
+    return max(grid_counts.values(), default=0)
+
+
+
 
 
 
@@ -114,7 +159,7 @@ def solve(puzzle_input):
     data, mr, mc = parse(puzzle_input)
 
     start_time = time.time()
-    p1 = str(part1(data,mr,mc))
+    p1 = str(part1b(data,mr,mc))
     exec_time = time.time() - start_time
     print(f"part 1: {p1} ({exec_time:.4f} sec)")
 
