@@ -2,7 +2,7 @@
 import os
 import subprocess
 import time
-# import numpy as np
+import numpy as np
 import logging
 
 
@@ -54,6 +54,7 @@ def manhattan_distance(a: tuple, b: tuple) -> int:
     abs(a[0] - b[0]) + abs(a[1] - b[1])
     """
     return abs(a[0]-b[0]) + abs(a[1]-b[1])
+    # return sum(abs(x-y) for x,y in zip(a,b))
 
 
 def rotate90(data: list, dir=-1) -> list:
