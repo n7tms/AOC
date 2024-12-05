@@ -5,11 +5,12 @@ import aoc_utils as aoc
 import time
 import os
 import re
+import networkx as nx
 
 
 DAY = '07'
-# IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".in")
-IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".sample.txt")
+IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".in")
+# IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".sample.txt")
 
 def parse(puzzle_input):
     """
@@ -22,7 +23,8 @@ def parse(puzzle_input):
     
     instructions = []
     for line in data:
-        instr = list(re.match(r"Step (.+) must be finished before step (.+) can begin.", line).groups())
+        # instr = list(re.match(r"Step (.+) must be finished before step (.+) can begin.", line).groups())
+        instr = re.match(r"Step (.+) must be finished before step (.+) can begin.", line).groups()
         instructions.append(instr)
         
     return instructions
@@ -43,20 +45,13 @@ def fix(rules, pages):
     return pages
 
 
-def part1(data):        # => 
-    correct_order = []
+def part1(data):        # => EBICGKQOVMYZJAWRDPXFSUTNLH
+    # the networkx module has a cool routine does does this exact thing!!
+    graph = nx.DiGraph()
+    graph.add_edges_from(data)
+    order = list(nx.lexicographical_topological_sort(graph))
 
-    for f,s in data:
-        if s not in correct_order:
-            correct_order.append(s)
-        if f not in correct_order:
-            correct_order.insert(0,f)
-    
-    fixed = fix(data,correct_order)
-
-
-
-    return ''.join(fixed)
+    return ''.join(order)
 
 
 def part2(data):        # => 
