@@ -22,16 +22,41 @@ def parse(puzzle_input):
     
     instructions = []
     for line in data:
-        instr = re.match(r"Step (.+) must be finished before step (.+) can begin.", line).groups()
+        instr = list(re.match(r"Step (.+) must be finished before step (.+) can begin.", line).groups())
         instructions.append(instr)
         
     return instructions
 
 
+def fix(rules, pages):
+    sorted = False
+    while not sorted:
+        sorted = True
+        for f,s in rules:
+            if f in pages and s in pages:
+                idx_f = pages.index(f)
+                idx_s = pages.index(s)
+                if idx_f > idx_s:
+                    pages[idx_f], pages[idx_s] = pages[idx_s], pages[idx_f]
+                    sorted = False
+
+    return pages
 
 
 def part1(data):        # => 
-    return 
+    correct_order = []
+
+    for f,s in data:
+        if s not in correct_order:
+            correct_order.append(s)
+        if f not in correct_order:
+            correct_order.insert(0,f)
+    
+    fixed = fix(data,correct_order)
+
+
+
+    return ''.join(fixed)
 
 
 def part2(data):        # => 
