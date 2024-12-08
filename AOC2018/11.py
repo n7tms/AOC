@@ -1,4 +1,4 @@
-# AOC 2018 day 10: 
+# AOC 2018 day 11: 
 #
 
 import aoc_utils as aoc
@@ -7,7 +7,7 @@ import os
 import re
 
 
-DAY = '10'
+DAY = '11'
 IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".in")
 # IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".sample.txt")
 
