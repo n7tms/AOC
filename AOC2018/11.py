@@ -34,16 +34,16 @@ def part1(data):        # =>
 
             grid[r][c] = power_level
     
-        max_pl = {}
-        for r in range(1,len(grid[0])-2):
-            for c in range(1,len(grid)-2):
-                tmp_pl = grid[r][c] + grid[r][c+1] + grid[r][c+2] + grid[r+1][c] + grid[r+1][c+1] + grid[r+1][c+2] + grid[r+2][c] + grid[r+2][c+1] + grid[r+2][c+2] 
-                max_pl[(r,c)] = tmp_pl
-        
+    max_pl = {}
+    for r in range(1,len(grid[0])-2):
+        for c in range(1,len(grid)-2):
+            tmp_pl = grid[r][c] + grid[r][c+1] + grid[r][c+2] + grid[r+1][c] + grid[r+1][c+1] + grid[r+1][c+2] + grid[r+2][c] + grid[r+2][c+1] + grid[r+2][c+2] 
+            max_pl[(c,r)] = tmp_pl
         
 
+
     
-    return
+    return max(max_pl.values())
         
 
 
