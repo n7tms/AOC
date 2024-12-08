@@ -8,74 +8,53 @@ import re
 
 
 DAY = '11'
-IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".in")
+# IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".in")
 # IN_FILE = os.path.join("AOC2018","inputs","2018-"+str(DAY)+".sample.txt")
 
-def parse():
-    """
-    Parse
-    """
-    aoc.get_input(2018,DAY,False)
+IN_FILE = 9424
 
-    with open(IN_FILE) as fp:
-        data = fp.read().strip().splitlines()
 
-    points = []
-    for d in data:
-        numbers = re.findall(r"-?\d+",d)
-        numbers = [int(num) for num in numbers]
-        points.append(numbers)
 
-    # matches = re.search(r"position=< (\d+), (\d+)> velocity=<(\d+), (\d+)>", data[0])
-    # players = int(matches.group(1))
-    # points = int(matches.group(2))
+def part1(data):        # => 
+    grid = [[0 for _ in range(301)] for _ in range(301)]
+
+    for r in range(1,len(grid[0])):
+        for c in range(1,len(grid)):
+            rackid = c + 10
+            power_level = rackid * r
+            power_level += data
+            power_level *= rackid
+
+            if power_level < 100:
+                power_level = 0
+            else: 
+                power_level = (power_level // 100) % 10
+            
+            power_level -= 5
+
+            grid[r][c] = power_level
     
-    return points
+        max_pl = {}
+        for r in range(1,len(grid[0])-2):
+            for c in range(1,len(grid)-2):
+                tmp_pl = grid[r][c] + grid[r][c+1] + grid[r][c+2] + grid[r+1][c] + grid[r+1][c+1] + grid[r+1][c+2] + grid[r+2][c] + grid[r+2][c+1] + grid[r+2][c+2] 
+                max_pl[(r,c)] = tmp_pl
+        
+        
 
-
-def print_grid(points):
-    # Determine the size of the grid
-    max_row = max(coord[0] for coord in points)
-    max_col = max(coord[1] for coord in points)
-
-    # Create an empty grid
-    grid = [["." for _ in range(max_col + 1)] for _ in range(max_row + 1)]
-
-    # Mark the points on the grid
-    for row, col, _, _ in points:
-        grid[row][col] = "X"
-
-    # Display the grid
-    for row in grid:
-        print("".join(row))
-
-    print('\n')
-
-
-def part1(points):        # => XECXBPZB at 10124 seconds
     
-    # by looking at the data, I can tell that things are going to get pretty close together after ~10000 seconds.
-    # i ran the program to there and then set breakpoints to see how close it was getting until a message appeared.
-    # (There must be a programmatic way to determine when the message appears.)
-    # My text appears vertical and mirrored. Hmmm.
-    seconds = 0
-    while True:
-        points = [[posc+velc,posr+velr,velc,velr] for posc, posr, velc, velr in points]
-
-        seconds += 1
-        if seconds == 10124:
-            print_grid(points)
-            return seconds
+    return
         
 
 
-def part2(data):        # => 10124
+def part2(data):        # => 
     return
 
 
 def solve():
     """Solve the puzzle for the given input."""
-    data = parse()
+    # data = parse()
+    data = IN_FILE
 
     start_time = time.time()
     p1 = str(part1(data))
