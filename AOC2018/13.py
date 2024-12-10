@@ -59,10 +59,14 @@ direction_changes = {
     ('-', 2): 2,  # keep right
     ('|', 1): 1,  # keep Up
     ('|', 3): 3,  # keep down
+    ('+', 0): 0,
+    ('+', 1): 1,
+    ('+', 2): 2,
+    ('+', 3): 3,
 }
 
 
-def part1(tracks, carts):        # => 
+def part1(tracks, carts):        # => 8,9   (I return (9,8) in (r,c) format; AOC wants (x,y) coords ==> (c,r))
 
     while True:
         # Sort the carts by location (left to right, top to bottom)
@@ -70,31 +74,60 @@ def part1(tracks, carts):        # =>
 
         for cart in sorted_carts:
             # get the cart information
-            for cn, (loc, dir, lastturn) in carts.items():
+            for cn, values in carts.items():
+                loc, dir, last = values['loc'], values['dir'], values['last']
                 if loc == cart:
                     # this is the cart we're looking for. Move it.
                     r,c = loc
                     if tracks[r][c] == '+': #turn
-                        new_turn = (carts[cn][lastturn]) + 1 % 3
-                        
-                        pass
-                    else:
-                        new_dir = direction_changes.get(tracks[r][c],dir)
-                        nr, nc = r+DIRS[new_dir][0], c+DIRS[new_dir][1]
-                        carts[cn]['loc'] = (nr, nc)
-                        carts[cn]['dir'] = new_dir
-
-                    
-
-
-
+                        carts[cn]['last'] = (last + 1) % 3
+                        dir = (TURNS[carts[cn]['last']] + dir) % 4
+                    new_dir = direction_changes[(tracks[r][c],dir)]
+                    nr, nc = r+DIRS[new_dir][0], c+DIRS[new_dir][1]
+                    carts[cn]['loc'] = (nr, nc)
+                    carts[cn]['dir'] = new_dir
+                    break
+            # Check for collision
+            if [key for key, details in carts.items() if key != cn and details['loc'] == carts[cn]['loc']]:
+                # collision!
+                return carts[cn]['loc']        
 
 
     return 
 
 
-def part2(data):        # => 
-    return 
+def part2(tracks, carts):        # => not (0,116), (0,113), (0,115), or (0,114)
+
+    while True:
+        if len(carts) == 1:
+            return carts
+        
+        # Sort the carts by location (left to right, top to bottom)
+        sorted_carts = sorted([value['loc'] for value in carts.values()], key=lambda loc: (loc[0],loc[1]))
+
+        for cart in sorted_carts:
+            # get the cart information
+            for cn, values in carts.items():
+                loc, dir, last = values['loc'], values['dir'], values['last']
+                if loc == cart:
+                    # this is the cart we're looking for. Move it.
+                    r,c = loc
+                    if tracks[r][c] == '+': #turn
+                        carts[cn]['last'] = (last + 1) % 3
+                        dir = (TURNS[carts[cn]['last']] + dir) % 4
+                    new_dir = direction_changes[(tracks[r][c],dir)]
+                    nr, nc = r+DIRS[new_dir][0], c+DIRS[new_dir][1]
+                    carts[cn]['loc'] = (nr, nc)
+                    carts[cn]['dir'] = new_dir
+
+                    # Check for collision
+                    crashed_carts = [key for key, details in carts.items() if key != cn and details['loc'] == carts[cn]['loc']]
+                    if crashed_carts:
+                        # collision! delete the offending carts
+                        del carts[cn]
+                        del carts[crashed_carts[0]]
+                        if len(carts) == 1: return carts
+                    break
 
 
 def solve():
@@ -102,7 +135,7 @@ def solve():
     t,c = parse()
 
     start_time = time.time()
-    p1 = str(part2(t,c))
+    p1 = str(part1(t,c))
     exec_time = time.time() - start_time
     print(f"part 1: {p1} ({exec_time:.4f} sec)")
 
