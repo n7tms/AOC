@@ -96,8 +96,10 @@ def part1(tracks, carts):        # => 8,9   (I return (9,8) in (r,c) format; AOC
     return 
 
 
-def part2(tracks, carts):        # => not (0,116), (0,113), (0,115), or (0,114)
-
+def part2(tracks, carts):        # => 73,33      
+    # this solution does not produce (73,33). Help from Jonathan Poulson
+    # my code spits out (71,124), although the example works correctly.
+    # not sure what is going on here ???
     while True:
         if len(carts) == 1:
             return carts
@@ -120,13 +122,12 @@ def part2(tracks, carts):        # => not (0,116), (0,113), (0,115), or (0,114)
                     carts[cn]['loc'] = (nr, nc)
                     carts[cn]['dir'] = new_dir
 
-                    # Check for collision
+                # Check for collision
                     crashed_carts = [key for key, details in carts.items() if key != cn and details['loc'] == carts[cn]['loc']]
                     if crashed_carts:
                         # collision! delete the offending carts
                         del carts[cn]
                         del carts[crashed_carts[0]]
-                        if len(carts) == 1: return carts
                     break
 
 
@@ -138,6 +139,9 @@ def solve():
     p1 = str(part1(t,c))
     exec_time = time.time() - start_time
     print(f"part 1: {p1} ({exec_time:.4f} sec)")
+
+    # start with a fresh set of carts
+    t,c = parse()
 
     start_time = time.time()
     p2 = str(part2(t,c))
