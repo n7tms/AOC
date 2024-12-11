@@ -97,7 +97,7 @@ def part1(tracks, carts):        # => 8,9   (I return (9,8) in (r,c) format; AOC
 
 
 def part2(tracks, carts):        # => 73,33      
-    # this solution does not produce (73,33). Help from Jonathan Poulson
+    # this solution does not produce (73,33). Help from Jonathan Poulson (https://www.reddit.com/r/adventofcode/comments/a5qd71/2018_day_13_solutions/)
     # my code spits out (71,124), although the example works correctly.
     # not sure what is going on here ???
     while True:
