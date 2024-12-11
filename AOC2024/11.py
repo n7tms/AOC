@@ -46,6 +46,36 @@ def part1(stones: list, blinks):        # => 199982
 
     return len(stones)
 
+from collections import defaultdict
+
+def part1b(s,blinks):
+    stones = defaultdict(int)
+    for stone in s:
+        if stone in stones:
+            stones[int(stone)] += 1
+        else:
+            stones[int(stone)] = 1
+    
+    for _ in range(blinks):
+        working_stones = defaultdict(int)
+
+        for stone, value in stones.items():
+            if stone == 0:
+                working_stones[1] += value
+            elif len(str(stone)) % 2 == 0:
+                str_n = str(stone)
+                half = len(str_n) // 2
+                left = int(str_n[:half])
+                right = int(str_n[half:])
+                working_stones[left] += value
+                working_stones[right] += value
+            else:
+                working_stones[stone*2024] += value
+                
+        stones = dict(working_stones)
+    
+    total_stones = sum(stones.values())
+    return total_stones
 
 
 
@@ -90,7 +120,9 @@ def solve(puzzle_input):
     data = parse(puzzle_input)
 
     start_time = time.time()
-    p1 = str(part1(data, 25))
+    # p1 = str(part1(data, 25))
+    p1 = str(part1b(data, 25))
+    # p1 = str(part2(data, 25))
     exec_time = time.time() - start_time
     print(f"part 1: {p1} ({exec_time:.4f} sec)")
 
