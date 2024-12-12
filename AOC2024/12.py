@@ -8,8 +8,8 @@ from collections import defaultdict
 import copy
 
 DAY = '12'
-IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".in")
-# IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".sample.txt")
+# IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".in")
+IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".sample.txt")
 
 
 def parse(puzzle_input):
@@ -60,8 +60,57 @@ def part1(field):       # => 1477762
                 total_price += len(area) * perimeter                    
     return total_price
 
-def part2(data):        # => 
-    
+
+def count_region_sides(data, start, value, visited=None):
+    if visited is None:
+        visited = set()  # Keep track of visited cells to avoid duplication
+
+    rows, cols = len(data), len(data[0])
+    r, c = start
+
+    # Check bounds and whether we've already visited this cell
+    if not (0 <= r < rows and 0 <= c < cols) or (r, c) in visited:
+        return 0
+
+    # If the cell does not belong to the current region, return 0
+    if data[r][c] != value:
+        return 0
+
+    # Mark the cell as visited
+    visited.add((r, c))
+
+    # Count sides for this cell
+    sides = 0
+    for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:  # Up, Down, Left, Right
+        nr, nc = r + dr, c + dc
+        if not (0 <= nr < rows and 0 <= nc < cols) or data[nr][nc] != value:
+            sides += 1
+
+    # Recursively count sides for the rest of the region
+    sides += count_region_sides(data, (r + 1, c), value, visited)
+    sides += count_region_sides(data, (r - 1, c), value, visited)
+    sides += count_region_sides(data, (r, c + 1), value, visited)
+    sides += count_region_sides(data, (r, c - 1), value, visited)
+
+    return sides
+
+
+
+def part2(field):        # => 
+    visited_cells = set()
+    sides_per_region = {}
+
+    for r in range(len(field)):
+        for c in range(len(field[0])):
+            if (r, c) not in visited_cells:
+                region_value = field[r][c]
+                sides = count_region_sides(field, (r, c), region_value, visited_cells)
+                sides_per_region[region_value] = sides
+
+    # Print results
+    for region, sides in sides_per_region.items():
+        print(f"Region {region} has {sides} sides.")
+            
     return 
 
 
