@@ -109,7 +109,7 @@ def shoelace_formula(data: list, include_border=False) -> float:
 
 
 
-def flood_fill(data: list, start: tuple, old: any, new:any) -> list:
+def flood_fill(data: list, start: tuple, old: any, new:any, changed=[]) -> list:
     """
     Fill an area of an array with a value.
     flood_fill assumes the boundary is one value (old).
@@ -123,6 +123,8 @@ def flood_fill(data: list, start: tuple, old: any, new:any) -> list:
     Returns:
         (list):         returns the flooded field
     """
+
+
     # starting coords
     r,c = start
 
@@ -137,11 +139,14 @@ def flood_fill(data: list, start: tuple, old: any, new:any) -> list:
 
     # change the value at the current coords to the new value
     data[r][c] = new
+    changed.append((r,c))
 
     # recursively flood the surrounding cells
-    flood_fill(data, (r+1, c), old, new)
-    flood_fill(data, (r-1, c), old, new)
-    flood_fill(data, (r, c+1), old, new)
-    flood_fill(data, (r, c-1), old, new)        
+    flood_fill(data, (r+1, c), old, new, changed)
+    flood_fill(data, (r-1, c), old, new, changed)
+    flood_fill(data, (r, c+1), old, new, changed)
+    flood_fill(data, (r, c-1), old, new, changed)
 
-    return data
+    return data, changed
+
+
