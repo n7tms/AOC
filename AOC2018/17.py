@@ -57,28 +57,40 @@ running_water = list()
 #   continue to flow left and right until 
 running_water.append(water)
 while True:
+    moved = False
     r,c = running_water[-1] # get the water at the end of the list (LIFO)
+
+    # Check for end conditions
+    # if r == 0: # we are back to the source; no solution
+    #     part1 = 'no solution'
+    #     break
+    if r > maxr: # we are dropping off the bottom of the map (done!)
+        part1 = len(waters)
+        break
+
+
     if (r+1,c) not in clay and (r+1,c) not in waters: # go down if no clay and no water
         if r > maxr: break # did we run off the bottom of the map? if yes, then done.
         running_water.append((r+1,c)) 
         waters.add((r+1,c))
-    elif (r,c-1) not in clay or (r,c+1) not in clay: # can't do down. Can we go left or right?
-        if (r,c-1) not in clay:
+        moved = True
+    else: # can't do down. Can we go left or right?
+        if (r,c-1) not in clay and (r,c-1) not in waters:
             running_water.append((r,c-1))
             waters.add((r,c-1))
             running_water.remove((r,c))
-        if (r,c+1) not in clay:
+            moved = True
+        if (r,c+1) not in clay and (r,c+1) not in waters:
             running_water.append((r,c+1))
             waters.add((r,c+1))
             if (r,c) in running_water: running_water.remove((r,c))
+            moved = True
+    if not moved:
+        running_water.pop()
 
 
 
 
-
-
-
-part1 = 0
 print(f'Part 1: {part1}')
 
 
