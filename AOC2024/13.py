@@ -23,47 +23,42 @@ with open(IN_FILE) as fp:
     data = fp.read().strip().split('\n\n')
 
 r = r'X[+=](-?\d+), Y[+=](-?\d+)'
-games = []
-for groups in data:
-    matches = re.findall(r,groups)
-    games.append([[int(x), int(y)] for x,y in matches])
-
+games = [[[int(x),int(y)] for x,y in re.findall(r,groups)] for groups in data]
 
 
 start_time = time.time()
 # Solution for Part 1 here vvvvvvvvvvvvvvvvvvvvvvvvv     # => 29438
+
 tokens = 0
-offset = 10000000000000
 for game in games:
-    A = sp.Matrix([[game[0][0],game[1][0]],[game[0][1],game[1][1]]])
+    a = sp.Matrix([[game[0][0],game[1][0]],[game[0][1],game[1][1]]])
     b = sp.Matrix([game[2][0],game[2][1]])
-    x = A.solve(b)
-    # print(x[0])
+    x = a.solve(b)
     if int(x[0]) == x[0] and int(x[1]) == x[1]:
         tokens += (x[0] * 3) + x[1]
 
-part1 = tokens
-print(f'Part 1: {part1}')
+
+exec_time = time.time() - start_time
+print(f'Part 1: {tokens} ({exec_time:.3f} sec)')
 
 
 
+start_time = time.time()
 # Solution for Part 2 here vvvvvvvvvvvvvvvvvvvvvvvvv    # => 104958599303720
 tokens = 0
 offset = 10000000000000
 for game in games:
-    A = sp.Matrix([[game[0][0],game[1][0]],[game[0][1],game[1][1]]])
+    a = sp.Matrix([[game[0][0],game[1][0]],[game[0][1],game[1][1]]])
     b = sp.Matrix([game[2][0]+offset,game[2][1]+offset])
-    x = A.solve(b)
-    # print(x[0])
+    x = a.solve(b)
     if int(x[0]) == x[0] and int(x[1]) == x[1]:
         tokens += (x[0] * 3) + x[1]
 
 
-part2 = tokens
-print(f'Part 2: {part2}')
-
-
-
-
 exec_time = time.time() - start_time
+print(f'Part 2: {tokens} ({exec_time:.3f} sec)')
+
+
+
+
 
