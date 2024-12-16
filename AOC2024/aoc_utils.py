@@ -150,3 +150,67 @@ def flood_fill(data: list, start: tuple, old: any, new:any, changed=[]) -> list:
     return data, changed
 
 
+def dfs_shortest_path(valid_points, start, end):
+    from collections import defaultdict
+
+    # Convert the list of valid points into a set for quick lookup
+    valid_set = set(valid_points)
+
+    # Directions for moving up, down, left, right
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+    # Helper function to perform DFS
+    def dfs(current, path, visited):
+        nonlocal shortest_path
+
+        # If we've reached the end point, check if the current path is shorter
+        if current == end:
+            if not shortest_path or len(path) < len(shortest_path):
+                shortest_path = path[:]
+            return
+
+        # Explore neighbors
+        for direction in directions:
+            neighbor = (current[0] + direction[0], current[1] + direction[1])
+
+            if neighbor in valid_set and neighbor not in visited:
+                visited.add(neighbor)
+                path.append(neighbor)
+
+                dfs(neighbor, path, visited)
+
+                # Backtrack
+                path.pop()
+                visited.remove(neighbor)
+
+    # Initialize variables
+    shortest_path = []  # Start with an empty shortest path
+    visited = set()
+    visited.add(start)
+
+    # Start DFS
+    dfs(start, [start], visited)
+
+    return shortest_path if shortest_path else None
+
+
+
+def count_direction_changes(path):
+    if not path or len(path) < 3:
+        return 0
+
+    direction_changes = 0
+
+    # Helper function to calculate direction
+    def get_direction(p1, p2):
+        return (p2[0] - p1[0], p2[1] - p1[1])
+
+    # Iterate through the path and count changes in direction
+    for i in range(1, len(path) - 1):
+        dir1 = get_direction(path[i - 1], path[i])
+        dir2 = get_direction(path[i], path[i + 1])
+
+        if dir1 != dir2:
+            direction_changes += 1
+
+    return direction_changes
