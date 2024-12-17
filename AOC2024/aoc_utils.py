@@ -150,49 +150,51 @@ def flood_fill(data: list, start: tuple, old: any, new:any, changed=[]) -> list:
     return data, changed
 
 
-def dfs_shortest_path(valid_points, start, end):
-    from collections import defaultdict
+from collections import deque
 
-    # Convert the list of valid points into a set for quick lookup
-    valid_set = set(valid_points)
+def bfs_shortest_path(valid_points, start, target):
+    """
+    Perform a BFS search to find the shortest path from start to target.
 
-    # Directions for moving up, down, left, right
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    :param valid_points: List of tuples representing valid points on the map.
+    :param start: Starting point (x, y).
+    :param target: Target point (x, y).
+    :return: A list representing the shortest path from start to target if one exists, otherwise None.
+    """
+    valid_set = set(valid_points)  # Use a set for quick lookup
 
-    # Helper function to perform DFS
-    def dfs(current, path, visited):
-        nonlocal shortest_path
+    if start not in valid_set or target not in valid_set:
+        return None
 
-        # If we've reached the end point, check if the current path is shorter
-        if current == end:
-            if not shortest_path or len(path) < len(shortest_path):
-                shortest_path = path[:]
-            return
+    # Directions for adjacency (vertical and horizontal only)
+    directions = [
+        (-1, 0), (1, 0), (0, -1), (0, 1)
+    ]
 
-        # Explore neighbors
-        for direction in directions:
-            neighbor = (current[0] + direction[0], current[1] + direction[1])
+    def get_neighbors(point):
+        x, y = point
+        neighbors = [(x + dx, y + dy) for dx, dy in directions]
+        return [n for n in neighbors if n in valid_set]
 
-            if neighbor in valid_set and neighbor not in visited:
-                visited.add(neighbor)
-                path.append(neighbor)
-
-                dfs(neighbor, path, visited)
-
-                # Backtrack
-                path.pop()
-                visited.remove(neighbor)
-
-    # Initialize variables
-    shortest_path = []  # Start with an empty shortest path
+    queue = deque([(start, [start])])  # Queue stores (current_point, path_so_far)
     visited = set()
-    visited.add(start)
 
-    # Start DFS
-    dfs(start, [start], visited)
+    while queue:
+        current, path = queue.popleft()
 
-    return shortest_path if shortest_path else None
+        if current == target:
+            return path
 
+        if current in visited:
+            continue
+
+        visited.add(current)
+
+        for neighbor in get_neighbors(current):
+            if neighbor not in visited:
+                queue.append((neighbor, path + [neighbor]))
+
+    return None
 
 
 def count_direction_changes(path):

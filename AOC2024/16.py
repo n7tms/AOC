@@ -25,8 +25,10 @@ def parse(puzzle_input):
         for c, ch in enumerate((line)):
             if ch == 'S':
                 start = (r,c)
+                map.append((r,c))
             elif ch == 'E':
                 exit = (r,c)
+                map.append((r,c))
             elif ch == '.':
                 # rather than form a little map, I'm just going to store the valid path locations
                 map.append((r,c))
@@ -37,7 +39,9 @@ DIRS = [(-1,0),(0,1),(1,0),(0,-1)]
 
 
 def part1(map, start, exit):        # => 
-    path = aoc.dfs_shortest_path(map,start,exit)
+    # path = aoc.dfs_shortest_path(map,start,exit)
+    path = aoc.bfs_shortest_path(map,start,exit)
+    print(path)
 
     # find all the turns
     turns = aoc.count_direction_changes(path)
