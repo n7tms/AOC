@@ -152,9 +152,56 @@ def flood_fill(data: list, start: tuple, old: any, new:any, changed=[]) -> list:
 
 from collections import deque
 
+# def bfs_shortest_path(valid_points, start, target):
+#     """
+#     Perform a BFS search to find the shortest path from start to target.
+
+#     :param valid_points: List of tuples representing valid points on the map.
+#     :param start: Starting point (x, y).
+#     :param target: Target point (x, y).
+#     :return: A list representing the shortest path from start to target if one exists, otherwise None.
+#     """
+#     valid_set = set(valid_points)  # Use a set for quick lookup
+
+#     if start not in valid_set or target not in valid_set:
+#         return None
+
+#     # Directions for adjacency (vertical and horizontal only)
+#     directions = [
+#         (-1, 0), (1, 0), (0, -1), (0, 1)
+#     ]
+
+#     def get_neighbors(point):
+#         x, y = point
+#         neighbors = [(x + dx, y + dy) for dx, dy in directions]
+#         return [n for n in neighbors if n in valid_set]
+
+#     queue = deque([(start, [start])])  # Queue stores (current_point, path_so_far)
+#     visited = set()
+
+#     while queue:
+#         current, path = queue.popleft()
+
+#         if current == target:
+#             return path
+
+#         if current in visited:
+#             continue
+
+#         visited.add(current)
+
+#         for neighbor in get_neighbors(current):
+#             if neighbor not in visited:
+#                 queue.append((neighbor, path + [neighbor]))
+
+#     return None
+
+
+
 def bfs_shortest_path(valid_points, start, target):
     """
-    Perform a BFS search to find the shortest path from start to target.
+    Perform a BFS search to find the shortest path from start to target,
+    considering the movement cost and turn cost.
 
     :param valid_points: List of tuples representing valid points on the map.
     :param start: Starting point (x, y).
@@ -167,6 +214,69 @@ def bfs_shortest_path(valid_points, start, target):
         return None
 
     # Directions for adjacency (vertical and horizontal only)
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
+
+    # Function to get neighbors
+    def get_neighbors(point, direction):
+        x, y = point
+        neighbors = [(x + dx, y + dy) for dx, dy in directions]
+        return [n for n in neighbors if n in valid_set]
+
+    # Initialize the BFS queue: stores (current_point, path_so_far, current_direction, cost)
+    queue = deque([(start, [start], None, 0)])  # None means no direction yet, cost starts at 0
+    visited = set()
+
+    while queue:
+        current, path, current_direction, cost = queue.popleft()
+
+        # If we've reached the target, return the path
+        if current == target:
+            return path
+
+        # Avoid revisiting already processed states
+        visited.add((current, current_direction))
+
+        # Explore neighbors
+        for dx, dy in directions:
+            neighbor = (current[0] + dx, current[1] + dy)
+
+            if neighbor not in valid_set or (neighbor, (dx, dy)) in visited:
+                continue
+
+            # Calculate the cost
+            turn_cost = 0
+            if current_direction is not None and (current_direction != (dx, dy)):
+                # If the direction has changed, add turn cost (1000)
+                turn_cost = 1000
+
+            # Total cost is current cost + movement cost (1) + any turn cost
+            new_cost = cost + 1 + turn_cost
+
+            # Add the neighbor to the queue with the updated path and cost
+            queue.append((neighbor, path + [neighbor], (dx, dy), new_cost))
+
+    return None
+
+
+
+
+
+
+def bfs_all_paths(valid_points, start, target):
+    """
+    Perform a BFS search to find all paths from start to target.
+
+    :param valid_points: List of tuples representing valid points on the map.
+    :param start: Starting point (x, y).
+    :param target: Target point (x, y).
+    :return: A list of lists, where each list represents a path from start to target.
+    """
+    valid_set = set(valid_points)  # Use a set for quick lookup
+
+    if start not in valid_set or target not in valid_set:
+        return []
+
+    # Directions for adjacency (vertical and horizontal only)
     directions = [
         (-1, 0), (1, 0), (0, -1), (0, 1)
     ]
@@ -177,24 +287,22 @@ def bfs_shortest_path(valid_points, start, target):
         return [n for n in neighbors if n in valid_set]
 
     queue = deque([(start, [start])])  # Queue stores (current_point, path_so_far)
-    visited = set()
+    all_paths = []  # List to store all paths
 
     while queue:
         current, path = queue.popleft()
 
+        # If the target is reached, add the path to the list of paths
         if current == target:
-            return path
-
-        if current in visited:
+            all_paths.append(path)
             continue
 
-        visited.add(current)
-
         for neighbor in get_neighbors(current):
-            if neighbor not in visited:
+            if neighbor not in path:  # Avoid revisiting nodes already in the current path
                 queue.append((neighbor, path + [neighbor]))
 
-    return None
+    return all_paths
+
 
 
 def count_direction_changes(path):
