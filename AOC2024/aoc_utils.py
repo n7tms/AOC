@@ -216,3 +216,50 @@ def count_direction_changes(path):
             direction_changes += 1
 
     return direction_changes
+
+
+
+def can_generate_design(sub_designs, design):
+    """
+    Determines if the design can be generated using the sub_designs.
+
+    Args:
+    - sub_designs (list): List of patterns to be used to generate the design (e.g., ['r', 'wr', 'b', ...]).
+    - design (str): The design string to generate (e.g., 'brwrr').
+
+    Returns:
+    - bool: True if the design can be generated, False otherwise.
+    """
+    n = len(design)
+    dp = [False] * (n + 1)
+    dp[0] = True  # Base case: an empty design can always be generated
+
+    for i in range(1, n + 1):
+        for sub_design in sub_designs:
+            if dp[i - len(sub_design)] and design[i - len(sub_design):i] == sub_design:
+                dp[i] = True
+                break
+
+    return dp[n]
+
+def ways_to_generate_design(sub_designs, design):
+    """
+    Counts the number of ways the design can be generated using the sub_designs.
+
+    Args:
+    - sub_designs (list): List of patterns to be used to generate the design (e.g., ['r', 'wr', 'b', ...]).
+    - design (str): The design string to generate (e.g., 'brwrr').
+
+    Returns:
+    - int: The number of ways the design can be generated.
+    """
+    n = len(design)
+    dp = [0] * (n + 1)
+    dp[0] = 1  # Base case: one way to generate an empty design
+
+    for i in range(1, n + 1):
+        for sub_design in sub_designs:
+            if i >= len(sub_design) and design[i - len(sub_design):i] == sub_design:
+                dp[i] += dp[i - len(sub_design)]
+
+    return dp[n]
