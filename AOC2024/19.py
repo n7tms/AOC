@@ -27,6 +27,7 @@ def parse(puzzle_input):
 
 # FYI: design_count will certainly come in handy in other AOC problems.
 # I've added it to the AOC library.
+
 def design_count(towels, design):
     n = len(design)
     dp = [0] * (n + 1)
