@@ -4,10 +4,11 @@
 import aoc_utils as aoc
 import time
 import os
+from collections import deque
 
 DAY = '16'
-IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".in")
-# IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".sample.txt")
+# IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".in")
+IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".sample.txt")
 
 def parse(puzzle_input):
     """
@@ -36,6 +37,8 @@ def parse(puzzle_input):
     return map, start, exit
 
 DIRS = [(-1,0),(0,1),(1,0),(0,-1)]
+
+
 
 
 def part1(map, start, exit):        # => 92405 < x < 93405
