@@ -4,6 +4,7 @@ import subprocess
 import time
 # import numpy as np
 import logging
+from collections import deque
 
 
     
@@ -150,7 +151,6 @@ def flood_fill(data: list, start: tuple, old: any, new:any, changed=[]) -> list:
     return data, changed
 
 
-from collections import deque
 
 # def bfs_shortest_path(valid_points, start, target):
 #     """
