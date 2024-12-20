@@ -1,10 +1,11 @@
 from pathlib import Path
 from collections import deque
-
+import os
 
 def parse_data(file_name):
     """Read and process the grid data from the file."""
-    file_path = Path(__file__).resolve().parent / f"{file_name}.txt"
+    # file_path = Path(__file__).resolve().parent / f"{file_name}.txt"
+    file_path = os.path.join("AOC2024","inputs","2024-"+str(20)+".in")
     with open(file_path, "r") as f:
         grid = [line.strip() for line in f]
 
