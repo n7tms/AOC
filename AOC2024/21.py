@@ -53,10 +53,14 @@ curpos3 = (0,2)
 # the robot pressing the keypad on the door
 def robot1(sequence: str): 
     global curpos1
-    seq1 = ''
+    seq1 = []
     for s in sequence:
-        sq = aoc.bfs_shortest_path(doorpad,curpos1,doorpadchars[s])
-        seq1 += path_to_arrows(sq)
+        # sq = aoc.bfs_shortest_path(doorpad,curpos1,doorpadchars[s])
+        sq = aoc.bfs_all_paths(doorpad,curpos1,doorpadchars[s])
+        pth = ''
+        for s1 in sq:
+            pth += path_to_arrows(sq)
+        seq1.append(pth)
         curpos1 = doorpadchars[s]
 
     return seq1
