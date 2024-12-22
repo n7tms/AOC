@@ -59,7 +59,7 @@ def robot1(sequence: str):
         sq = aoc.bfs_all_paths(doorpad,curpos1,doorpadchars[s])
         pth = ''
         for s1 in sq:
-            pth += path_to_arrows(sq)
+            pth += path_to_arrows(s1)
         seq1.append(pth)
         curpos1 = doorpadchars[s]
 
