@@ -152,53 +152,53 @@ def flood_fill(data: list, start: tuple, old: any, new:any, changed=[]) -> list:
 
 
 
-# def bfs_shortest_path(valid_points, start, target):
-#     """
-#     Perform a BFS search to find the shortest path from start to target.
-
-#     :param valid_points: List of tuples representing valid points on the map.
-#     :param start: Starting point (x, y).
-#     :param target: Target point (x, y).
-#     :return: A list representing the shortest path from start to target if one exists, otherwise None.
-#     """
-#     valid_set = set(valid_points)  # Use a set for quick lookup
-
-#     if start not in valid_set or target not in valid_set:
-#         return None
-
-#     # Directions for adjacency (vertical and horizontal only)
-#     directions = [
-#         (-1, 0), (1, 0), (0, -1), (0, 1)
-#     ]
-
-#     def get_neighbors(point):
-#         x, y = point
-#         neighbors = [(x + dx, y + dy) for dx, dy in directions]
-#         return [n for n in neighbors if n in valid_set]
-
-#     queue = deque([(start, [start])])  # Queue stores (current_point, path_so_far)
-#     visited = set()
-
-#     while queue:
-#         current, path = queue.popleft()
-
-#         if current == target:
-#             return path
-
-#         if current in visited:
-#             continue
-
-#         visited.add(current)
-
-#         for neighbor in get_neighbors(current):
-#             if neighbor not in visited:
-#                 queue.append((neighbor, path + [neighbor]))
-
-#     return None
-
-
-
 def bfs_shortest_path(valid_points, start, target):
+    """
+    Perform a BFS search to find the shortest path from start to target.
+
+    :param valid_points: List of tuples representing valid points on the map.
+    :param start: Starting point (x, y).
+    :param target: Target point (x, y).
+    :return: A list representing the shortest path from start to target if one exists, otherwise None.
+    """
+    valid_set = set(valid_points)  # Use a set for quick lookup
+
+    if start not in valid_set or target not in valid_set:
+        return None
+
+    # Directions for adjacency (vertical and horizontal only)
+    directions = [
+        (-1, 0), (1, 0), (0, -1), (0, 1)
+    ]
+
+    def get_neighbors(point):
+        x, y = point
+        neighbors = [(x + dx, y + dy) for dx, dy in directions]
+        return [n for n in neighbors if n in valid_set]
+
+    queue = deque([(start, [start])])  # Queue stores (current_point, path_so_far)
+    visited = set()
+
+    while queue:
+        current, path = queue.popleft()
+
+        if current == target:
+            return path
+
+        if current in visited:
+            continue
+
+        visited.add(current)
+
+        for neighbor in get_neighbors(current):
+            if neighbor not in visited:
+                queue.append((neighbor, path + [neighbor]))
+
+    return None
+
+
+
+def bfs_shortest_path_with_turn(valid_points, start, target):
     """
     Perform a BFS search to find the shortest path from start to target,
     considering the movement cost and turn cost.
@@ -256,9 +256,6 @@ def bfs_shortest_path(valid_points, start, target):
             queue.append((neighbor, path + [neighbor], (dx, dy), new_cost))
 
     return None
-
-
-
 
 
 
