@@ -19,7 +19,8 @@ def parse(puzzle_input):
     with open(IN_FILE) as fp:
         data = fp.read().strip().splitlines()
         
-    return data
+    secret_numbers = [int(x) for x in data]
+    return secret_numbers
 
 
 
