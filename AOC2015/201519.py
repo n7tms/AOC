@@ -1,24 +1,32 @@
-# --- Day 19:  ---
+# AOC 2015 day 19: 
+#
 
-
+# import aoc_utils as aoc
 import time
+import os
 import re
+# import numpy as np
 
-# IN_FILE = "AOC2015/201519.txt"
-IN_FILE = "AOC2015/201519.sample.txt"
+DAY = '19'
+# IN_FILE = os.path.join("AOC2015","2015"+str(DAY)+".txt")
+IN_FILE = os.path.join("AOC2015","2015"+str(DAY)+".sample.txt")
 
-def parse():
-    with open(IN_FILE) as f:
-        out = [line for line in f.read().split('\n\n')]
+def parse(puzzle_input):
+    """
+    Parse
+    """
+    # aoc.get_input(2023,DAY,False)
+
+    with open(IN_FILE) as fp:
+        data = fp.read().strip().split("\n")
 
     replacements = []
     regex = r"(\w+) => (\w+)"
-    for r in out[0].split('\n'):
+    for r in data[0].split('\n'):
         vals = list(re.match(regex,r).groups())
         replacements.append([vals[0],vals[1]])
 
-    return replacements,out[1]
-
+    return replacements,data[1]
 
 
 def part1(medicine,replacements):    # => 
