@@ -7,8 +7,8 @@ import os
 from collections import deque
 
 DAY = '16'
-# IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".in")
-IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".sample.txt")
+IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".in")
+# IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".sample.txt")
 
 def parse(puzzle_input):
     """
@@ -19,7 +19,7 @@ def parse(puzzle_input):
     with open(IN_FILE) as fp:
         data = fp.read().strip().splitlines()
     
-    start = None 
+    start = None  
     exit = None
     map = []
     for r,line in enumerate(data):
@@ -41,30 +41,24 @@ DIRS = [(-1,0),(0,1),(1,0),(0,-1)]
 
 
 
-def part1(map, start, exit):        # => 92405 < x < 93405
-    # path = aoc.dfs_shortest_path(map,start,exit)
-    path = aoc.bfs_shortest_path(map,start,exit)
-    print(path)
+def part1(map, start, exit):        # => 65436
+    cost, paths = aoc.bfs_shortest_path_with_turn_cost(map, start, exit, "RIGHT", 1000)
 
-    # find all the turns
-    turns = aoc.count_direction_changes(path)
-    
-    total_cost = (turns * 1000) + len(path)
-    return total_cost
-
-    # paths = aoc.bfs_all_paths(map,start, exit)
-    # scores = []
-    # for path in paths:
-    #     scores.append(len(path) + (1000*aoc.count_direction_changes(path)))
-    
-    # return min(scores)
+    unique_tiles = set()
+    for path in paths:
+        unique_tiles.update(path)
+    return cost, len(unique_tiles)
 
 
+def part2(map, start, exit):       # => >437 >439
+    _, paths = aoc.bfs_shortest_path_with_turn_cost(map, start, exit, "RIGHT", 1000)
+
+    unique_tiles = set()
+    for path in paths:
+        unique_tiles.update(path)
+    return len(unique_tiles)
 
 
-
-def part2(m,s,e):       # => 
-    return
 
 def solve(puzzle_input):
     """Solve the puzzle for the given input."""

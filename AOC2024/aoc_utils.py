@@ -198,64 +198,85 @@ def bfs_shortest_path(valid_points, start, target):
 
 
 
-def bfs_shortest_path_with_turn(valid_points, start, target):
+import heapq
+
+def bfs_shortest_path_with_turn_cost(valid_points:list, start:tuple, target:tuple, start_direction:str = "RIGHT", cost_to_turn:int = 0):
     """
-    Perform a BFS search to find the shortest path from start to target,
-    considering the movement cost and turn cost.
+    Perform a modified BFS search to find the shortest path from start to target,
+    accounting for step and turn costs.
 
     :param valid_points: List of tuples representing valid points on the map.
     :param start: Starting point (x, y).
     :param target: Target point (x, y).
-    :return: A list representing the shortest path from start to target if one exists, otherwise None.
+    :param start_direction: The initial direction the start point is facing ("UP", "DOWN", "LEFT", "RIGHT").
+    :param turn_cost: the cost of making a 90 degree turn; default is 0 (no cost)
+    :return: A tuple of (cost, path) representing the total cost and the path taken.
     """
     valid_set = set(valid_points)  # Use a set for quick lookup
 
     if start not in valid_set or target not in valid_set:
         return None
 
-    # Directions for adjacency (vertical and horizontal only)
-    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
-
-    # Function to get neighbors
-    def get_neighbors(point, direction):
+    # Directions with their associated movement vectors
+    directions = {
+        "UP": (-1, 0),
+        "DOWN": (1, 0),
+        "LEFT": (0, -1),
+        "RIGHT": (0, 1)
+    }
+    
+    def get_neighbors(point):
         x, y = point
-        neighbors = [(x + dx, y + dy) for dx, dy in directions]
-        return [n for n in neighbors if n in valid_set]
+        neighbors = []
+        for direction, (dx, dy) in directions.items():
+            neighbor = (x + dx, y + dy)
+            if neighbor in valid_set:
+                neighbors.append((neighbor, direction))
+        return neighbors
 
-    # Initialize the BFS queue: stores (current_point, path_so_far, current_direction, cost)
-    queue = deque([(start, [start], None, 0)])  # None means no direction yet, cost starts at 0
-    visited = set()
+    # Priority queue to store (total_cost, current_point, direction, path_so_far)
+    pq = []
+    heapq.heappush(pq, (0, start, start_direction, [start]))
+    visited = {}
+    best_paths = []
+    min_cost = float('inf')
 
-    while queue:
-        current, path, current_direction, cost = queue.popleft()
+    while pq:
+        cost, current, last_direction, path = heapq.heappop(pq)
 
-        # If we've reached the target, return the path
         if current == target:
-            return path
+            if cost < min_cost:
+                # if we find a cheaper path, reset all the paths
+                min_cost = cost
+                best_paths = [path]
+            elif cost == min_cost:
+                best_paths.append(path)
+            continue
 
-        # Avoid revisiting already processed states
-        visited.add((current, current_direction))
+        if (current, last_direction) in visited and visited[(current, last_direction)] <= cost:
+            continue
 
-        # Explore neighbors
-        for dx, dy in directions:
-            neighbor = (current[0] + dx, current[1] + dy)
 
-            if neighbor not in valid_set or (neighbor, (dx, dy)) in visited:
-                continue
 
-            # Calculate the cost
-            turn_cost = 0
-            if current_direction is not None and (current_direction != (dx, dy)):
-                # If the direction has changed, add turn cost (1000)
-                turn_cost = 1000
+        # If visiting this state for the first time or with a lower cost
+        state = (current, last_direction)
+        if state not in visited or visited[state] > cost:
+            visited[state] = cost
 
-            # Total cost is current cost + movement cost (1) + any turn cost
-            new_cost = cost + 1 + turn_cost
+            for neighbor, direction in get_neighbors(current):
+                # Calculate the cost of moving to this neighbor
+                step_cost = 1
+                turn_cost = 1000 if last_direction and last_direction != direction else 0
+                total_cost = cost + step_cost + turn_cost
+                heapq.heappush(pq, (total_cost, neighbor, direction, path + [neighbor]))
 
-            # Add the neighbor to the queue with the updated path and cost
-            queue.append((neighbor, path + [neighbor], (dx, dy), new_cost))
+    # Consolidate all tiles from the best paths
+    tiles_in_best_paths = set()
+    for path in best_paths:
+        tiles_in_best_paths.update(path)
 
-    return None
+    return min_cost, best_paths
+
 
 
 
