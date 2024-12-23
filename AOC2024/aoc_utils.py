@@ -368,3 +368,16 @@ def ways_to_generate_design(sub_designs, design):
                 dp[i] += dp[i - len(sub_design)]
 
     return dp[n]
+
+
+
+
+def bron_kerbosch(R, P, X, connections, cliques):
+    if not P and not X:
+        # If P and X are empty, R is a maximal clique
+        cliques.append(R)
+        return
+    for v in list(P):
+        bron_kerbosch(R | {v}, P & connections[v], X & connections[v], connections, cliques)
+        P.remove(v)
+        X.add(v)
