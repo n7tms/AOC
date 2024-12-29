@@ -4,7 +4,6 @@
 import aoc_utils as aoc
 import time
 import os
-import aoc_utils as aoc
 
 DAY = '21'
 # IN_FILE = os.path.join("AOC2024","inputs","2024-"+str(DAY)+".in")
@@ -68,15 +67,17 @@ def robot1(sequence: str):
     
 
 # the robot pressing the keypad on robot1 
-def robot2(sequence: str):
+def robot2(sequences: str):
     global curpos2
-    seq2 = ''
-    for s in sequence:
-        sq = aoc.bfs_shortest_path(dirpad,curpos2,dirpadchars[s])
-        seq2 += path_to_arrows(sq)
-        curpos2 = dirpadchars[s]
-
-    return seq2
+    final_seq2 = []
+    for sequence in sequences:
+        seq2 = ''
+        for s in sequence:
+            sq = aoc.bfs_shortest_path(dirpad,curpos2,dirpadchars[s])
+            seq2 += path_to_arrows(sq)
+            curpos2 = dirpadchars[s]
+        final_seq2.append(seq2)
+    return final_seq2
 
 # the robot pressing the keypad on robot2
 def robot3(sequence: str):
@@ -110,14 +111,23 @@ def part1(data):        # =>
     complexity = 0 
     for sequence in data:
         seq1 = robot1(sequence)
-        print(seq1)
+        # print(seq1)
         seq2 = robot2(seq1)
-        print(seq2)
-        seq3 = robot3(seq2)
-        print(seq3)
+        # print(seq2)
+        seq3 = robot2(seq2)
+        # print(seq3)
         # seq4 = robot23(seq3)
-        print(f'{sequence}: {len(seq3)} * {int(sequence.partition('A')[0])}   =>  {seq3}')
-        complexity += (len(seq3) * int(sequence.partition('A')[0]) )
+
+        min_length = 9999999
+        min_seq = ''
+        for s in seq3:
+            if len(s) < min_length:
+                min_length = len(s)
+                min_seq = s
+
+
+        print(f'{min_seq}: {len(min_seq)} * {int(sequence.partition("A")[0])}   =>  {min_seq}')
+        complexity += (len(min_seq) * int(sequence.partition('A')[0]) )
 
     return complexity
 
