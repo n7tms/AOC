@@ -25,7 +25,8 @@ def parse(puzzle_input):
 
 def robot(sequence,padtype = 'r'):
     pad = ton.mov_movements if padtype == 'r' else ton.num_movements
-        
+    
+    troubleshoot = ''
     seq = ''
     curpos = 'A'
     for s in sequence:
@@ -34,19 +35,20 @@ def robot(sequence,padtype = 'r'):
         seq += 'A'
         curpos = s
 
-    return seq
+        troubleshoot += f'{s}:{seq} '
+
+    return seq,troubleshoot
 
 
 def part1(data):        # => 
 
     complexity = 0
     for seq in data:
-        s1 = robot(seq,'n')
-        s2 = robot(s1)
-        s3 = robot(s2)
+        s1,t = robot(seq,'n')
+        s2,t = robot(s1)
+        s3,t = robot(s2)
         complex = len(s3) * int(seq.partition('A')[0])
-    
-        print(f'{seq}: {complex} => {s3}')
+        print(f'{seq}\n{s1}\n{s2}\n{s3}\n{t}\n\n')    
         complexity += complex
     return complexity
 
