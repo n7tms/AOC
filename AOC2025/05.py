@@ -27,7 +27,7 @@ def parse(puzzle_input):
 
 
 
-def part1(id_ranges: list, fruits: list):        # => 
+def part1(id_ranges: list, fruits: list):        # => 712
 
     fresh = []
     for fruit in fruits:
@@ -38,16 +38,29 @@ def part1(id_ranges: list, fruits: list):        # =>
 
 
 
-def part2(id_ranges: list, fruits: list):        # => 
-    # s1 and e1 both fall inside some other s0 and e0
-    # s1 is outside some other s0 and e1, but e0 is inside 
-    # s1 is inside some other s0 and e1, but e0 is outside
+def part2(id_ranges: list):        # => 332998283036769
 
+    # merge ranges
+    id_ranges.sort(key=lambda x: x[0])
 
-    total_fresh = 0
-    for s,e in id_ranges:
-        total_fresh += (e-s+1)
-    return 0
+    # Merge overlapping or adjacent ranges
+    merged = []
+    for current_start, current_end in id_ranges:
+        if not merged:
+            merged.append([current_start, current_end])
+        else:
+            last_start, last_end = merged[-1]
+            if current_start <= last_end + 1:  # Overlaps or touches
+                merged[-1][1] = max(last_end, current_end)
+            else:
+                merged.append([current_start, current_end])
+
+    # Calculate total count
+    total = 0
+    for s, e in merged:
+        total += e - s + 1
+    
+    return total
 
 
 def solve(puzzle_input):
@@ -60,7 +73,7 @@ def solve(puzzle_input):
     print(f"part 1: {p1} ({exec_time:.4f} sec)")
 
     start_time = time.time()
-    p2 = str(part2(r,f))
+    p2 = str(part2(r))
     exec_time = time.time() - start_time
     print(f"part 2: {p2} ({exec_time:.4f} sec)")
 
