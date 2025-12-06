@@ -7,8 +7,8 @@ import os
 import math
 
 DAY = '06'
-IN_FILE = os.path.join("AOC2025","inputs","2025-"+str(DAY)+"-sample.txt")
-# IN_FILE = os.path.join("AOC2025","inputs","2025-"+str(DAY)+".in")
+# IN_FILE = os.path.join("AOC2025","inputs","2025-"+str(DAY)+"-sample.txt")
+IN_FILE = os.path.join("AOC2025","inputs","2025-"+str(DAY)+".in")
 
 def parse(puzzle_input):
     """
@@ -52,7 +52,7 @@ def part1(x):        # => 3525371263915
     return total_sum
 
 
-def part2(x):        # => 
+def part2(x):        # => 6846480843636
     problems = []
     for line in x:
         aline = []
@@ -60,9 +60,11 @@ def part2(x):        # =>
             aline.append(x)
         problems.append(aline)
 
-
     total_sum = 0
     ops = len(problems)-1
+
+    for i in range(len(problems[0]) - len(problems[ops])+1):
+        problems[ops].append(" ")
 
     op = ""
     numbers = []
@@ -74,15 +76,27 @@ def part2(x):        # =>
 
         # get the digits
         digits = []
+        only_space = True
         for dig in range(ops):
-            digits.append(int(problems[dig][i]))
-        numbers.append(int("".join(digits))) # do something right here to detect a space in every column; if so, then perform the calculation and reset for the next
-
-
-        if problems[ops][i] == "+":
-            total_sum += sum(digits)
+            if problems[dig][i] != " ":
+                only_space=False
+            digits.append(problems[dig][i])
+        if only_space:
+            # process the operation
+            if op == "+":
+                total_sum += sum(numbers)
+            else:
+                total_sum += math.prod(numbers)
+            numbers = []
         else:
-            total_sum += math.prod(digits)
+            numbers.append(int("".join(digits))) 
+
+    if op == "+":
+        total_sum += sum(numbers)
+    else:
+        total_sum += math.prod(numbers)
+    numbers = []
+
             
     return total_sum
 
