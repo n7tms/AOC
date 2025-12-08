@@ -101,7 +101,7 @@ def part2(x):        # => EOARGPHYAO
     for r in display:
         for dig in r:
             if dig == 1:
-                print("X", end="")
+                print("#", end="")
             else:
                 print(" ", end="")
         print("")
